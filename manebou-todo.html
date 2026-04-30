@@ -13,7 +13,7 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{font-family:'Zen Maru Gothic',sans-serif;background:var(--cream);color:var(--dark);min-height:100vh;padding-bottom:80px;overflow-x:hidden;background-image:radial-gradient(ellipse at 10% 20%,rgba(91,200,232,0.07) 0%,transparent 60%),radial-gradient(ellipse at 90% 80%,rgba(245,200,66,0.06) 0%,transparent 55%);background-attachment:fixed;}
+body{font-family:'Zen Maru Gothic',sans-serif;background:var(--cream);color:var(--dark);min-height:100vh;padding-bottom:160px;overflow-x:hidden;background-image:radial-gradient(ellipse at 10% 20%,rgba(91,200,232,0.07) 0%,transparent 60%),radial-gradient(ellipse at 90% 80%,rgba(245,200,66,0.06) 0%,transparent 55%);background-attachment:fixed;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 .fade-in{opacity:0;transform:translateY(18px);transition:opacity 0.55s ease,transform 0.55s ease;}
 .fade-in.visible{opacity:1;transform:translateY(0);}
@@ -37,7 +37,7 @@ nav{position:sticky;top:0;z-index:200;background:rgba(26,26,46,0.94);backdrop-fi
 .xp-pts{font-size:9px;color:var(--gold);font-weight:700;white-space:nowrap;flex-shrink:0;}
 
 /* ====== CHARACTER BAR ====== */
-.char-bar{background:linear-gradient(to bottom,#0e1428,var(--dark));border-bottom:3px solid rgba(245,200,66,0.3);padding:12px 14px;display:flex;align-items:center;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.char-bar{position:fixed;bottom:66px;left:0;right:0;z-index:199;background:linear-gradient(to top,#0e1428,var(--dark));border-top:3px solid rgba(245,200,66,0.3);padding:10px 14px;display:flex;align-items:center;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
 .char-bar-label{font-size:8px;color:rgba(255,255,255,0.35);letter-spacing:2px;flex-shrink:0;font-weight:700;}
 .char-btn{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;border:none;background:rgba(255,255,255,0.04);padding:8px 10px;flex-shrink:0;border-radius:16px;border:2px solid transparent;transition:all 0.2s;}
 .char-btn:hover{background:rgba(255,255,255,0.08);transform:translateY(-2px);}
@@ -664,6 +664,74 @@ html.dark .tile-sheet-subtitle{color:#555;}
 
 /* ====== OWNED THEME BADGE ====== */
 .theme-price.owned-label{color:var(--green) !important;}
+
+/* ====== JAPAN MAP (都道府県 発展マップ) ====== */
+.jp-stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
+.jp-stat{background:rgba(255,255,255,0.04);border:2px solid rgba(255,255,255,0.09);border-radius:12px;padding:8px 6px;text-align:center;}
+.jp-stat-num{font-family:'Dela Gothic One',sans-serif;font-size:20px;line-height:1;margin-bottom:2px;}
+.jp-stat-lbl{font-size:8px;color:rgba(255,255,255,0.4);font-weight:700;letter-spacing:1px;}
+
+/* 3D 斜め視点コンテナ */
+.jp-map-outer{perspective:800px;perspective-origin:50% -10%;margin:0 0 12px;overflow:visible;}
+.jp-map-tilt{
+  transform:rotateX(28deg) rotateZ(-2deg);
+  transform-origin:50% 0%;
+  transform-style:preserve-3d;
+  transition:transform 0.5s cubic-bezier(0.2,0,0,1);
+  border-radius:20px;
+  box-shadow:0 30px 80px rgba(0,0,0,0.8),0 0 40px rgba(245,200,66,0.07),inset 0 1px 0 rgba(255,255,255,0.06);
+}
+.jp-map-outer:hover .jp-map-tilt,.jp-map-outer:focus-within .jp-map-tilt{transform:rotateX(17deg) rotateZ(-1deg);}
+.jp-map-stage{
+  position:relative;width:100%;padding-bottom:132%;
+  background:radial-gradient(ellipse at 65% 28%,rgba(74,158,255,0.09) 0%,transparent 55%),
+             radial-gradient(ellipse at 20% 82%,rgba(162,155,254,0.08) 0%,transparent 50%),#07081a;
+  border-radius:20px;border:2px solid rgba(245,200,66,0.22);overflow:visible;
+}
+.jp-sea{position:absolute;font-size:7.5px;color:rgba(255,255,255,0.12);font-weight:700;letter-spacing:1px;pointer-events:none;transform:translate(-50%,-50%);}
+
+/* ノード */
+.jp-node{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;cursor:pointer;user-select:none;z-index:5;transition:transform .15s;}
+.jp-node:hover{transform:translate(-50%,-50%) scale(1.3);z-index:20;}
+.jp-node:active{transform:translate(-50%,-50%) scale(1.08);}
+.jp-circle{
+  width:30px;height:30px;border-radius:50%;
+  border:2.5px solid rgba(255,255,255,0.14);background:rgba(18,22,52,0.9);
+  display:flex;align-items:center;justify-content:center;
+  font-size:7.5px;font-weight:900;color:rgba(255,255,255,0.28);
+  line-height:1.1;text-align:center;transition:all .25s;
+}
+.jp-node.jp-terr .jp-circle{width:22px;height:22px;font-size:6px;border-style:dashed;}
+.jp-node[data-lv="1"] .jp-circle{color:#fff;border-color:rgba(255,255,255,0.55);}
+.jp-node[data-lv="2"] .jp-circle{color:#fff;border-color:rgba(255,255,255,0.85);box-shadow:0 0 10px 3px var(--jrc,rgba(255,255,255,.3));}
+.jp-node[data-lv="3"] .jp-circle{color:#fff;border-color:var(--gold);border-width:3px;box-shadow:0 0 18px 5px var(--jrc,rgba(255,255,255,.3)),0 0 0 2px var(--gold-dark);}
+.jp-node[data-lv="1"] .jp-circle,.jp-node[data-lv="2"] .jp-circle,.jp-node[data-lv="3"] .jp-circle{background-color:var(--jrc,rgba(100,100,200,0.85));}
+.jp-stars{font-size:7px;line-height:1;margin-top:2px;color:var(--gold);opacity:0;transition:opacity .2s;letter-spacing:-1px;text-shadow:0 0 4px rgba(245,200,66,.8);}
+.jp-node[data-lv="1"] .jp-stars{opacity:.7;}
+.jp-node[data-lv="2"] .jp-stars,.jp-node[data-lv="3"] .jp-stars{opacity:1;}
+.jp-node.jp-disputed .jp-circle{animation:jpBlink 2.5s ease-in-out infinite;}
+@keyframes jpBlink{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* 日本マップ モーダル */
+.jpm-overlay{position:fixed;inset:0;z-index:700;background:rgba(0,0,0,0.78);backdrop-filter:blur(8px);display:none;align-items:flex-end;justify-content:center;}
+.jpm-overlay.open{display:flex;}
+.jpm-sheet{background:#111228;width:100%;max-width:520px;border-radius:24px 24px 0 0;border:2px solid rgba(245,200,66,0.18);border-bottom:none;padding:16px 16px 36px;max-height:86vh;overflow-y:auto;position:relative;box-shadow:0 -8px 40px rgba(0,0,0,0.6);}
+.jpm-handle{width:36px;height:4px;background:rgba(255,255,255,0.18);border-radius:2px;margin:0 auto 12px;}
+.jpm-close{position:absolute;top:12px;right:12px;background:rgba(255,255,255,0.07);border:none;color:rgba(255,255,255,.45);font-size:15px;cursor:pointer;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;}
+.jpm-head{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.jpm-flag{width:48px;height:48px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px;border:2.5px solid;}
+.jpm-name{font-family:'Dela Gothic One',sans-serif;font-size:20px;color:var(--gold);}
+.jpm-meta{font-size:10px;color:rgba(255,255,255,.45);margin-top:2px;}
+.jpm-stars-row{display:flex;gap:4px;margin-top:4px;}
+.jpm-era{background:rgba(255,255,255,0.04);border-radius:12px;padding:10px 12px;margin-bottom:8px;border-left:3.5px solid;}
+.jpm-era-title{font-size:10px;font-weight:900;letter-spacing:.8px;margin-bottom:5px;opacity:.8;}
+.jpm-era-text{font-size:11.5px;line-height:1.75;color:rgba(255,255,255,.85);}
+.jpm-btn{width:100%;padding:13px;margin-top:12px;background:var(--gold);color:#000;border:none;border-radius:14px;font-size:14px;font-weight:900;cursor:pointer;font-family:inherit;transition:opacity .15s,transform .1s;}
+.jpm-btn:hover{opacity:.88;}
+.jpm-btn:active{transform:scale(.98);}
+.jpm-btn.jpm-max{background:rgba(255,255,255,.07);color:rgba(255,255,255,.35);cursor:default;}
+.jpm-btn.jpm-max:hover{opacity:1;}
+html.dark .jp-stat{background:rgba(255,255,255,0.03);border-color:rgba(255,255,255,0.07);}
 </style>
 </head>
 <body>
@@ -957,26 +1025,45 @@ html.dark .tile-sheet-subtitle{color:#555;}
       </div>
     </div>
 
-    <!-- Map Stats -->
-    <div class="map-stats-row">
-      <div class="map-stat"><div class="ms-num" id="mapStatUnlocked" style="color:var(--green)">1</div><div class="ms-label">解放</div></div>
-      <div class="map-stat"><div class="ms-num" id="mapStatXp"       style="color:var(--gold)">0</div><div class="ms-label">総XP</div></div>
-      <div class="map-stat"><div class="ms-num" id="mapStatOwned"    style="color:var(--sky)">0</div><div class="ms-label">所有地</div></div>
-      <div class="map-stat"><div class="ms-num" id="mapStatFog"      style="color:var(--purple)">99</div><div class="ms-label">未解放</div></div>
+    <!-- JAPAN MAP STATS -->
+    <div class="jp-stats-row">
+      <div class="jp-stat"><div class="jp-stat-num" id="jpStatFull" style="color:var(--gold)">0</div><div class="jp-stat-lbl">★3 完全制覇</div></div>
+      <div class="jp-stat"><div class="jp-stat-num" id="jpStatPart" style="color:var(--sky)">0</div><div class="jp-stat-lbl">発展中</div></div>
+      <div class="jp-stat"><div class="jp-stat-num" id="jpStatLeft" style="color:var(--purple)">56</div><div class="jp-stat-lbl">未開拓</div></div>
     </div>
 
-    <!-- Territory Grid -->
-    <div class="zone-legend" id="mapZoneLegend"></div>
-    <div class="evo-bar" id="mapEvoBar"></div>
-    <div class="territory-wrap" id="territoryWrap">
-      <button class="map-fs-btn" id="mapFsBtn" onclick="toggleMapFullscreen()">⛶</button>
-      <div id="territoryGrid" class="territory-grid"></div>
+    <!-- JAPAN MAP 3D 斜め視点 -->
+    <div class="jp-map-outer">
+      <div class="jp-map-tilt">
+        <div class="jp-map-stage" id="jpMapStage">
+          <div class="jp-sea" style="left:12%;top:48%">日本海</div>
+          <div class="jp-sea" style="left:83%;top:62%">太平洋</div>
+          <div class="jp-sea" style="left:14%;top:90%">東シナ海</div>
+        </div>
+      </div>
     </div>
+
+    <!-- Map info -->
     <div class="map-info-panel">
-      <b>🟡 金枠</b> = 次に解放されるタイル（ポモドーロ完了で自動解放）<br>
-      <b>💰 タップ</b> = 解放済みタイルを購入（30🪙）→ <b>パッシブ収入+1🪙/セッション</b><br>
-      <b>🎴 ピンク枠</b> = 激レア マネぼうカードタイル（確率0.1%）<br>
-      <b>ゾーン効果</b> = キャラのゾーン内タイルが多いほど、タスク完了時のXP・コインがUP
+      <b>🗾 タップ</b> = 都道府県・島をクリックして歴史を解放！<br>
+      <b>★1→★2→★3</b> = 3時代（1970-85 / 1986-2005 / 2006-2025）を順に発展させよ<br>
+      <b>⚡ 点滅</b> = 北方領土・竹島・尖閣（領土問題エリア）
+    </div>
+
+    <!-- 旧タイルシステム（JS互換のため非表示で保持） -->
+    <div style="display:none">
+      <div class="map-stats-row">
+        <div class="map-stat"><div class="ms-num" id="mapStatUnlocked"></div><div class="ms-label">解放</div></div>
+        <div class="map-stat"><div class="ms-num" id="mapStatXp"></div><div class="ms-label">総XP</div></div>
+        <div class="map-stat"><div class="ms-num" id="mapStatOwned"></div><div class="ms-label">所有地</div></div>
+        <div class="map-stat"><div class="ms-num" id="mapStatFog"></div><div class="ms-label">未解放</div></div>
+      </div>
+      <div class="zone-legend" id="mapZoneLegend"></div>
+      <div class="evo-bar" id="mapEvoBar"></div>
+      <div class="territory-wrap" id="territoryWrap">
+        <button class="map-fs-btn" id="mapFsBtn" onclick="toggleMapFullscreen()">⛶</button>
+        <div id="territoryGrid" class="territory-grid"></div>
+      </div>
     </div>
 
     <!-- Boss Section -->
@@ -1104,6 +1191,24 @@ html.dark .tile-sheet-subtitle{color:#555;}
       <div class="ai-placeholder-desc">タスク管理・生産性・節約について<br>AIキャラクターに相談できます</div>
       <button class="ai-open-btn" onclick="openAiChat()">Gemで開く →</button>
     </div>
+  </div>
+</div>
+
+<!-- JAPAN MAP MODAL -->
+<div class="jpm-overlay" id="jpmOverlay" onclick="bgCloseJp(event)">
+  <div class="jpm-sheet">
+    <button class="jpm-close" onclick="closeJpModal()">✕</button>
+    <div class="jpm-handle"></div>
+    <div class="jpm-head">
+      <div class="jpm-flag" id="jpmFlag">🗾</div>
+      <div>
+        <div class="jpm-name" id="jpmName"></div>
+        <div class="jpm-meta" id="jpmMeta"></div>
+        <div class="jpm-stars-row" id="jpmStarsRow"></div>
+      </div>
+    </div>
+    <div id="jpmEras"></div>
+    <button class="jpm-btn" id="jpmBtn" onclick="advanceJpLevel()">▶ この時代を解放！</button>
   </div>
 </div>
 
@@ -3025,14 +3130,19 @@ function startPomodoroForTask(taskId){
 // =====================================================
 // AI PANEL
 // =====================================================
-// ← GeminiカスタムGemの共有URLをここに貼る
-const AI_CHAT_URL = '';
+const AI_CHAT_URLS = {
+  'おーる局長': 'https://gemini.google.com/u/0/gem/ef52d5f198d6',
+  'えんだ':     'https://gemini.google.com/u/0/gem/5f02d91247ae',
+  'カウッシー': 'https://gemini.google.com/u/0/gem/00d5b8524cf3',
+  'ためぞう':   'https://gemini.google.com/u/0/gem/d057139d3d86',
+};
 
 function toggleAiPanel(){
   const panel=$('aiPanel');
   panel.classList.toggle('open');
   if(panel.classList.contains('open')){
-    if(AI_CHAT_URL){
+    const url=AI_CHAT_URLS[S.activeChar]||'';
+    if(url){
       $('aiSetupView').style.display='none';
       const rv=$('aiReadyView'); rv.style.display='flex';
       $('aiReadyLabel').textContent=`${S.activeChar}に相談する`;
@@ -3043,7 +3153,8 @@ function toggleAiPanel(){
   }
 }
 function openAiChat(){
-  if(AI_CHAT_URL) window.open(AI_CHAT_URL,'_blank','noopener');
+  const url=AI_CHAT_URLS[S.activeChar]||'';
+  if(url) window.open(url,'_blank','noopener');
 }
 function closeAiPanel(e){
   if(e.target===$('aiPanel')||e.target.classList.contains('ai-panel-overlay'))
@@ -3127,6 +3238,203 @@ function init(){
 }
 
 init();
+
+// =====================================================
+// JAPAN MAP ─ 47都道府県 + 9領土 発展マップ
+// =====================================================
+const JP_RC = {
+  hokkaido:'#aee6ff',tohoku:'#7dcfb6',kanto:'#4a9eff',
+  chubu:'#2ecc71',kinki:'#ff9f43',chugoku:'#d88aff',
+  shikoku:'#f5c842',kyushu:'#e17055',okinawa:'#a29bfe',
+  hoppo:'#74b9ff',takeshima:'#ff7675',senkaku:'#fdcb6e',
+};
+const JP_STARS = ['','★','★★','★★★'];
+const JP_ERAS  = ['1970〜1985年代','1986〜2005年代','2006〜2025年代'];
+
+// [id, name, region, x%, y%, emoji, [era1, era2, era3]]
+const JP_PREFS=[
+['hokkaido','北海道','hokkaido',70,12,'🐻',['農業と水産業が基幹産業として発展。200海里設定（1977）でソ連との北洋漁業が縮小し、農業の多角化が進んだ。','バブル景気で観光ブームが到来。G8洞爺湖サミット（2008）が開催され、国際的知名度が向上。','北海道新幹線が2016年に開業。農産品輸出の拡大と、北方領土問題の長期化が同時進行する。']],
+['aomori','青森','tohoku',67,21,'🍎',['青函トンネル建設が本格化。リンゴ産地として全国トップの生産量を誇る。','青函トンネル（1988）開通・青函連絡船廃止。本州と北海道を結ぶ交通の要衝に。','東北新幹線が新青森まで延伸（2010）。六ヶ所村の核燃料サイクル施設問題が政治課題に。']],
+['akita','秋田','tohoku',62,26,'🌾',['秋田杉・農業・石油採掘が経済を支える。秋田音頭・なまはげ文化が全国に広まる。','少子高齢化・過疎化が全国最速水準で進行。秋田新幹線（こまち）が1997年に開業。','人口減少が最も深刻な県の一つ。洋上風力発電の拠点として再生可能エネルギーに注目。']],
+['iwate','岩手','tohoku',70,26,'🗻',['農業・林業が主産業。三陸海岸の漁業が盛んで、南部鉄器などの伝統工芸が継承される。','宮沢賢治の故郷として観光開発が進む。遠野の民話文化が国際的に注目される。','2011年東日本大震災で壊滅的被害。沿岸部の復興事業が長期にわたって続く。']],
+['yamagata','山形','tohoku',63,32,'🍒',['果物王国・農業県として発展。山形新幹線（つばさ）の整備計画が始まる。','山形新幹線（1992）開業。さくらんぼ・米（つや姫）が全国ブランドに成長。','観光と農業の連携で「食の山形」ブランドを確立。豪雪との闘いが続く。']],
+['miyagi','宮城','tohoku',70,33,'🏯',['仙台市が東北の中心都市として発展。農業・水産業が基幹産業。','仙台が政令指定都市（1989）に。「杜の都」として経済・文化の東北拠点が確立。','東日本大震災で甚大な被害。南三陸・女川・石巻を津波が直撃。復興の象徴となる。']],
+['fukushima','福島','tohoku',66,38,'🍑',['会津・中通り・浜通りと3つの地域が共存。農業と工業が均衡よく発展。','東北自動車道・磐越道など交通インフラが整備。桃・りんご・コメが全国ブランドに。','2011年、福島第一原発事故。避難者最大約16万人。廃炉作業と風評被害との闘いが現在も続く。']],
+['niigata','新潟','chubu',58,36,'🍚',['コシヒカリの産地として全国に名を馳せる。日本海側最大の都市・新潟が発展。','越後湯沢スキーリゾートがバブル期に急成長。石油化学工業も発展。','2004年新潟県中越地震（M6.8）、2007年中越沖地震。北陸新幹線延伸で再発展。']],
+['tochigi','栃木','kanto',66,43,'🍓',['日光・那須の観光地として発展。農業（イチゴ）と工業が経済を支える。','東北新幹線延伸で首都圏のベッドタウン化が進む。宇都宮線の高速化も実現。','イチゴ（とちおとめ・とちあいか）生産量で全国首位。自動車関連工場の集積が進む。']],
+['ibaraki','茨城','kanto',71,44,'🔬',['農業産出額全国トップクラス。日立製作所など大手工場が立地し工業も盛ん。','つくば科学万博（1985）開催。つくば研究学園都市が形成される。','東京圏のベッドタウン化が進む一方、農業・研究機関が共存する「科学農業県」として発展。']],
+['gunma','群馬','kanto',60,44,'♨️',['繊維・機械産業が発展。温泉（草津・伊香保）観光が盛んで「温泉天国」と呼ばれる。','関越自動車道の全線開通で首都圏とのアクセスが向上。自動車部品産業が集積。','アウトドア観光が発展。外国人労働者受け入れが全国トップクラスに。']],
+['saitama','埼玉','kanto',64,48,'🏟',['首都圏のベッドタウンとして人口が急増。高度経済成長を下から支える役割。','大宮・浦和・与野の合併で「さいたま市」が2001年に政令指定都市へ。','大宮駅周辺の再開発が加速。「ダサい」から「住みやすい」への都市イメージ転換に成功。']],
+['chiba','千葉','kanto',71,49,'✈️',['東京湾岸の工業地帯が発展。成田空港が1978年に開港（多くの反対運動を乗り越えて）。','幕張メッセが1989年開業。ディズニーランド（1983）の開園で観光・商業が大きく発展。','東日本大震災で液状化被害。成田空港の機能強化と千葉港周辺の再開発が続く。']],
+['tokyo','東京','kanto',66,49,'🗼',['高度経済成長で世界有数の大都市圏に。1964年東京五輪の遺産が都市インフラを支える。','バブル景気で地価が世界最高水準に。バブル崩壊後、経済の「失われた時代」の中心に。','2020年東京五輪（コロナ禍で無観客）。少子化・都心回帰・外国人増加が続く。']],
+['kanagawa','神奈川','kanto',65,52,'⚓',['横浜・川崎の重工業が発展。横浜港が国際貿易の要衝として機能。','横浜みなとみらい21の開発が本格化。横浜市が全国最大の市に成長。','観光都市・国際都市として発展。外国人居住者が多い「国際横浜」が定着。']],
+['toyama','富山','chubu',51,39,'🦀',['北陸の工業県として発展。富山湾の新鮮な魚介類が名産。薬売り（置き薬）文化も継承。','北陸自動車道の全線開通で企業誘致が進む。ガラス工芸が新産業として注目される。','北陸新幹線が2015年に金沢まで延伸開業。2024年1月、能登半島地震で大きな被害。']],
+['ishikawa','石川','chubu',49,41,'🏺',['伝統工芸（加賀友禅・九谷焼）と観光が発展。金沢が「小京都」として全国に知られる。','金沢21世紀美術館など文化施設が整備。工芸・観光の融合が独自の発展モデルに。','北陸新幹線金沢開業（2015）で観光客急増。2024年1月、能登半島地震が壊滅的被害を与える。']],
+['fukui','福井','chubu',48,44,'🦕',['原子力発電所が集中（若狭湾エリア）。眼鏡フレーム・繊維産業が基幹産業。','原発の安全問題が長年の政治課題に。恐竜博物館が全国的に有名に。','北陸新幹線が2024年に福井まで延伸開業。原発の再稼働問題と観光振興が同時課題。']],
+['nagano','長野','chubu',58,43,'⛷',['農業・観光・精密機械産業が均衡して発展。国内有数のスキーリゾート県。','1998年冬季長野五輪開催。善光寺参りなどの伝統観光とスキー観光が共存。','移住・田舎暮らしのメッカとして注目。リニア中央新幹線のルート問題で静岡県と対立。']],
+['yamanashi','山梨','chubu',62,48,'🍇',['フルーツ王国（ぶどう・桃）の産地として発展。富士山が観光資源に。','富士急ハイランドなどの観光施設が充実。リニアモーターカーの実験線が整備される。','富士山が2013年に世界文化遺産に登録。外国人観光客急増でオーバーツーリズム問題が浮上。']],
+['shizuoka','静岡','chubu',61,53,'🍵',['富士山・伊豆の観光資源と、静岡茶・みかんの農業。浜松の楽器産業も発展。','浜松のヤマハ・スズキなど製造業が発展。静岡空港建設が進む。','リニア中央新幹線の南アルプストンネル問題で静岡県が工事を長期にわたり不許可。']],
+['gifu','岐阜','chubu',53,47,'🦺',['中部の内陸県として発展。白川郷・合掌造り集落が独特の文化を守る。','白川郷が1995年に世界文化遺産に登録。自動車部品・航空機部品産業が発展。','豪雨・台風被害が多発。高山・白川郷への訪日外国人が急増しオーバーツーリズム問題が顕在化。']],
+['aichi','愛知','chubu',55,51,'🚗',['トヨタ自動車を中心とした自動車産業が世界的拠点に。名古屋が中部圏の中心都市として発展。','愛知万博（2005年）開催。自動車産業の輸出で工業生産額全国首位に。','トヨタが自動運転・EV戦略を本格化。外国人労働者受け入れの最先端県として多文化共生が課題。']],
+['mie','三重','kinki',54,55,'🦞',['伊勢神宮への参拝観光と漁業（真珠・志摩）が発展。「おかげ参り」が観光ブームを呼ぶ。','志摩スペイン村など大型観光施設が開業。真珠養殖・海女文化が世界的に注目される。','G7伊勢志摩サミット（2016）開催。三重の食文化・観光ブランドが国際的に発信される。']],
+['shiga','滋賀','kinki',50,51,'🚤',['琵琶湖の水資源が関西の生命線。農業・工業が発展。「近江商人」の文化が継承される。','京都のベッドタウンとして人口が増加。湖北の自然・文化観光が注目される。','琵琶湖の水質保全が国家的課題に。全国で数少ない人口増加県として発展が続く。']],
+['kyoto','京都','kinki',48,50,'🏛',['古都・世界的観光地として観光業が発展。西陣織・清水焼などの伝統工芸が継承される。','バブル期に地価が急騰。任天堂・京セラなどグローバル企業が台頭し始める。','オーバーツーリズムが深刻化。伝統的景観保全と観光業の共存が最大の課題に。']],
+['osaka','大阪','kinki',47,53,'🏢',['「天下の台所」として商業・工業の中心。1970年大阪万博の遺産が都市インフラを支える。','バブル崩壊後の「大阪の地盤沈下」が議論に。大阪維新の会が台頭し政治改革を推進（2010年〜）。','大阪・関西万博2025年開催。IRカジノを含む統合型リゾートの誘致が賛否両論の議論に。']],
+['hyogo','兵庫','kinki',42,52,'🌉',['神戸港を中心とした貿易・工業が発展。「六甲アイランド」など埋め立て開発が進む。','1995年1月17日、阪神淡路大震災（M7.3）。死者6400人超。震災復興が長期の最重要課題に。','神戸ファッション・医療産業クラスターが形成。淡路島の観光開発が近年急加速。']],
+['nara','奈良','kinki',50,55,'🦌',['古都・世界文化遺産の観光資源が豊富。農業と観光が経済を支える。','法隆寺・東大寺など世界遺産の整備が進む。奈良市のベッドタウン化が進む。','2022年7月8日、安倍晋三元首相が奈良市内で銃撃・死去。訪日外国人が過去最多を更新。']],
+['wakayama','和歌山','kinki',47,59,'⛩',['世界遺産・熊野古道と農業（梅・みかん）が経済を支える。漁業も盛ん。','熊野古道が2004年に世界遺産登録。南紀白浜の観光が発展。','人口減少が最も深刻な県の一つ。南海トラフ地震対策と移住促進が重要課題。']],
+['tottori','鳥取','chugoku',40,48,'🏖',['農業（二十世紀梨）と砂丘観光が有名。日本で最も人口の少ない県。','鳥取砂丘の保全と観光開発が議論に。山陰自動車道の整備が進む。','2016年鳥取県中部地震（M6.6）。スタバ・マクドナルド「最後の都道府県出店」で話題に。']],
+['shimane','島根','chugoku',35,48,'⛩',['出雲大社・石見銀山など歴史文化資源が豊富。農業・漁業が基幹産業。','石見銀山が2007年に世界遺産登録。竹島問題が国際問題化（2005年「竹島の日」条例）。','人口減少・過疎化が最も深刻な県の一つ。UIターン促進と地方創生の先進地として注目。']],
+['okayama','岡山','chugoku',40,52,'🍑',['農業（白桃・マスカット）と工業が発展。「晴れの国おかやま」として観光PRが進む。','瀬戸大橋が1988年に開通。本州と四国を結ぶ拠点として工業・物流が発展。','2018年西日本豪雨で倉敷市真備町が壊滅的被害。復興が進む中、再移住対策が課題に。']],
+['hiroshima','広島','chugoku',35,53,'☮️',['原爆投下（1945年）の記憶を持つ平和都市として世界的に知られる。マツダ（自動車）が発展。','マツダがグローバル企業に成長。広島カープが地域スポーツ文化の中心に。','G7広島サミット（2023）開催。核廃絶の発信地として平和外交の拠点に。']],
+['yamaguchi','山口','chugoku',28,55,'🏭',['周南コンビナートなど重化学工業が発展。安倍晋三・岸田文雄ら歴代首相を多く輩出。','本州最西端として九州・関西をつなぐ物流が発展。角島大橋など観光が注目される。','山口・宇部の工業が電機・化学で転換。「長州閥」政治の根拠地として存在感を発揮。']],
+['kagawa','香川','shikoku',42,56,'🍜',['うどん王国として食文化が発展。瀬戸内海の島々が独特の風景を作る。','瀬戸大橋（坂出〜児島）が1988年に開通。本州へのアクセスが飛躍的に向上。','瀬戸内国際芸術祭（2010年〜）が国際的なアートイベントに成長。インバウンドが急増。']],
+['tokushima','徳島','shikoku',47,57,'💃',['阿波踊りが全国的なブランドに。農業（鳴門金時・すだち）が特産。','大鳴門橋が1985年開通。四国初の本州四国連絡橋で交通革命。IT企業誘致の先駆けに。','地方創生の最先端モデルとして注目。神山町のITテレワーク移住が全国メディアで紹介。']],
+['ehime','愛媛','shikoku',37,59,'🍊',['みかん・真珠の産地として農業・水産業が発展。松山城・道後温泉が観光資源。','しまなみ海道の整備が進む。今治タオルが全国ブランドに成長。','しまなみ海道が自転車聖地として国際的に有名に。今治造船が国内最大の造船グループに成長。']],
+['kochi','高知','shikoku',42,62,'🎏',['農業（土佐文旦・かつお）と漁業が発展。坂本龍馬の故郷として観光が盛ん。','高知自動車道の整備が進む。よさこいソーラン祭りが全国に広まる。','南海トラフ地震の最大被災地と想定される。人口減少・高齢化対策が最重要課題に。']],
+['fukuoka','福岡','kyushu',26,57,'🏙',['九州の中心都市・博多として商業・工業が発展。福岡空港が九州の航空の要衝に。','福岡ドーム（1993年）開業。天神・博多の都市再開発が加速。アジアへの玄関口として成長。','人口増加が続く稀有な政令指定都市。韓国・中国との航路が充実しアジアのハブ都市化が進む。']],
+['oita','大分','kyushu',32,57,'♨️',['温泉大国（別府・由布院）として観光業が発展。農業・漁業も盛ん。','由布院温泉が「大人の隠れ家」として全国ブランドに。大分空港のホバークラフトが注目される。','サッカー・Jリーグ（大分トリニータ）が地域活性化に貢献。地熱発電など再生エネルギー拠点化。']],
+['saga','佐賀','kyushu',23,59,'🏺',['農業（佐賀牛・いちご・のり）と伝統工芸（有田焼・伊万里焼）が産業の柱。','有田陶磁器が世界的コレクターズアイテムに。玄海原発の稼働問題が長年の政治課題。','佐賀空港へのオスプレイ配備問題が全国的議論に。農業ブランド化と観光振興が課題。']],
+['kumamoto','熊本','kyushu',28,61,'🏯',['農業王国・農業産出額で九州トップクラス。阿蘇山の観光が発展。','TDK・ソニーなど半導体・電機工場が集積。熊本城が観光の中心に。','2016年熊本地震（M7.3）で熊本城が大きな被害。TSMC工場誘致（2024年）で半導体産業の拠点に急浮上。']],
+['nagasaki','長崎','kyushu',19,62,'⛩',['軍艦島（端島）など近代化遺産が多く観光資源豊富。造船業の衰退で新産業が必要に。','軍艦島が2015年に世界遺産登録（朝鮮人強制労働問題で韓国と対立）。ハウステンボス（1992）開業。','長崎新幹線（西九州新幹線）が2022年開業。諫早湾干拓問題が長期化。']],
+['miyazaki','宮崎','kyushu',32,65,'🌊',['農業（ピーマン・きゅうり）と観光（シーガイア）が発展。プロ野球キャンプ地として有名。','シーガイア（1994年）開業するも経営行き詰まり破綻。口蹄疫問題（2010年）で畜産業が深刻打撃。','2023年7月、「南海トラフ地震臨時情報（巨大地震注意）」を初発令。全国に衝撃。']],
+['kagoshima','鹿児島','kyushu',26,68,'🚀',['種子島宇宙センター（1969年完成）が日本の宇宙開発の拠点に。農業・黒毛和牛が有名。','屋久島が1993年に世界自然遺産登録。九州新幹線（2004年部分開業）で交通が改善。','川内原発の再稼働（2015年）が全国の原発再稼働第1号として注目。JAXA商業衛星打ち上げが増加。']],
+['okinawa','沖縄','okinawa',15,82,'🌺',['1972年5月15日、本土復帰。27年ぶりに返還されるが広大な米軍基地が残留。沖縄海洋博覧会（1975年）開催。','1995年米兵による少女暴行事件を契機に10万人集会。「普天間基地の県外移設」を要求する運動が激化。','普天間基地の辺野古移設が国と沖縄県の対立のまま工事継続中。観光客数はコロナ前水準に回復しつつある。']],
+];
+
+const JP_TERRS=[
+['etorofu','択捉島','hoppo',82,7,'🏔',['面積約3183㎢、北方四島最大の島。1945年ソ連が占領。元島民約4万人の帰還を求める声が続く。','ソ連崩壊後、東京宣言（1993年）で四島返還の枠組みが確認されるが具体的な進展はなし。','2022年ロシアのウクライナ侵攻後、北方領土交渉は完全停止。元島民の高齢化が進む。']],
+['kunashiri','国後島','hoppo',78,12,'🏔',['面積約1489㎢の島。ロシア軍の軍事施設が整備されている。「ビザなし交流」で訪問できる制度があった。','「ビザなし交流事業」（1992年〜）で日本人と旧島民が相互訪問。元島民の故郷への想いが確認される。','2022年のウクライナ侵攻後、ロシアはビザなし交流を一方的に停止。ロシアの軍事化が加速。']],
+['shikotan','色丹島','hoppo',80,15,'🏔',['日ソ共同宣言（1956年）では平和条約締結後に日本へ返還することが記されている2島のうちの1つ。','「2島先行返還」案が日本側から提起されるも、ロシアは4島問題として一括処理を主張。','プーチン政権下でロシアは2島返還案にも応じない姿勢を強化。ウクライナ侵攻後は交渉自体が凍結。']],
+['habomai','歯舞群島','hoppo',75,17,'🏔',['北海道根室市の眼前に広がる島々。漁業資源が豊富で、元島民が最も返還を切望する島群。','根室市の「北方領土の日」（2月7日）返還要求集会が毎年開催。政府・議員が参加する国民運動に定着。','ロシア側は歯舞を「千島」の一部として領有を主張。日本との法的解釈の違いが解決を複雑にする。']],
+['takeshima','竹島','takeshima',26,43,'🪨',['島根県隠岐郡に属する小島。1952年「李承晩ライン」設定後、韓国が1954年以降実効支配を継続。','1996年日韓双方がEEZを設定し摩擦激化。2005年島根県「竹島の日」条例制定で韓国が激しく抗議。','2012年8月、韓国の李明博大統領が竹島に上陸し天皇への謝罪要求発言で日韓関係が戦後最悪に。']],
+['uotsuri','魚釣島','senkaku',10,82,'⛰',['1895年に日本が閣議決定で領土に編入。1971年のUNESCAP石油埋蔵報告後、中国・台湾が領有権を主張し始める。','2004年中国人活動家7名が上陸し逮捕・強制送還。2010年中国漁船衝突事件が領土問題を国際的焦点に。','2012年9月、日本政府が尖閣を国有化。中国公船・海警局船の領海侵犯が常態化し年間最多記録を更新。']],
+['kitako','北小島','senkaku',13,84,'⛰',['無人島。1896年、古賀辰四郎氏がアホウドリ採取・漁業のために開拓し、日本の実効支配が始まった歴史を持つ。','1992年、中国が「領海及び接続水域法」で北小島を自国領土と明記。日本は強く抗議。','中国公船が北小島周辺の領海に定期的に侵入。日本の海上保安庁が24時間監視を継続。']],
+['minamiko','南小島','senkaku',9,85,'⛰',['北小島とともに古賀氏の開拓拠点として使われた歴史を持つ。日本政府が1932年に国有地に。','1996年、日本の右翼団体が魚釣島に灯台を建設。南小島周辺でも領有権示威活動が活発化。','2012年以降、中国海警船の周回・接続水域侵入が慢性化。日本の「何もしない実効支配」が続く。']],
+['kuba','久場島','senkaku',7,80,'⛰',['4島の中で最も西に位置する島。米軍の訓練水域に指定されており、日米地位協定の問題も絡む複雑な位置づけ。','米軍の使用継続と日本の主権主張の両立が外交的課題に。中国はこの点を批判する。','中国が久場島周辺での軍事訓練に懸念を示す。日・中・米の三つ巴の複雑な権益関係が続く。']],
+];
+
+// Lookup map
+const JP_ALL={};
+JP_PREFS.forEach(p=>{ JP_ALL[p[0]]={id:p[0],name:p[1],region:p[2],x:p[3],y:p[4],emoji:p[5],eras:p[6],isTerr:false}; });
+JP_TERRS.forEach(t=>{ JP_ALL[t[0]]={id:t[0],name:t[1],region:t[2],x:t[3],y:t[4],emoji:t[5],eras:t[6],isTerr:true}; });
+
+function getJpLv(id){ return (S.jpMap&&S.jpMap[id])||0; }
+
+function jpHex(hex,a){
+  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},${a})`;
+}
+function jpShort(n){
+  if(['北海道','神奈川','和歌山','鹿児島','歯舞群島'].includes(n)) return n.slice(0,3);
+  if(n.length<=2) return n;
+  return n.slice(0,2);
+}
+function jpRegLabel(r){
+  return{hokkaido:'北海道',tohoku:'東北',kanto:'関東',chubu:'中部',kinki:'近畿',
+  chugoku:'中国',shikoku:'四国',kyushu:'九州',okinawa:'沖縄',
+  hoppo:'北方領土',takeshima:'竹島',senkaku:'尖閣諸島'}[r]||r;
+}
+function jpDark(hex){
+  return(parseInt(hex.slice(1,3),16)*.299+parseInt(hex.slice(3,5),16)*.587+parseInt(hex.slice(5,7),16)*.114)<128;
+}
+
+function buildJapanMap(){
+  const stage=document.getElementById('jpMapStage');
+  if(!stage) return;
+  stage.querySelectorAll('.jp-node').forEach(el=>el.remove());
+  if(!S.jpMap) S.jpMap={};
+
+  Object.values(JP_ALL).forEach(s=>{
+    const lv=getJpLv(s.id);
+    const color=JP_RC[s.region]||'#aaa';
+    const div=document.createElement('div');
+    div.className='jp-node'+(s.isTerr?' jp-terr jp-disputed':'');
+    div.dataset.id=s.id;
+    div.dataset.lv=lv;
+    div.style.left=s.x+'%';
+    div.style.top=s.y+'%';
+    if(lv>0) div.style.setProperty('--jrc',jpHex(color,0.9));
+
+    const circ=document.createElement('div');
+    circ.className='jp-circle';
+    if(lv>0) circ.style.background=color;
+    circ.textContent=jpShort(s.name);
+
+    const stars=document.createElement('div');
+    stars.className='jp-stars';
+    stars.textContent=JP_STARS[lv]||'';
+
+    div.appendChild(circ);
+    div.appendChild(stars);
+    div.onclick=()=>openJpModal(s.id);
+    div.title=s.name;
+    stage.appendChild(div);
+  });
+  updateJpHUD();
+}
+
+function updateJpHUD(){
+  const ids=Object.keys(JP_ALL);
+  const full=ids.filter(id=>getJpLv(id)===3).length;
+  const part=ids.filter(id=>getJpLv(id)>0&&getJpLv(id)<3).length;
+  const left=Math.max(0,56-full-part);
+  const e1=document.getElementById('jpStatFull'),e2=document.getElementById('jpStatPart'),e3=document.getElementById('jpStatLeft');
+  if(e1) e1.textContent=full;
+  if(e2) e2.textContent=part;
+  if(e3) e3.textContent=left;
+}
+
+let jpCurId=null;
+function openJpModal(id){
+  jpCurId=id;
+  const s=JP_ALL[id];
+  const lv=getJpLv(id);
+  const color=JP_RC[s.region]||'#aaa';
+  const flag=document.getElementById('jpmFlag');
+  if(flag){flag.textContent=s.emoji;flag.style.background=jpHex(color,0.15);flag.style.borderColor=color;}
+  const nm=document.getElementById('jpmName');if(nm) nm.textContent=s.name;
+  const meta=document.getElementById('jpmMeta');
+  if(meta) meta.textContent=(s.isTerr?'⚠️ 領土問題エリア · ':'')+jpRegLabel(s.region)+' · ★'+lv+'/3';
+  const sr=document.getElementById('jpmStarsRow');
+  if(sr) sr.innerHTML=[0,1,2].map(i=>`<span style="font-size:16px;color:${i<lv?color:'rgba(255,255,255,0.15)'}">★</span>`).join('');
+  const erasEl=document.getElementById('jpmEras');
+  if(erasEl) erasEl.innerHTML=s.eras.map((txt,i)=>{
+    const active=i<lv,cur=i===lv;
+    return `<div class="jpm-era" style="border-color:${i<=lv?color:'rgba(255,255,255,0.1)'}${active||cur?'':';opacity:.35'}">
+      <div class="jpm-era-title" style="color:${i<=lv?color:'rgba(255,255,255,0.3)'}">${JP_ERAS[i]}</div>
+      <div class="jpm-era-text">${txt}</div></div>`;
+  }).join('');
+  const btn=document.getElementById('jpmBtn');
+  if(btn){
+    if(lv>=3){btn.textContent='★★★ 完全制覇！';btn.className='jpm-btn jpm-max';}
+    else{btn.textContent=`▶ ${JP_ERAS[lv]}を解放！（★${lv}→★${lv+1}）`;btn.className='jpm-btn';btn.style.background=color;btn.style.color=jpDark(color)?'#fff':'#000';}
+  }
+  const ov=document.getElementById('jpmOverlay');
+  if(ov){ov.classList.add('open');document.body.style.overflow='hidden';}
+}
+
+function advanceJpLevel(){
+  if(!jpCurId) return;
+  const lv=getJpLv(jpCurId);
+  if(lv>=3) return;
+  if(!S.jpMap) S.jpMap={};
+  S.jpMap[jpCurId]=lv+1;
+  save();
+  buildJapanMap();
+  const s=JP_ALL[jpCurId];
+  showToast(`${s.name} ★${lv+1} 解放！🎉`);
+  openJpModal(jpCurId);
+}
+
+function closeJpModal(){
+  const ov=document.getElementById('jpmOverlay');
+  if(ov){ov.classList.remove('open');document.body.style.overflow='';}
+  jpCurId=null;
+}
+function bgCloseJp(e){if(e.target===document.getElementById('jpmOverlay'))closeJpModal();}
+
+buildJapanMap();
 </script>
 </body>
 </html>
