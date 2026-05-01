@@ -957,8 +957,9 @@ html.dark .tile-sheet-subtitle{color:#555;}
     <div class="nav-coin" id="navCoin">🪙0</div>
     <div class="nav-streak" id="navStreak">🔥0</div>
     <div class="nav-date" id="navDate"></div>
-    <img id="navUserAvatar" class="nav-user-avatar" src="" alt="" onclick="openAccountMenu()" title="アカウント">
+    <img id="navUserAvatar" class="nav-user-avatar" src="" alt="" onclick="switchTab('settings')" title="アカウント">
     <span id="navLoginLink" class="nav-login-link" onclick="openLoginModal()">ログイン</span>
+    <span id="navUserName" class="nav-login-link" onclick="switchTab('settings')" style="display:none;border-color:rgba(76,175,125,0.5);color:var(--green)"></span>
     <button class="dark-toggle" id="darkToggle" onclick="toggleDark()" title="ダークモード切替">🌙</button>
   </div>
 </nav>
@@ -2147,14 +2148,22 @@ function renderCharSelector(){
   wrap.innerHTML=Object.keys(CHARS).map(name=>{
     const c=CHARS[name];
     const idx=charExprIdx[name]||0;
+    const costumeImg=getCharDisplayImg(name);
+    const avatarSrc=costumeImg||c.imgs[idx];
     const act=name===S.activeChar?'active':'';
-    return `<button class="char-btn ${act}" onclick="selectChar('${escH(name)}')" title="${escH(c.role)}">
-      <img class="char-avatar" src="${c.imgs[idx]}" alt="${escH(name)}" onerror="this.style.background='#ccc'">
+    const badge=costumeImg?'<span class="char-costume-badge">🎽</span>':'';
+    return `<button class="char-btn ${act}" onclick="selectChar('${escH(name)}')" title="${escH(c.role)}" style="position:relative">
+      <img class="char-avatar" src="${avatarSrc}" alt="${escH(name)}" onerror="this.style.background='#ccc'">
+      ${badge}
       <span class="char-name">${escH(name)}</span>
     </button>`;
   }).join('');
   const ch=CHARS[S.activeChar];
-  if(ch){ $('bubbleImg').src=ch.imgs[charExprIdx[S.activeChar]||0]; $('bubbleName').textContent=S.activeChar; }
+  if(ch){
+    const costumeImg=getCharDisplayImg(S.activeChar);
+    $('bubbleImg').src=costumeImg||(ch.imgs[charExprIdx[S.activeChar]||0]);
+    $('bubbleName').textContent=S.activeChar;
+  }
 }
 
 function selectChar(name){
@@ -3882,14 +3891,17 @@ function closeAiPanelDirect(){
     _fbUser=user;
     const av=document.getElementById('navUserAvatar');
     const ll=document.getElementById('navLoginLink');
+    const un=document.getElementById('navUserName');
     if(user){
       if(av&&user.photoURL){ av.src=user.photoURL; av.style.display=''; }
       else if(av) av.style.display='none';
       if(ll) ll.style.display='none';
+      if(un){ un.textContent='✅ '+(user.displayName||user.email||'ログイン中'); un.style.display=''; }
       await cloudLoad();
     } else {
       if(av) av.style.display='none';
       if(ll) ll.style.display='';
+      if(un) un.style.display='none';
     }
     const stab=document.getElementById('tab-settings');
     if(stab&&stab.classList.contains('active')) renderSettings();
