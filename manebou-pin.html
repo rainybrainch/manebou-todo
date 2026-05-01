@@ -243,12 +243,13 @@ nav{position:sticky;top:0;z-index:200;background:rgba(26,26,46,0.96);backdrop-fi
 .ex-panel.open{pointer-events:all;}
 .ex-panel-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.5);opacity:0;transition:opacity 0.3s;}
 .ex-panel.open .ex-panel-overlay{opacity:1;}
-.ex-panel-sheet{position:relative;width:min(420px,100vw);background:var(--dark);border-left:3px solid var(--sky);border-top:3px solid var(--sky);border-radius:20px 0 0 0;display:flex;flex-direction:column;transform:translateX(110%);transition:transform 0.35s cubic-bezier(0.17,0.89,0.32,1.1);max-height:100vh;overflow:hidden;}
+.ex-panel-sheet{position:relative;width:min(420px,100vw);background:var(--dark);border-left:3px solid var(--sky);border-top:3px solid var(--sky);border-radius:20px 0 0 0;display:flex;flex-direction:column;transform:translateX(110%);transition:transform 0.35s cubic-bezier(0.17,0.89,0.32,1.1);max-height:calc(100dvh - env(safe-area-inset-bottom,0px));overflow:hidden;}
 .ex-panel.open .ex-panel-sheet{transform:translateX(0);}
-.ex-panel-hdr{display:flex;align-items:center;padding:16px 16px 12px;border-bottom:2px solid rgba(91,200,232,0.2);flex-shrink:0;gap:8px;}
+.ex-panel-hdr{display:flex;align-items:center;padding:16px 16px 12px;border-bottom:2px solid rgba(91,200,232,0.2);flex-shrink:0;gap:8px;position:sticky;top:0;z-index:2;background:var(--dark);}
+.ex-panel-drag-handle{width:36px;height:4px;background:rgba(255,255,255,0.2);border-radius:99px;margin:0 auto 8px;}
 .ex-panel-title{font-family:'Dela Gothic One',sans-serif;font-size:15px;color:var(--sky);flex:1;}
 .ex-panel-close{background:rgba(255,255,255,0.07);border:none;color:rgba(255,255,255,0.5);font-size:15px;cursor:pointer;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;}
-.ex-panel-body{flex:1;overflow-y:auto;padding:14px 16px;-webkit-overflow-scrolling:touch;}
+.ex-panel-body{flex:1;overflow-y:auto;padding:14px 16px;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;}
 /* Pin goal banner (やったこと tab) */
 .pin-goal-banner{margin-bottom:12px;}
 .pin-goal-banner-inner{display:flex;align-items:center;gap:10px;background:rgba(91,200,232,0.07);border:1.5px solid rgba(91,200,232,0.25);border-radius:13px;padding:11px 14px;font-size:12px;font-weight:700;color:rgba(255,255,255,0.8);}
@@ -264,7 +265,9 @@ nav{position:sticky;top:0;z-index:200;background:rgba(26,26,46,0.96);backdrop-fi
 .ex-chart-wrap.cwrap-radar{display:flex;align-items:center;justify-content:center;}
 .ex-chart-wrap.cwrap-bar,.ex-chart-wrap.cwrap-trend{display:block;height:170px;position:relative;}
 /* pin multi-pin system */
-.pin-tabs-row{display:flex;gap:5px;padding:8px 14px 4px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;flex-shrink:0;}
+.pin-tabs-row-wrap{position:relative;flex-shrink:0;}
+.pin-tabs-row-wrap::after{content:'';position:absolute;right:0;top:0;bottom:0;width:24px;background:linear-gradient(to left,var(--dark),transparent);pointer-events:none;}
+.pin-tabs-row{display:flex;gap:5px;padding:8px 14px 4px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
 .pin-tabs-row::-webkit-scrollbar{display:none;}
 .pin-tab-btn{flex-shrink:0;display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:20px;border:1.5px solid rgba(255,255,255,0.1);background:transparent;color:rgba(255,255,255,0.4);font-size:11px;font-weight:700;cursor:pointer;transition:all 0.2s;font-family:inherit;white-space:nowrap;}
 .pin-tab-btn.pt-active{background:rgba(91,200,232,0.12);border-color:var(--sky);color:var(--sky);box-shadow:0 0 10px rgba(91,200,232,0.2);}
@@ -287,8 +290,9 @@ nav{position:sticky;top:0;z-index:200;background:rgba(26,26,46,0.96);backdrop-fi
 .ex-input-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
 .ex-input-item{display:flex;flex-direction:column;gap:4px;}
 .ex-input-label{font-size:9px;font-weight:700;color:rgba(255,255,255,0.4);letter-spacing:0.5px;}
-.ex-input-field{background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.12);border-radius:8px;color:#fff;font-size:14px;font-weight:700;padding:8px 10px;font-family:inherit;text-align:right;transition:border-color 0.2s;}
-.ex-input-field:focus{outline:none;border-color:var(--sky);}
+.ex-input-field{background:rgba(255,255,255,0.09);border:1.5px solid rgba(255,255,255,0.15);border-radius:8px;color:#fff;font-size:14px;font-weight:700;padding:8px 10px;font-family:inherit;text-align:right;transition:border-color 0.2s;width:100%;box-sizing:border-box;}
+.ex-input-field:focus{outline:none;border-color:var(--sky);background:rgba(91,200,232,0.06);}
+html.dark .ex-input-field{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.18);}
 .ex-input-unit{font-size:8px;color:rgba(255,255,255,0.3);text-align:right;margin-top:1px;}
 .ex-title-row{display:flex;gap:8px;margin-bottom:10px;}
 .ex-title-input{flex:1;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.12);border-radius:8px;color:#fff;font-size:12px;padding:8px 10px;font-family:inherit;}
@@ -302,7 +306,8 @@ nav{position:sticky;top:0;z-index:200;background:rgba(26,26,46,0.96);backdrop-fi
 .ex-hist-hdr{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
 .ex-hist-date{font-size:10px;color:var(--sky);font-weight:700;}
 .ex-hist-name{font-size:11px;font-weight:700;color:rgba(255,255,255,0.7);flex:1;}
-.ex-hist-del{background:none;border:none;color:rgba(255,80,80,0.5);font-size:14px;cursor:pointer;padding:0 2px;}
+.ex-hist-del{background:none;border:none;color:rgba(255,80,80,0.5);font-size:14px;cursor:pointer;padding:0;min-width:36px;min-height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;transition:background 0.15s;}
+.ex-hist-del:hover{background:rgba(255,60,60,0.1);color:rgba(255,80,80,0.85);}
 .ex-hist-chips{display:flex;flex-wrap:wrap;gap:4px;}
 .ex-hist-chip{font-size:9px;font-weight:700;padding:2px 7px;border-radius:8px;background:rgba(91,200,232,0.1);border:1px solid rgba(91,200,232,0.25);color:var(--sky);}
 /* settings toggle */
@@ -313,6 +318,37 @@ nav{position:sticky;top:0;z-index:200;background:rgba(26,26,46,0.96);backdrop-fi
 .ex-metric-del{background:none;border:none;color:rgba(255,80,80,0.5);font-size:16px;cursor:pointer;}
 .ex-add-metric-row{display:flex;gap:8px;margin-top:6px;}
 .ex-add-btn{background:rgba(91,200,232,0.15);border:1.5px solid rgba(91,200,232,0.35);border-radius:8px;color:var(--sky);font-size:11px;font-weight:700;padding:8px 12px;cursor:pointer;white-space:nowrap;}
+/* ── Pin 追加CSS ── */
+/* 今日記録済みバナー */
+.pin-today-banner{display:flex;align-items:center;gap:8px;background:rgba(76,175,125,0.1);border:1.5px solid rgba(76,175,125,0.35);border-radius:12px;padding:9px 12px;margin-bottom:12px;font-size:11px;font-weight:700;color:#4CAF7D;}
+/* PB小表示 */
+.ex-input-pb{font-size:7px;color:rgba(245,200,66,0.7);margin-top:1px;text-align:right;letter-spacing:0.3px;}
+/* 前回比デルタ表示 */
+.ex-hist-chip.delta-up{background:rgba(76,175,125,0.12);border-color:rgba(76,175,125,0.3);color:#4CAF7D;}
+.ex-hist-chip.delta-dn{background:rgba(232,53,74,0.1);border-color:rgba(232,53,74,0.25);color:#E8354A;}
+.ex-hist-chip.delta-eq{opacity:0.55;}
+/* 今日の履歴ハイライト */
+.ex-hist-item.hist-today{border-color:rgba(245,200,66,0.45);background:rgba(245,200,66,0.04);}
+.ex-hist-item.hist-today .ex-hist-date{color:var(--gold);}
+/* メモアイコン */
+.ex-hist-memo-icon{font-size:10px;opacity:0.5;margin-left:2px;}
+/* インプット操作ボタン */
+.pin-form-actions{display:flex;gap:6px;margin-bottom:8px;}
+.pin-form-action-btn{flex:1;padding:6px 8px;border-radius:8px;border:1.5px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.45);font-size:10px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;transition:all 0.15s;}
+.pin-form-action-btn:hover{border-color:var(--sky);color:var(--sky);}
+/* 週プログレスバー */
+.pin-week-prog{background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.08);border-radius:12px;padding:10px 12px;margin-bottom:12px;}
+.pin-week-prog-label{font-size:9px;font-weight:700;color:rgba(255,255,255,0.38);letter-spacing:1px;margin-bottom:5px;}
+.pin-week-prog-bar-bg{height:6px;background:rgba(255,255,255,0.08);border-radius:99px;overflow:hidden;}
+.pin-week-prog-bar-fill{height:100%;background:linear-gradient(90deg,var(--sky),var(--green));border-radius:99px;transition:width 0.5s ease;}
+.pin-week-prog-txt{font-size:9px;color:rgba(255,255,255,0.38);margin-top:3px;text-align:right;}
+/* ys-pin セクション改善 */
+.pin-last-date{font-size:9px;color:rgba(255,255,255,0.35);margin-left:auto;}
+.pin-open-btn{display:inline-block;padding:2px 8px;background:rgba(91,200,232,0.1);border:1.5px solid rgba(91,200,232,0.3);border-radius:8px;color:var(--sky);font-size:9px;font-weight:700;cursor:pointer;margin-left:auto;font-family:inherit;transition:all 0.15s;flex-shrink:0;}
+.pin-open-btn:hover{background:rgba(91,200,232,0.2);}
+/* 空状態 */
+.pin-empty-guide{text-align:center;padding:24px 16px;color:rgba(255,255,255,0.3);font-size:12px;line-height:1.8;}
+.pin-empty-guide .eg-icon{font-size:36px;display:block;margin-bottom:8px;}
 /* ====== LOGIN MODAL ====== */
 .login-modal-overlay{position:fixed;inset:0;z-index:800;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s;}
 .login-modal-overlay.open{opacity:1;pointer-events:all;}
@@ -1033,18 +1069,93 @@ html.dark .show-all-btn.active-toggle{background:#E6EDF3;color:#0D1117;}
 .btn-icon.del-confirm{border-color:var(--red);color:var(--red);background:rgba(232,53,74,0.08);font-size:10px;font-weight:700;}
 
 /* ====== BOSS CARD ====== */
-.boss-card{background:var(--dark);border:3px solid var(--red);border-radius:16px;padding:16px;margin:14px 0;text-align:center;box-shadow:4px 4px 0 #8B0000;}
-.boss-card.boss-dead{border-color:#444;box-shadow:4px 4px 0 #222;}
-.boss-title{font-family:'Dela Gothic One',sans-serif;font-size:10px;color:#aaa;letter-spacing:3px;margin-bottom:6px;}
-.boss-emoji{font-size:48px;line-height:1;margin:6px 0;}
+/* D1: overhaul boss card */
+.boss-card{background:linear-gradient(135deg,rgba(20,20,44,0.97),rgba(35,20,60,0.97));border:3px solid var(--gold);border-radius:18px;padding:18px;margin:14px 0;text-align:center;position:relative;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.5),0 0 0 1px rgba(245,200,66,0.1);}
+.boss-card.boss-dead{border-color:#444;opacity:0.8;filter:grayscale(0.4);}
+/* D11: title */
+.boss-title{font-family:'Dela Gothic One',sans-serif;font-size:10px;color:var(--gold);letter-spacing:3px;margin-bottom:6px;}
+/* D2: boss emoji sizing */
+.boss-emoji{font-size:56px;line-height:1;margin:6px 0;display:block;}
 .boss-name{font-family:'Dela Gothic One',sans-serif;font-size:16px;margin:6px 0;}
-.boss-hp-wrap{height:12px;background:rgba(255,255,255,0.1);border-radius:999px;overflow:hidden;margin:8px 0 4px;}
-.boss-hp-bar{height:100%;border-radius:999px;transition:width 0.5s ease;}
-.boss-hp-txt{font-size:11px;color:rgba(255,255,255,0.5);font-weight:700;margin-bottom:6px;}
-.boss-hint{font-size:9px;color:rgba(255,255,255,0.3);font-weight:700;margin-bottom:6px;}
-.boss-reward-preview{font-size:10px;color:var(--gold);font-weight:700;}
+/* D3: HP bar styling */
+.boss-hp-wrap{height:12px;background:rgba(255,255,255,0.1);border-radius:20px;overflow:hidden;border:1.5px solid rgba(255,255,255,0.15);margin:8px 0;}
+.boss-hp-bar{height:100%;border-radius:20px;box-shadow:0 0 8px rgba(255,255,255,0.2);transition:width 0.5s ease,background 0.5s ease;}
+.boss-hp-txt{font-size:11px;color:rgba(255,255,255,0.6);font-weight:700;margin-bottom:4px;transition:color 0.3s;}
+.boss-hint{font-size:9px;color:rgba(255,255,255,0.35);font-weight:700;margin-bottom:6px;background:rgba(255,255,255,0.04);border-radius:8px;padding:5px 8px;}
+/* D4: reward preview pill */
+.boss-reward-preview{font-size:10px;color:var(--gold);font-weight:700;background:rgba(245,200,66,0.1);border:1px solid rgba(245,200,66,0.3);border-radius:20px;padding:4px 12px;display:inline-block;margin:4px 2px;}
 .boss-defeated-msg{font-size:12px;color:#aaa;margin:6px 0;}
-.boss-reward{font-size:12px;color:var(--gold);font-weight:700;}
+.boss-reward{font-size:12px;color:var(--gold);font-weight:700;margin:4px 0;}
+/* A1: phase badge */
+.boss-phase-badge{font-size:10px;font-weight:900;padding:3px 10px;border-radius:20px;border:1.5px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.07);display:inline-block;margin:4px 0;letter-spacing:1px;}
+/* A3: shake animation */
+@keyframes bossShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+.boss-hit-shake{animation:bossShake 0.4s ease!important;}
+/* A4: floating damage */
+.boss-dmg-float{position:absolute;font-family:'Dela Gothic One',sans-serif;font-size:22px;color:#E8354A;font-weight:900;pointer-events:none;z-index:999;text-shadow:0 2px 4px rgba(0,0,0,0.5);animation:dmgFloat 1s ease forwards;}
+@keyframes dmgFloat{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-60px) scale(1.3)}}
+/* D18: defeat text float */
+@keyframes bossDefeatFloat{0%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-130%) scale(1.6)}}
+/* B2: enrage */
+.boss-card.boss-enrage{border-color:#E8354A!important;animation:bossEnrageGlow 0.8s infinite alternate;}
+@keyframes bossEnrageGlow{from{box-shadow:0 0 0 rgba(232,53,74,0)}to{box-shadow:0 0 20px rgba(232,53,74,0.6),0 4px 24px rgba(0,0,0,0.5)}}
+.boss-enrage-label{font-size:11px;color:#E8354A;font-weight:900;letter-spacing:2px;margin-bottom:4px;}
+/* A7: countdown */
+.boss-countdown{font-size:9px;color:rgba(255,255,255,0.4);font-weight:700;margin-top:6px;}
+/* A8: weakness */
+.boss-weakness-row{font-size:10px;color:var(--sky);font-weight:700;margin:3px 0;}
+/* A9: dmg dealt */
+.boss-dmg-dealt{font-size:9px;color:rgba(255,255,255,0.4);font-weight:700;}
+/* A10: combo badge */
+.boss-combo-badge{font-size:10px;color:var(--gold);font-weight:900;background:rgba(245,200,66,0.12);border:1px solid rgba(245,200,66,0.3);border-radius:10px;padding:2px 8px;display:inline-block;margin:3px 0;}
+/* C8: equipped badge on boss card */
+.boss-equipped-badge{font-size:10px;color:var(--gold);background:rgba(245,200,66,0.1);border:1px solid rgba(245,200,66,0.25);border-radius:8px;padding:4px 10px;margin:4px auto;display:inline-block;}
+/* B4: attack log */
+.boss-log{margin-top:6px;background:rgba(0,0,0,0.25);border-radius:8px;padding:5px 8px;text-align:left;max-height:50px;overflow-y:auto;}
+.boss-log-item{font-size:9px;color:rgba(255,255,255,0.5);font-weight:700;}
+/* A6: total defeats in dead card */
+.boss-defeats-total{font-size:10px;color:var(--green);font-weight:700;margin:4px 0;}
+/* D19: quick attack button */
+.boss-quick-attack-btn{background:rgba(232,53,74,0.15);border:1.5px solid var(--red);color:#ff8090;border-radius:10px;padding:5px 14px;font-size:11px;font-weight:900;cursor:pointer;margin-top:6px;transition:transform 0.1s;}
+.boss-quick-attack-btn:active{transform:scale(0.95);}
+/* D20: bestiary */
+.boss-bestiary{margin-top:8px;background:rgba(0,0,0,0.2);border-radius:12px;padding:8px;}
+.boss-bestiary-title{font-size:10px;color:#aaa;font-weight:700;letter-spacing:2px;cursor:pointer;user-select:none;}
+.boss-bestiary-list{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:6px;}
+.boss-bestiary-card{text-align:center;padding:6px 4px;border-radius:8px;background:rgba(255,255,255,0.04);}
+.boss-bestiary-card.seen{border:1.5px solid rgba(245,200,66,0.3);}
+.boss-bestiary-card.unseen{opacity:0.4;}
+.bbe{font-size:22px;line-height:1.2;}
+.bbn{font-size:8px;font-weight:700;color:rgba(255,255,255,0.7);}
+.bbd{font-size:7px;color:rgba(255,255,255,0.4);}
+/* B5: boss dmg preview on task card */
+.boss-dmg-preview{font-size:9px;font-weight:900;color:#ff8090;background:rgba(232,53,74,0.15);border:1px solid rgba(232,53,74,0.3);border-radius:8px;padding:1px 5px;margin-left:5px;vertical-align:middle;}
+/* bv extra */
+.bv-boss-defeats,.bv-boss-streak{font-size:11px;font-weight:700;color:var(--gold);margin:4px 0;}
+/* ====== ITEM COLLECTION ====== */
+/* C7/D7: item collection CSS */
+#itemCollectionSection{margin:8px 0;}
+.item-coll-header{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:rgba(155,109,214,0.12);border:2px solid rgba(155,109,214,0.3);border-radius:12px;margin-bottom:6px;}
+.item-coll-title{font-family:'Dela Gothic One',sans-serif;font-size:12px;color:var(--purple);}
+.item-coll-count{font-size:10px;color:var(--gold);font-weight:700;font-family:monospace;}
+.item-era-section{margin-bottom:8px;border-radius:10px;overflow:hidden;}
+.item-era-hdr{font-size:9px;color:rgba(255,255,255,0.5);letter-spacing:2px;cursor:pointer;padding:4px 8px;background:rgba(255,255,255,0.03);user-select:none;}
+/* D7: item grid */
+.item-coll-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:4px;padding:4px;}
+.item-coll-card{background:rgba(255,255,255,0.04);border:2px solid rgba(255,255,255,0.1);border-radius:12px;padding:6px 4px;text-align:center;cursor:pointer;transition:all 0.2s;position:relative;}
+.item-coll-card:hover{transform:scale(1.05);}
+.icc-emoji{font-size:20px;line-height:1.3;}
+.icc-name{font-size:7px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;margin-top:2px;}
+.icc-cnt{position:absolute;top:2px;right:4px;font-size:8px;font-weight:900;color:var(--gold);}
+.icc-equipped{font-size:7px;color:var(--gold);font-weight:900;background:rgba(245,200,66,0.15);border-radius:4px;padding:1px 4px;margin-top:2px;}
+.icc-equip-btn,.icc-sell-btn{font-size:7px;padding:2px 4px;border-radius:6px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.7);cursor:pointer;margin-top:2px;display:block;width:100%;}
+.icc-equip-btn.equip-active{border-color:var(--gold);color:var(--gold);}
+.icc-sell-btn{border-color:rgba(91,200,232,0.4);color:var(--sky);}
+/* C6: gacha equip button */
+.gacha-equip-btn{background:rgba(245,200,66,0.15);border:2px solid var(--gold);color:var(--gold);border-radius:12px;padding:8px 20px;font-family:'Dela Gothic One',sans-serif;font-size:12px;cursor:pointer;margin:8px 0 4px;transition:transform 0.1s;}
+.gacha-equip-btn:active{transform:scale(0.95);}
+/* C9: char item badge */
+.char-item-badge{position:absolute;bottom:28px;right:0;font-size:13px;filter:drop-shadow(0 1px 3px rgba(0,0,0,0.8));}
 
 /* ====== HABIT POOL ====== */
 .habit-section{background:var(--white);border:3px solid var(--dark);border-radius:16px;padding:14px;margin-top:14px;box-shadow:3px 3px 0 var(--dark);}
@@ -1116,6 +1227,21 @@ html.dark .settings-btn{background:#0D1117;color:#E6EDF3;border-color:#30363D;}
 .map-info-panel{background:rgba(245,200,66,0.07);border:2px solid rgba(245,200,66,0.25);border-radius:12px;padding:10px 12px;margin:10px 0 6px;font-size:10px;color:#aaa;font-weight:700;line-height:1.7;}
 .map-info-panel b{color:var(--gold);}
 html.dark .map-info-panel{border-color:rgba(245,200,66,0.2);}
+/* D14: HP text flash */
+@keyframes hpFlash{0%{color:rgba(255,255,255,0.6)}30%{color:#E8354A}100%{color:rgba(255,255,255,0.6)}}
+.boss-hp-txt.flashing{animation:hpFlash 0.5s ease;}
+/* D8: equip button animation */
+@keyframes equipPulse{0%{transform:scale(1)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
+.icc-equip-btn:active{animation:equipPulse 0.3s ease;}
+/* D16: week task progress */
+.boss-week-progress{font-size:9px;color:rgba(255,255,255,0.35);font-weight:700;margin-top:4px;}
+/* D5: improved defeated card */
+.boss-card.boss-dead .boss-emoji{font-size:48px;opacity:0.5;}
+.boss-card.boss-dead .boss-name{text-decoration:line-through;opacity:0.6;}
+.boss-card.boss-dead .boss-defeated-msg{font-size:12px;color:var(--green);font-weight:700;}
+/* D6: victory overlay improvements */
+.bv-boss-defeats{color:var(--gold);font-size:11px;font-weight:700;margin:4px 0;}
+.bv-boss-streak{color:var(--red);font-size:11px;font-weight:700;margin:4px 0;}
 
 /* ====== HABIT POOL DESC ====== */
 .habit-desc{font-size:10px;color:#aaa;font-weight:700;margin-bottom:8px;line-height:1.5;}
@@ -1574,6 +1700,57 @@ html.dark .badge-prog-txt{color:#555;}
 .hm-legend-label{font-size:8px;color:#aaa;font-weight:700;}
 .hm-legend-cell{display:inline-block;width:11px;height:11px;border-radius:3px;flex-shrink:0;}
 html.dark .hm-legend-label{color:#555;}
+
+/* ====== 賞状ギャラリー ====== */
+.cert-gallery-wrap{margin-bottom:16px;}
+.cert-gallery-title{font-size:10px;font-weight:700;letter-spacing:2px;color:rgba(255,255,255,0.35);margin-bottom:8px;}
+.cert-gallery{display:flex;gap:10px;overflow-x:auto;padding:4px 2px 12px;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;}
+.cert-gallery::-webkit-scrollbar{height:3px;}
+.cert-gallery::-webkit-scrollbar-track{background:transparent;}
+.cert-gallery::-webkit-scrollbar-thumb{background:rgba(155,109,214,0.3);border-radius:99px;}
+
+/* 証書カード共通 */
+.cert-card{flex:0 0 124px;scroll-snap-align:start;border-radius:16px;padding:13px 9px 11px;text-align:center;position:relative;border:2px solid;transition:transform 0.15s,box-shadow 0.15s;}
+.cert-card:not(.cert-locked):hover{transform:translateY(-3px);}
+/* ☆別カラー */
+.cert-card.cert-bs1{border-color:rgba(155,109,214,0.55);background:rgba(155,109,214,0.08);}
+.cert-card.cert-bs2{border-color:rgba(91,200,232,0.55);background:rgba(91,200,232,0.08);}
+.cert-card.cert-bs3{border-color:rgba(245,200,66,0.65);background:rgba(245,200,66,0.07);}
+/* 解除済み */
+.cert-card.cert-unlocked.cert-bs1{box-shadow:0 0 10px rgba(155,109,214,0.25);}
+.cert-card.cert-unlocked.cert-bs2{box-shadow:0 0 10px rgba(91,200,232,0.25);}
+.cert-card.cert-unlocked.cert-bs3{box-shadow:0 0 14px rgba(245,200,66,0.3);animation:certGlow 3.5s ease-in-out 0.3s infinite;}
+/* 未解除 */
+.cert-card.cert-locked{opacity:0.28;filter:grayscale(0.85);}
+/* アニメ */
+@keyframes certGlow{0%,100%{box-shadow:0 0 8px rgba(245,200,66,0.2)}50%{box-shadow:0 0 22px rgba(245,200,66,0.55)}}
+@keyframes certIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.cert-card{animation:certIn 0.25s ease both;}
+/* 内部要素 */
+.cert-stars{display:block;font-size:9px;margin-bottom:5px;line-height:1;}
+.cert-emoji{font-size:36px;display:block;margin-bottom:5px;line-height:1;}
+.cert-name{font-size:9px;font-weight:700;color:#fff;line-height:1.35;margin-bottom:3px;}
+.cert-desc{font-size:7.5px;color:rgba(255,255,255,0.38);line-height:1.4;margin-bottom:4px;}
+.cert-effect{font-size:7px;font-weight:700;color:var(--gold);background:rgba(245,200,66,0.1);border:1px solid rgba(245,200,66,0.3);border-radius:6px;padding:2px 5px;margin-top:2px;line-height:1.6;}
+.cert-date{font-size:7px;color:rgba(255,255,255,0.28);margin-top:4px;}
+.cert-prog-bar{height:3px;background:rgba(255,255,255,0.1);border-radius:3px;margin-top:6px;overflow:hidden;}
+.cert-prog-fill{height:100%;background:linear-gradient(90deg,var(--sky),var(--green));border-radius:3px;transition:width 0.4s;}
+.cert-prog-txt{font-size:7px;color:rgba(255,255,255,0.28);margin-top:2px;}
+.cert-new-tag{position:absolute;top:-1px;right:-1px;background:var(--red);color:#fff;font-size:6px;font-weight:700;padding:2px 5px;border-radius:0 14px 0 7px;letter-spacing:1px;z-index:2;}
+.cert-lock-icon{position:absolute;bottom:7px;right:8px;font-size:13px;opacity:0.4;}
+/* ギャラリーセクションヘッダー */
+.cert-section-hdr{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.cert-section-ttl{font-size:12px;font-weight:700;font-family:'Dela Gothic One',sans-serif;color:var(--gold);}
+.cert-section-cnt{font-size:10px;color:rgba(255,255,255,0.38);font-weight:700;}
+
+/* ====== キャラ装備グローエフェクト ====== */
+.char-btn.badge-glow-bs1{border-color:rgba(155,109,214,0.65)!important;box-shadow:0 0 14px rgba(155,109,214,0.35)!important;}
+.char-btn.badge-glow-bs2{border-color:rgba(91,200,232,0.65)!important;box-shadow:0 0 14px rgba(91,200,232,0.35)!important;}
+.char-btn.badge-glow-bs3{border-color:rgba(245,200,66,0.75)!important;box-shadow:0 0 18px rgba(245,200,66,0.45)!important;animation:charActiveGlow 2s ease-in-out infinite!important;}
+/* キャラボタン上の装備バッジピン */
+.char-badge-pin{position:absolute;top:4px;right:4px;font-size:13px;background:rgba(0,0,0,0.55);border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;line-height:1;border:1px solid rgba(255,255,255,0.15);}
+/* バブル下に装備エフェクト帯 */
+.bubble-equip-bar{font-size:9px;font-weight:700;color:var(--gold);text-align:center;padding:3px 8px;background:rgba(245,200,66,0.08);border-top:1px solid rgba(245,200,66,0.2);}
 </style>
 </head>
 <body>
@@ -1631,6 +1808,7 @@ html.dark .hm-legend-label{color:#555;}
     </div>
     <div class="bubble" id="bubbleText"></div>
   </div>
+  <div id="bubbleEquipBar" class="bubble-equip-bar" style="display:none"></div>
 </div>
 
 <!-- STRIP -->
@@ -1785,6 +1963,7 @@ html.dark .hm-legend-label{color:#555;}
         <div class="stat-card"><div class="stat-num" id="statTotal" style="color:var(--sky)">0</div><div class="stat-label">タスク数</div></div>
         <div class="stat-card"><div class="stat-num" id="statDone" style="color:var(--green)">0</div><div class="stat-label">完了数</div></div>
         <div class="stat-card"><div class="stat-num" id="statStreak" style="color:var(--gold)">0</div><div class="stat-label">🔥 連続日</div></div>
+        <div class="stat-card"><div class="stat-num" id="statItemCount" style="color:var(--purple);font-size:10px;">道具: 0/55</div><div class="stat-label">🎒 道具</div></div>
       </div>
       <div class="progress-wrap">
         <div class="progress-hdr">
@@ -2012,6 +2191,9 @@ html.dark .hm-legend-label{color:#555;}
     <!-- Boss Section -->
     <div id="bossSection"></div>
 
+    <!-- Item Collection Section -->
+    <div id="itemCollectionSection"></div>
+
     <!-- ガチャセクション -->
     <div class="adv-gacha-card">
       <div class="adv-gacha-hdr">
@@ -2186,14 +2368,17 @@ html.dark .hm-legend-label{color:#555;}
 <div class="ex-panel" id="exPanel" onclick="closeExercisePanelBg(event)">
   <div class="ex-panel-overlay"></div>
   <div class="ex-panel-sheet">
+    <div class="ex-panel-drag-handle"></div>
     <div class="ex-panel-hdr">
       <div>
-        <span class="ex-panel-title">🚩 Pin</span>
-        <div style="font-size:10px;color:rgba(255,255,255,0.45);margin-top:2px;">複数の目標を記録できる</div>
+        <span class="ex-panel-title" id="exPanelTitle">🚩 Pin</span>
+        <div id="exPanelSubtitle" style="font-size:10px;color:rgba(255,255,255,0.45);margin-top:2px;">複数の目標を記録できる</div>
       </div>
       <button class="ex-panel-close" onclick="closeExercisePanel()">✕</button>
     </div>
-    <div class="pin-tabs-row" id="pinTabsRow"></div>
+    <div class="pin-tabs-row-wrap">
+      <div class="pin-tabs-row" id="pinTabsRow"></div>
+    </div>
     <div class="ex-panel-body" id="exPanelBody">
       <!-- renderActivePinContent() で動的描画 -->
     </div>
@@ -2276,6 +2461,8 @@ html.dark .hm-legend-label{color:#555;}
       <div class="bv-reward-coins" id="bvCoins"></div>
       <div class="bv-reward-xp" id="bvXp"></div>
     </div>
+    <div class="bv-boss-defeats" id="bvBossDefeats"></div>
+    <div class="bv-boss-streak" id="bvBossStreak"></div>
     <button class="bv-close-btn" onclick="closeBossVictory()">よし！次も頑張る！</button>
   </div>
 </div>
@@ -2299,6 +2486,7 @@ html.dark .hm-legend-label{color:#555;}
     <div class="gacha-item-name" id="gachaItemName" style="display:none;"></div>
     <div class="gacha-item-desc" id="gachaItemDesc" style="display:none;"></div>
     <div class="gacha-item-effect" id="gachaItemEffect" style="display:none;"></div>
+    <button id="gachaEquipBtn" class="gacha-equip-btn" style="display:none;" onclick="">🗡️ 装備する</button>
     <button class="gacha-close-btn" onclick="closeGacha()">マップを見る →</button>
   </div>
 </div>
@@ -2504,70 +2692,70 @@ const GACHA_RARITIES = [
 const GACHA_ITEMS = [
   // ── 0〜4歳 era (unlock:0) ─────────────────────
   {id:'i01',emoji:'🔨',name:'節約の小槌',       desc:'小さな習慣が大きな富を生む',               effect:'XP +5',          unlockAt:0,   bonus:{xp:5}          },
-  {id:'i02',emoji:'📌',name:'メモ針',            desc:'大事なことを絶対に忘れない',               effect:'+5コイン',       unlockAt:0,   bonus:{coins:5}       },
-  {id:'i03',emoji:'🪣',name:'こつこつバケツ',    desc:'毎日少しずつ積み立てる器',                 effect:'+8コイン',       unlockAt:0,   bonus:{coins:8}       },
-  {id:'i04',emoji:'🔦',name:'照らしライト',      desc:'次にすべきことが見えてくる',               effect:'XP +10',         unlockAt:0,   bonus:{xp:10}         },
-  {id:'i05',emoji:'🎯',name:'狙い矢',            desc:'目標に向かって一直線に進む',               effect:'XP +6、+4コイン',unlockAt:0,   bonus:{xp:6,coins:4}  },
-  {id:'i06',emoji:'📏',name:'測りじゃく',        desc:'進捗をはっきり見える化する',               effect:'+6コイン',       unlockAt:0,   bonus:{coins:6}       },
-  {id:'i07',emoji:'🪄',name:'やる気棒',          desc:'叩くとやる気がわいてくる不思議な棒',       effect:'XP +12',         unlockAt:0,   bonus:{xp:12}         },
-  {id:'i08',emoji:'🔔',name:'提出ベル',          desc:'期限を鳴らして教えてくれる',               effect:'XP +8、+3コイン',unlockAt:0,   bonus:{xp:8,coins:3}  },
+  {id:'i02',emoji:'📌',name:'メモ針',            desc:'大事なことを絶対に忘れない',               effect:'+5コイン',       unlockAt:0,   bonus:{coins:5},       taskBonus:{coins:2}          },
+  {id:'i03',emoji:'🪣',name:'こつこつバケツ',    desc:'毎日少しずつ積み立てる器',                 effect:'+8コイン',       unlockAt:0,   bonus:{coins:8},       taskBonus:{coins:2}          },
+  {id:'i04',emoji:'🔦',name:'照らしライト',      desc:'次にすべきことが見えてくる',               effect:'XP +10',         unlockAt:0,   bonus:{xp:10},         taskBonus:{xp:2}             },
+  {id:'i05',emoji:'🎯',name:'狙い矢',            desc:'目標に向かって一直線に進む',               effect:'XP +6、+4コイン',unlockAt:0,   bonus:{xp:6,coins:4},  taskBonus:{xp:2}             },
+  {id:'i06',emoji:'📏',name:'測りじゃく',        desc:'進捗をはっきり見える化する',               effect:'+6コイン',       unlockAt:0,   bonus:{coins:6},       taskBonus:{coins:2}          },
+  {id:'i07',emoji:'🪄',name:'やる気棒',          desc:'叩くとやる気がわいてくる不思議な棒',       effect:'XP +12',         unlockAt:0,   bonus:{xp:12},         taskBonus:{xp:2}             },
+  {id:'i08',emoji:'🔔',name:'提出ベル',          desc:'期限を鳴らして教えてくれる',               effect:'XP +8、+3コイン',unlockAt:0,   bonus:{xp:8,coins:3},  taskBonus:{coins:2}          },
   // ── 5〜9歳 era (unlock:5) ─────────────────────
-  {id:'i09',emoji:'⚙️',name:'歯車時計',          desc:'時間を無駄なく活用する知恵',               effect:'XP +15',         unlockAt:5,   bonus:{xp:15}         },
-  {id:'i10',emoji:'🔭',name:'遠眼鏡',            desc:'先を見通す観察力を育てる',                 effect:'+12コイン',      unlockAt:5,   bonus:{coins:12}      },
-  {id:'i11',emoji:'🧲',name:'チャンス磁石',      desc:'いい機会をぐんぐん引き寄せる',             effect:'XP +13',         unlockAt:5,   bonus:{xp:13}         },
-  {id:'i12',emoji:'🔑',name:'節約鍵',            desc:'無駄な出費をしっかりロック',               effect:'+10コイン',      unlockAt:5,   bonus:{coins:10}      },
-  {id:'i13',emoji:'🪛',name:'調整ドライバー',    desc:'ちょっとずつ改善を続ける職人技',           effect:'XP +10、+5コイン',unlockAt:5,  bonus:{xp:10,coins:5} },
-  {id:'i14',emoji:'🧰',name:'基本工具箱',        desc:'どんな問題にも対応できる備え',             effect:'XP +12、+6コイン',unlockAt:5,  bonus:{xp:12,coins:6} },
+  {id:'i09',emoji:'⚙️',name:'歯車時計',          desc:'時間を無駄なく活用する知恵',               effect:'XP +15',         unlockAt:5,   bonus:{xp:15},         taskBonus:{xp:3}             },
+  {id:'i10',emoji:'🔭',name:'遠眼鏡',            desc:'先を見通す観察力を育てる',                 effect:'+12コイン',      unlockAt:5,   bonus:{coins:12},      taskBonus:{coins:3}          },
+  {id:'i11',emoji:'🧲',name:'チャンス磁石',      desc:'いい機会をぐんぐん引き寄せる',             effect:'XP +13',         unlockAt:5,   bonus:{xp:13},         taskBonus:{xp:3}             },
+  {id:'i12',emoji:'🔑',name:'節約鍵',            desc:'無駄な出費をしっかりロック',               effect:'+10コイン',      unlockAt:5,   bonus:{coins:10},      taskBonus:{coins:3}          },
+  {id:'i13',emoji:'🪛',name:'調整ドライバー',    desc:'ちょっとずつ改善を続ける職人技',           effect:'XP +10、+5コイン',unlockAt:5,  bonus:{xp:10,coins:5}, taskBonus:{xp:3}             },
+  {id:'i14',emoji:'🧰',name:'基本工具箱',        desc:'どんな問題にも対応できる備え',             effect:'XP +12、+6コイン',unlockAt:5,  bonus:{xp:12,coins:6}, taskBonus:{coins:3}          },
   // ── 10〜14歳 era (unlock:15) ─────────────────
-  {id:'i15',emoji:'🛠️',name:'多機能ツール',      desc:'様々な問題に対応できる万能選手',           effect:'XP +15、+10コイン',unlockAt:15, bonus:{xp:15,coins:10}},
-  {id:'i16',emoji:'⚖️',name:'判断天秤',          desc:'最善の選択をする力を磨く',                 effect:'XP +20',         unlockAt:15,  bonus:{xp:20}         },
-  {id:'i17',emoji:'🪝',name:'引き上げフック',    desc:'どん底から這い上がる底力',                 effect:'+14コイン',      unlockAt:15,  bonus:{coins:14}      },
-  {id:'i18',emoji:'🔬',name:'虫眼鏡',            desc:'細かいところまで丁寧に観察',               effect:'XP +18',         unlockAt:15,  bonus:{xp:18}         },
-  {id:'i19',emoji:'🪚',name:'改革のこぎり',      desc:'いらないものを思い切って切り捨てる',       effect:'+16コイン',      unlockAt:15,  bonus:{coins:16}      },
-  {id:'i20',emoji:'📐',name:'精密定規',          desc:'正確に測って計画を完璧に立てる',           effect:'XP +16、+10コイン',unlockAt:15, bonus:{xp:16,coins:10}},
+  {id:'i15',emoji:'🛠️',name:'多機能ツール',      desc:'様々な問題に対応できる万能選手',           effect:'XP +15、+10コイン',unlockAt:15, bonus:{xp:15,coins:10},taskBonus:{xp:4}             },
+  {id:'i16',emoji:'⚖️',name:'判断天秤',          desc:'最善の選択をする力を磨く',                 effect:'XP +20',         unlockAt:15,  bonus:{xp:20},         taskBonus:{coins:4}          },
+  {id:'i17',emoji:'🪝',name:'引き上げフック',    desc:'どん底から這い上がる底力',                 effect:'+14コイン',      unlockAt:15,  bonus:{coins:14},      taskBonus:{xp:4}             },
+  {id:'i18',emoji:'🔬',name:'虫眼鏡',            desc:'細かいところまで丁寧に観察',               effect:'XP +18',         unlockAt:15,  bonus:{xp:18},         taskBonus:{coins:4}          },
+  {id:'i19',emoji:'🪚',name:'改革のこぎり',      desc:'いらないものを思い切って切り捨てる',       effect:'+16コイン',      unlockAt:15,  bonus:{coins:16},      taskBonus:{xp:4}             },
+  {id:'i20',emoji:'📐',name:'精密定規',          desc:'正確に測って計画を完璧に立てる',           effect:'XP +16、+10コイン',unlockAt:15, bonus:{xp:16,coins:10},taskBonus:{coins:4}          },
   // ── 15〜19歳 era (unlock:30) ─────────────────
-  {id:'i21',emoji:'🔩',name:'強化ボルト',        desc:'土台を固め基盤を盤石にする',               effect:'XP +22、+8コイン',unlockAt:30, bonus:{xp:22,coins:8} },
-  {id:'i22',emoji:'📡',name:'情報アンテナ',      desc:'必要な情報を素早くキャッチ',               effect:'XP +20、+10コイン',unlockAt:30,bonus:{xp:20,coins:10}},
-  {id:'i23',emoji:'🔋',name:'充電池',            desc:'枯渇したエネルギーを一気に蓄える',         effect:'XP +25',         unlockAt:30,  bonus:{xp:25}         },
-  {id:'i24',emoji:'🧪',name:'実験フラスコ',      desc:'新しいことに果敢に挑戦する精神',           effect:'+18コイン',      unlockAt:30,  bonus:{coins:18}      },
-  {id:'i25',emoji:'🧲',name:'強力磁石',          desc:'もっと強く富を引き寄せる進化版',           effect:'XP +18、+12コイン',unlockAt:30,bonus:{xp:18,coins:12}},
-  {id:'i26',emoji:'🛒',name:'賢い買い物カゴ',    desc:'費用対効果を最大化する買い物術',           effect:'XP +15、+15コイン',unlockAt:30,bonus:{xp:15,coins:15}},
+  {id:'i21',emoji:'🔩',name:'強化ボルト',        desc:'土台を固め基盤を盤石にする',               effect:'XP +22、+8コイン',unlockAt:30, bonus:{xp:22,coins:8}, taskBonus:{xp:5}             },
+  {id:'i22',emoji:'📡',name:'情報アンテナ',      desc:'必要な情報を素早くキャッチ',               effect:'XP +20、+10コイン',unlockAt:30,bonus:{xp:20,coins:10},taskBonus:{coins:5}          },
+  {id:'i23',emoji:'🔋',name:'充電池',            desc:'枯渇したエネルギーを一気に蓄える',         effect:'XP +25',         unlockAt:30,  bonus:{xp:25},         taskBonus:{xp:5}             },
+  {id:'i24',emoji:'🧪',name:'実験フラスコ',      desc:'新しいことに果敢に挑戦する精神',           effect:'+18コイン',      unlockAt:30,  bonus:{coins:18},      taskBonus:{coins:5}          },
+  {id:'i25',emoji:'🧲',name:'強力磁石',          desc:'もっと強く富を引き寄せる進化版',           effect:'XP +18、+12コイン',unlockAt:30,bonus:{xp:18,coins:12},taskBonus:{xp:5}             },
+  {id:'i26',emoji:'🛒',name:'賢い買い物カゴ',    desc:'費用対効果を最大化する買い物術',           effect:'XP +15、+15コイン',unlockAt:30,bonus:{xp:15,coins:15},taskBonus:{coins:5}          },
   // ── 20〜24歳 era (unlock:50) ─────────────────
-  {id:'i27',emoji:'🏹',name:'黄金の弓矢',        desc:'目標を正確に射抜く集中力',                 effect:'XP +30、+15コイン',unlockAt:50,bonus:{xp:30,coins:15}},
-  {id:'i28',emoji:'🔮',name:'水晶球',            desc:'未来を予測し先手を打つ先見力',             effect:'XP +25、+20コイン',unlockAt:50,bonus:{xp:25,coins:20}},
-  {id:'i29',emoji:'⚡',name:'雷のハンマー',      desc:'強力なエネルギーで物事に打ち込む',         effect:'XP +40',         unlockAt:50,  bonus:{xp:40}         },
-  {id:'i30',emoji:'🗝️',name:'宝探し鍵',          desc:'隠れたチャンスと宝を見つける',             effect:'+28コイン',      unlockAt:50,  bonus:{coins:28}      },
-  {id:'i31',emoji:'🧿',name:'守護のお守り',      desc:'大切なものをしっかり守り抜く',             effect:'XP +28、+15コイン',unlockAt:50,bonus:{xp:28,coins:15}},
+  {id:'i27',emoji:'🏹',name:'黄金の弓矢',        desc:'目標を正確に射抜く集中力',                 effect:'XP +30、+15コイン',unlockAt:50,bonus:{xp:30,coins:15},taskBonus:{xp:6}             },
+  {id:'i28',emoji:'🔮',name:'水晶球',            desc:'未来を予測し先手を打つ先見力',             effect:'XP +25、+20コイン',unlockAt:50,bonus:{xp:25,coins:20},taskBonus:{coins:6}          },
+  {id:'i29',emoji:'⚡',name:'雷のハンマー',      desc:'強力なエネルギーで物事に打ち込む',         effect:'XP +40',         unlockAt:50,  bonus:{xp:40},         taskBonus:{xp:6},   bossBonus:2},
+  {id:'i30',emoji:'🗝️',name:'宝探し鍵',          desc:'隠れたチャンスと宝を見つける',             effect:'+28コイン',      unlockAt:50,  bonus:{coins:28},      taskBonus:{coins:6}          },
+  {id:'i31',emoji:'🧿',name:'守護のお守り',      desc:'大切なものをしっかり守り抜く',             effect:'XP +28、+15コイン',unlockAt:50,bonus:{xp:28,coins:15},taskBonus:{xp:6}             },
   // ── 25〜29歳 era (unlock:100) ─────────────────
-  {id:'i32',emoji:'🗡️',name:'財運の剣',          desc:'富を切り開く決断力と行動力',               effect:'+35コイン',      unlockAt:100, bonus:{coins:35}      },
-  {id:'i33',emoji:'🪄',name:'魔法の杖',          desc:'困難をやわらかく解決する不思議な力',       effect:'XP +35、+22コイン',unlockAt:100,bonus:{xp:35,coins:22}},
-  {id:'i34',emoji:'⚗️',name:'賢者の石',          desc:'知識と経験が凝縮した最高の結晶',           effect:'XP +45',         unlockAt:100, bonus:{xp:45}         },
-  {id:'i35',emoji:'🌊',name:'満潮の錨',          desc:'チャンスの波に乗り続ける安定感',           effect:'XP +30、+28コイン',unlockAt:100,bonus:{xp:30,coins:28}},
-  {id:'i36',emoji:'🔱',name:'三叉の鉾',          desc:'知識・経験・行動の三位一体パワー',         effect:'XP +50',         unlockAt:100, bonus:{xp:50}         },
+  {id:'i32',emoji:'🗡️',name:'財運の剣',          desc:'富を切り開く決断力と行動力',               effect:'+35コイン',      unlockAt:100, bonus:{coins:35},      taskBonus:{coins:7}          },
+  {id:'i33',emoji:'🪄',name:'魔法の杖',          desc:'困難をやわらかく解決する不思議な力',       effect:'XP +35、+22コイン',unlockAt:100,bonus:{xp:35,coins:22},taskBonus:{xp:7}             },
+  {id:'i34',emoji:'⚗️',name:'賢者の石',          desc:'知識と経験が凝縮した最高の結晶',           effect:'XP +45',         unlockAt:100, bonus:{xp:45},         taskBonus:{coins:7}          },
+  {id:'i35',emoji:'🌊',name:'満潮の錨',          desc:'チャンスの波に乗り続ける安定感',           effect:'XP +30、+28コイン',unlockAt:100,bonus:{xp:30,coins:28},taskBonus:{xp:7}             },
+  {id:'i36',emoji:'🔱',name:'三叉の鉾',          desc:'知識・経験・行動の三位一体パワー',         effect:'XP +50',         unlockAt:100, bonus:{xp:50},         taskBonus:{coins:7}, bossBonus:3},
   // ── 30〜34歳 era (unlock:150) ─────────────────
-  {id:'i37',emoji:'🔭',name:'宇宙望遠鏡',        desc:'無限の可能性を見渡す大きな眼',             effect:'XP +40、+22コイン',unlockAt:150,bonus:{xp:40,coins:22}},
-  {id:'i38',emoji:'🧲',name:'黄金磁石',          desc:'富と幸運をぐんぐん引き寄せる上位版',       effect:'+40コイン',      unlockAt:150, bonus:{coins:40}      },
-  {id:'i39',emoji:'🏆',name:'勝利のトロフィー',  desc:'努力と継続が確かに報われた証',             effect:'XP +50、+20コイン',unlockAt:150,bonus:{xp:50,coins:20}},
-  {id:'i40',emoji:'🌡️',name:'情熱温度計',        desc:'モチベーションの高さをリアルに可視化',     effect:'XP +38、+15コイン',unlockAt:150,bonus:{xp:38,coins:15}},
-  {id:'i41',emoji:'🛡️',name:'鉄壁の盾',          desc:'どんな失敗にも動じない圧倒的な強さ',       effect:'XP +45、+28コイン',unlockAt:150,bonus:{xp:45,coins:28}},
+  {id:'i37',emoji:'🔭',name:'宇宙望遠鏡',        desc:'無限の可能性を見渡す大きな眼',             effect:'XP +40、+22コイン',unlockAt:150,bonus:{xp:40,coins:22},taskBonus:{xp:8}             },
+  {id:'i38',emoji:'🧲',name:'黄金磁石',          desc:'富と幸運をぐんぐん引き寄せる上位版',       effect:'+40コイン',      unlockAt:150, bonus:{coins:40},      taskBonus:{coins:8}          },
+  {id:'i39',emoji:'🏆',name:'勝利のトロフィー',  desc:'努力と継続が確かに報われた証',             effect:'XP +50、+20コイン',unlockAt:150,bonus:{xp:50,coins:20},taskBonus:{xp:8}             },
+  {id:'i40',emoji:'🌡️',name:'情熱温度計',        desc:'モチベーションの高さをリアルに可視化',     effect:'XP +38、+15コイン',unlockAt:150,bonus:{xp:38,coins:15},taskBonus:{coins:8}          },
+  {id:'i41',emoji:'🛡️',name:'鉄壁の盾',          desc:'どんな失敗にも動じない圧倒的な強さ',       effect:'XP +45、+28コイン',unlockAt:150,bonus:{xp:45,coins:28},taskBonus:{xp:8},   bossBonus:2},
   // ── 35〜39歳 era (unlock:200) ─────────────────
-  {id:'i42',emoji:'⚙️',name:'精密歯車',          desc:'あらゆる機構を制する完全制御',             effect:'XP +50、+25コイン',unlockAt:200,bonus:{xp:50,coins:25}},
-  {id:'i43',emoji:'🗺️',name:'黄金の地図',        desc:'成功への確かな道筋を描く力',               effect:'XP +45、+35コイン',unlockAt:200,bonus:{xp:45,coins:35}},
-  {id:'i44',emoji:'🎭',name:'変革の仮面',        desc:'固定観念をぶち壊す創造的思考力',           effect:'+52コイン',      unlockAt:200, bonus:{coins:52}      },
-  {id:'i45',emoji:'⚔️',name:'英雄の剣',          desc:'困難を乗り越えてきた勇者の証',             effect:'XP +60、+25コイン',unlockAt:200,bonus:{xp:60,coins:25}},
+  {id:'i42',emoji:'⚙️',name:'精密歯車',          desc:'あらゆる機構を制する完全制御',             effect:'XP +50、+25コイン',unlockAt:200,bonus:{xp:50,coins:25},taskBonus:{xp:10}            },
+  {id:'i43',emoji:'🗺️',name:'黄金の地図',        desc:'成功への確かな道筋を描く力',               effect:'XP +45、+35コイン',unlockAt:200,bonus:{xp:45,coins:35},taskBonus:{coins:10}         },
+  {id:'i44',emoji:'🎭',name:'変革の仮面',        desc:'固定観念をぶち壊す創造的思考力',           effect:'+52コイン',      unlockAt:200, bonus:{coins:52},      taskBonus:{xp:10}            },
+  {id:'i45',emoji:'⚔️',name:'英雄の剣',          desc:'困難を乗り越えてきた勇者の証',             effect:'XP +60、+25コイン',unlockAt:200,bonus:{xp:60,coins:25},taskBonus:{coins:10}, bossBonus:3},
   // ── 40〜44歳 era (unlock:300) ─────────────────
-  {id:'i46',emoji:'💎',name:'ダイヤの指輪',      desc:'努力が形になった永遠の輝き',               effect:'XP +70、+30コイン',unlockAt:300,bonus:{xp:70,coins:30}},
-  {id:'i47',emoji:'🌟',name:'星の指揮棒',        desc:'人々を導く特別なカリスマ性',               effect:'XP +65、+40コイン',unlockAt:300,bonus:{xp:65,coins:40}},
-  {id:'i48',emoji:'⚡',name:'雷神の鎚',          desc:'天空のエネルギーを操る伝説の武器',         effect:'XP +80',         unlockAt:300, bonus:{xp:80}         },
-  {id:'i49',emoji:'🔮',name:'時空の水晶',        desc:'過去と未来を自在に見渡す神秘の力',         effect:'XP +60、+50コイン',unlockAt:300,bonus:{xp:60,coins:50}},
+  {id:'i46',emoji:'💎',name:'ダイヤの指輪',      desc:'努力が形になった永遠の輝き',               effect:'XP +70、+30コイン',unlockAt:300,bonus:{xp:70,coins:30},taskBonus:{xp:12}            },
+  {id:'i47',emoji:'🌟',name:'星の指揮棒',        desc:'人々を導く特別なカリスマ性',               effect:'XP +65、+40コイン',unlockAt:300,bonus:{xp:65,coins:40},taskBonus:{coins:12}         },
+  {id:'i48',emoji:'⚡',name:'雷神の鎚',          desc:'天空のエネルギーを操る伝説の武器',         effect:'XP +80',         unlockAt:300, bonus:{xp:80},         taskBonus:{xp:12},  bossBonus:4},
+  {id:'i49',emoji:'🔮',name:'時空の水晶',        desc:'過去と未来を自在に見渡す神秘の力',         effect:'XP +60、+50コイン',unlockAt:300,bonus:{xp:60,coins:50},taskBonus:{coins:12}         },
   // ── 45〜49歳 era (unlock:400) ─────────────────
-  {id:'i50',emoji:'👑',name:'マネぼう王冠',      desc:'財の世界で頂点に立った者だけの証',         effect:'XP +100、+30コイン',unlockAt:400,bonus:{xp:100,coins:30}},
-  {id:'i51',emoji:'🌈',name:'虹色の万能薬',      desc:'あらゆる問題を解決する奇跡の道具',         effect:'XP +80、+60コイン',unlockAt:400,bonus:{xp:80,coins:60}},
-  {id:'i52',emoji:'🌙',name:'月の羅針盤',        desc:'迷った時に進むべき方向を静かに示す',       effect:'XP +70、+70コイン',unlockAt:400,bonus:{xp:70,coins:70}},
+  {id:'i50',emoji:'👑',name:'マネぼう王冠',      desc:'財の世界で頂点に立った者だけの証',         effect:'XP +100、+30コイン',unlockAt:400,bonus:{xp:100,coins:30},taskBonus:{xp:15,coins:5}   },
+  {id:'i51',emoji:'🌈',name:'虹色の万能薬',      desc:'あらゆる問題を解決する奇跡の道具',         effect:'XP +80、+60コイン',unlockAt:400,bonus:{xp:80,coins:60},taskBonus:{coins:15}         },
+  {id:'i52',emoji:'🌙',name:'月の羅針盤',        desc:'迷った時に進むべき方向を静かに示す',       effect:'XP +70、+70コイン',unlockAt:400,bonus:{xp:70,coins:70},taskBonus:{xp:15}            },
   // ── FIRE era (unlock:500) ─────────────────────
-  {id:'i53',emoji:'☀️',name:'太陽の聖剣',        desc:'最高の輝きで人生を切り開く究極の刃',       effect:'XP +100、+100コイン',unlockAt:500,bonus:{xp:100,coins:100}},
-  {id:'i54',emoji:'🌌',name:'銀河の設計図',      desc:'宇宙規模の視野で描く大きな人生設計',       effect:'XP +120、+80コイン',unlockAt:500,bonus:{xp:120,coins:80}},
-  {id:'i55',emoji:'🎭',name:'命運のカード',      desc:'運命を大きく変える力が宿った一枚',         effect:'XP +90、+90コイン',unlockAt:500,bonus:{xp:90,coins:90}},
+  {id:'i53',emoji:'☀️',name:'太陽の聖剣',        desc:'最高の輝きで人生を切り開く究極の刃',       effect:'XP +100、+100コイン',unlockAt:500,bonus:{xp:100,coins:100},taskBonus:{xp:18,coins:8}, bossBonus:5},
+  {id:'i54',emoji:'🌌',name:'銀河の設計図',      desc:'宇宙規模の視野で描く大きな人生設計',       effect:'XP +120、+80コイン',unlockAt:500,bonus:{xp:120,coins:80},taskBonus:{xp:18}            },
+  {id:'i55',emoji:'🎭',name:'命運のカード',      desc:'運命を大きく変える力が宿った一枚',         effect:'XP +90、+90コイン',unlockAt:500,bonus:{xp:90,coins:90},taskBonus:{coins:18}          },
 ];
 
 // era name for display
@@ -2588,10 +2776,69 @@ function getGachaPool(){
   const total=S.totalCompleted||0;
   return GACHA_ITEMS.filter(it=>it.unlockAt<=total);
 }
+// C13 weighted + C14 lucky next-era
 function pickGachaItem(){
+  const total=S.totalCompleted||0;
   const pool=getGachaPool();
   if(!pool.length) return null;
-  return pool[Math.floor(Math.random()*pool.length)];
+  const ERA_THRESHOLDS=[0,5,15,30,50,100,150,200,300,400,500];
+  const nextThreshold=ERA_THRESHOLDS.find(t=>t>total)||null;
+  if(nextThreshold!==null && Math.random()<0.05){
+    const nextPool=GACHA_ITEMS.filter(it=>it.unlockAt===nextThreshold);
+    if(nextPool.length) return nextPool[Math.floor(Math.random()*nextPool.length)];
+  }
+  const weights=pool.map(it=>Math.max(1,10-Math.floor(it.unlockAt/50)));
+  const totalW=weights.reduce((a,b)=>a+b,0);
+  let r=Math.random()*totalW;
+  for(let i=0;i<pool.length;i++){r-=weights[i];if(r<=0) return pool[i];}
+  return pool[pool.length-1];
+}
+// C4: item rarity
+function getItemRarity(item){
+  const u=item.unlockAt;
+  if(u>=500) return {id:'legend',name:'レジェンド',color:'#FF6B9D'};
+  if(u>=300) return {id:'rare',name:'レア',color:'#5BC8E8'};
+  if(u>=150) return {id:'epic',name:'エピック',color:'#9B6DD6'};
+  if(u>=50)  return {id:'gold',name:'ゴールド',color:'#F5C842'};
+  if(u>=5)   return {id:'silver',name:'シルバー',color:'#c0c0c0'};
+  return      {id:'bronze',name:'ブロンズ',color:'#cd7f32'};
+}
+// C5: equip/unequip
+function equipItem(itemId){
+  if(S.equippedItem===itemId){
+    S.equippedItem=null; save();
+    if(currentTab==='map') renderItemCollection();
+    showToast('🗡️ 装備を外した');
+  } else {
+    S.equippedItem=itemId; save();
+    if(currentTab==='map') renderItemCollection();
+    const it=GACHA_ITEMS.find(x=>x.id===itemId);
+    if(it){
+      const tb=it.taskBonus||{};
+      const tbTxt=tb.xp&&tb.coins?`+${tb.xp}XP+${tb.coins}🪙`:tb.xp?`+${tb.xp}XP`:tb.coins?`+${tb.coins}🪙`:'';
+      showToast(`🗡️ ${it.emoji}${it.name}を装備！（タスク: ${tbTxt}）`);
+    }
+  }
+}
+// C11: sell item
+function sellItem(itemId){
+  const it=GACHA_ITEMS.find(x=>x.id===itemId);
+  if(!it) return;
+  const price=Math.floor(it.unlockAt*0.1)+5;
+  S.gachaCollection=(S.gachaCollection||[]).filter(c=>c.id!==itemId);
+  if(S.equippedItem===itemId) S.equippedItem=null;
+  earnCoins(price); save();
+  renderItemCollection();
+  showToast(`💰 ${it.emoji}${it.name}を売却！+${price}🪙`);
+}
+// C15: era notification
+function checkEraNotification(){
+  const total=S.totalCompleted||0;
+  const THRESHOLDS=[5,15,30,50,100,150,200,300,400,500];
+  const last=S.lastEraNotified||0;
+  for(const t of THRESHOLDS){
+    if(total>=t && last<t){ S.lastEraNotified=t; save(); showToast('🎁 新しい時代に突入！新アイテムが解放されました！'); break; }
+  }
 }
 function getEraName(total){
   let name=ERA_NAMES[0].name;
@@ -2864,13 +3111,13 @@ const CHARS = {
 };
 
 const BOSSES = [
-  { name:'ぐうたらスライム', emoji:'🟩', color:'#4CAF7D', maxHp:15, reward:{coins:80,xp:30},
+  { name:'ぐうたらスライム', emoji:'🟩', color:'#4CAF7D', maxHp:15, reward:{coins:80,xp:30},  weakness:'生活',
     hit:['ぷるぷる…','やめてよ〜','うぅ…'], die:'ぷしゅ〜！倒した！' },
-  { name:'先延ばしゴースト', emoji:'👻', color:'#5BC8E8', maxHp:25, reward:{coins:150,xp:50},
+  { name:'先延ばしゴースト', emoji:'👻', color:'#5BC8E8', maxHp:25, reward:{coins:150,xp:50}, weakness:'勉強',
     hit:['ひぃ〜！','ば、バカな…','また明日…にしよ…'], die:'成仏したぁ！！' },
-  { name:'怠惰オーガ',       emoji:'👹', color:'#E8354A', maxHp:40, reward:{coins:250,xp:80},
+  { name:'怠惰オーガ',       emoji:'👹', color:'#E8354A', maxHp:40, reward:{coins:250,xp:80},  weakness:'運動',
     hit:['ぐぉ！','くっ…！','バカにするなよ！'], die:'ぐわぁぁ！やられた！' },
-  { name:'混乱の魔王',       emoji:'😈', color:'#9B6DD6', maxHp:60, reward:{coins:400,xp:120},
+  { name:'混乱の魔王',       emoji:'😈', color:'#9B6DD6', maxHp:60, reward:{coins:400,xp:120}, weakness:'仕事',
     hit:['貴様…！','この私が…！','まだだ…！'], die:'バ、バカな…この私が…！！' },
 ];
 
@@ -2977,6 +3224,12 @@ let S = {
   bossState:      null,
   loginStreak:    0,
   lastLoginDate:  '',
+  equippedItem:   null,
+  bossDefeats:    0,
+  bossStreak:     0,
+  itemCounts:     {},
+  lastEraNotified:0,
+  bossHistory:    {},
   ...loadState(),
 };
 if(!CHARS[S.activeChar]) S.activeChar='えんだ';
@@ -3129,16 +3382,23 @@ function autoSetBubble(){
 // =====================================================
 function renderCharSelector(){
   const wrap=$('charSelector');
+  const charTitles=S.charTitles||{};
   wrap.innerHTML=Object.keys(CHARS).map(name=>{
     const c=CHARS[name];
     const idx=charExprIdx[name]||0;
     const costumeImg=getCharDisplayImg(name);
     const avatarSrc=costumeImg||c.imgs[idx];
     const act=name===S.activeChar?'active':'';
-    const badge=costumeImg?'<span class="char-costume-badge">🎽</span>':'';
-    return `<button class="char-btn ${act}" onclick="openCharPopup('${escH(name)}')" title="${escH(c.role)}" style="position:relative">
+    const costumeBadge=costumeImg?'<span class="char-costume-badge">🎽</span>':'';
+    const equippedId=charTitles[name];
+    const equippedBadge=equippedId?(TITLES.find(t=>t.id===equippedId)||ACHIEVEMENTS.find(a=>a.id===equippedId)):null;
+    const glowClass=equippedBadge?` badge-glow-bs${equippedBadge.stars||1}`:'';
+    const badgePin=equippedBadge?`<span class="char-badge-pin">${equippedBadge.emoji}</span>`:'';
+    // C9: show equipped item emoji on active char button
+    const equippedItemEmoji=(act&&S.equippedItem)?(()=>{const it=GACHA_ITEMS.find(x=>x.id===S.equippedItem);return it?`<span class="char-item-badge" title="${it.name}">${it.emoji}</span>`:''})():'';
+    return `<button class="char-btn ${act}${glowClass}" onclick="openCharPopup('${escH(name)}')" title="${escH(c.role)}" style="position:relative">
       <img class="char-avatar" src="${avatarSrc}" alt="${escH(name)}" onerror="this.src='${escH(c.imgs[0])}';this.onerror=null;">
-      ${badge}
+      ${costumeBadge}${badgePin}${equippedItemEmoji}
       <span class="char-name">${escH(name)}</span>
     </button>`;
   }).join('');
@@ -3147,6 +3407,21 @@ function renderCharSelector(){
     const costumeImg=getCharDisplayImg(S.activeChar);
     $('bubbleImg').src=costumeImg||(ch.imgs[charExprIdx[S.activeChar]||0]);
     $('bubbleName').textContent=S.activeChar;
+  }
+  // 装備バー更新
+  const equipBar=$('bubbleEquipBar');
+  if(equipBar){
+    const eid=(S.charTitles||{})[S.activeChar];
+    const eb=eid?(TITLES.find(t=>t.id===eid)||ACHIEVEMENTS.find(a=>a.id===eid)):null;
+    if(eb&&eb.effect){
+      equipBar.style.display='block';
+      const s=eb.stars||1;
+      const colors=['','#9B6DD6','#5BC8E8','#F5C842'];
+      equipBar.style.color=colors[s];
+      equipBar.innerHTML=`${eb.emoji} ${eb.name} <span style="opacity:.6">${fmtEffect(eb.effect)}</span>`;
+    } else {
+      equipBar.style.display='none';
+    }
   }
 }
 
@@ -3272,9 +3547,26 @@ function toggleTask(id){
     const eff=getActiveEffect();
     const effTxt=(eff.xpFlat||eff.coinFlat)?` [+${eff.xpFlat||0}XP+${eff.coinFlat||0}🪙]`:'';
     const bonusTxt=(xpBonus||coinBonus)?` (ゾーン+${xpBonus}XP+${coinBonus}🪙)`:'';
-    showToast(`+${totalXp} XP ＆ +${totalCoins}🪙 獲得！${bonusTxt}${effTxt}`);
+    // C3: equipped item task bonus
+    let itemBonusTxt='';
+    if(S.equippedItem){
+      const eqItem=GACHA_ITEMS.find(x=>x.id===S.equippedItem);
+      if(eqItem&&eqItem.taskBonus){
+        const tb=eqItem.taskBonus;
+        if(tb.xp){ addXP(tb.xp); }
+        if(tb.coins){ earnCoins(tb.coins); }
+        itemBonusTxt=` [${eqItem.emoji}${tb.xp?`+${tb.xp}XP`:''}${tb.coins?`+${tb.coins}🪙`:''}]`;
+      }
+    }
+    showToast(`+${totalXp} XP ＆ +${totalCoins}🪙 獲得！${bonusTxt}${effTxt}${itemBonusTxt}`);
     setBubble('complete');
-    dealBossDamage(t.priority==='high'?3:1);
+    // A5: critical hit for high priority (20% chance to double)
+    let bossDmg=(t.priority==='high')?3:1;
+    let isCrit=false;
+    if(t.priority==='high'&&Math.random()<0.2){ isCrit=true; bossDmg=6; showToast('⚡ クリティカル！ダメージ2倍！'); }
+    dealBossDamage(bossDmg, t.category);
+    // C15: era check
+    checkEraNotification();
     // Character expression: switch to excited face, reset after 3s
     charExprIdx[S.activeChar]=1;
     renderCharSelector();
@@ -3538,20 +3830,16 @@ function renderPinSection(){
   migratePinsData();
   const pins=S.pins||[];
   const allLogs=pins.flatMap(p=>p.log||[]);
-  const weekAgoStr=new Date(Date.now()-6*86400000).toISOString().split('T')[0];
-  const weekCount=allLogs.filter(e=>e.date>=weekAgoStr).length;
+  const today=todayStr();
+  const _rnow=new Date(),_rmon=new Date(_rnow);_rmon.setDate(_rnow.getDate()-((_rnow.getDay()+6)%7));
+  const monStr=`${_rmon.getFullYear()}-${String(_rmon.getMonth()+1).padStart(2,'0')}-${String(_rmon.getDate()).padStart(2,'0')}`;
+  const weekCount=allLogs.filter(e=>e.date>=monStr).length;
   const dateSet=new Set(allLogs.map(e=>e.date));
-  let streak=0;const d=new Date();
-  while(dateSet.has(d.toISOString().split('T')[0])){streak++;d.setDate(d.getDate()-1);}
+  let streak=0;const _sd2=new Date();
+  for(;;){const _ds2=`${_sd2.getFullYear()}-${String(_sd2.getMonth()+1).padStart(2,'0')}-${String(_sd2.getDate()).padStart(2,'0')}`;if(!dateSet.has(_ds2))break;streak++;_sd2.setDate(_sd2.getDate()-1);}
 
   const gb=$('ysPinGoalBanner');
-  if(gb) gb.innerHTML=pins.length?pins.map(p=>`
-    <div class="pin-goal-banner-inner">
-      <span style="font-size:16px">${escH(p.icon||'📌')}</span>
-      <span style="font-weight:700;color:var(--sky);">${escH(p.name)}</span>
-      <span style="flex:1;font-size:11px;">${escH(p.goal||'目標未設定')}</span>
-      <span style="font-size:10px;color:rgba(255,255,255,0.35);">${(p.log||[]).length}件</span>
-    </div>`).join(''):'';
+  if(gb) gb.innerHTML=pins.length?pins.map(p=>{const _ll=(p.log||[]).slice(-1)[0];const _ld=_ll?getRelativeDate(_ll.date):'記録なし';return `<div class="pin-goal-banner-inner" onclick="switchTab('pin');S.activePinId='${escH(p.id)}';renderPinTabs();" style="cursor:pointer;"><span style="font-size:16px">${escH(p.icon||'📌')}</span><span style="font-weight:700;color:var(--sky);">${escH(p.name)}</span><span style="flex:1;font-size:11px;">${escH(p.goal||'目標未設定')}</span><span style="font-size:10px;color:rgba(255,255,255,0.4);">🕐 ${escH(_ld)}</span><span style="font-size:10px;color:rgba(255,255,255,0.25);">${(p.log||[]).length}件</span></div>`;}).join(''):'';
 
   const t=$('ysPinTotal'); if(t) t.textContent=allLogs.length;
   const w=$('ysPinWeek');  if(w) w.textContent=weekCount;
@@ -3567,16 +3855,10 @@ function renderPinSection(){
     const rows=logs.map(e=>{
       const chips=(pin.metrics||[]).filter(m=>e.values&&e.values[m.id]!=null)
         .map(m=>`<span class="ex-hist-chip">${escH(m.name)} ${e.values[m.id]}${escH(m.unit)}</span>`).join('');
-      return `<div class="ex-hist-item">
-        <div class="ex-hist-hdr">
-          <span class="ex-hist-date">${escH(e.date||'')}</span>
-          <span class="ex-hist-name">${escH(e.title||'')}</span>
-          <button class="ex-hist-del" onclick="deletePinLogEntry('${escH(pin.id)}','${escH(e.id)}')" title="削除">🗑</button>
-        </div>
-        ${chips?`<div class="ex-hist-chips">${chips}</div>`:''}
-      </div>`;
+      const isToday=e.date===today;
+      return `<div class="ex-hist-item${isToday?' hist-today':''}"><div class="ex-hist-hdr"><span class="ex-hist-date">${getRelativeDate(e.date)}</span><span class="ex-hist-name">${escH(e.title||'')}</span><button class="ex-hist-del" onclick="confirmDeletePinEntry('${escH(pin.id)}','${escH(e.id)}')" title="削除">🗑</button></div>${chips?`<div class="ex-hist-chips">${chips}</div>`:''}</div>`;
     }).join('');
-    return `<div class="pin-group-hdr">${escH(pin.icon||'📌')} ${escH(pin.name)}</div>${rows}`;
+    return `<div class="pin-group-hdr">${escH(pin.icon||'📌')} ${escH(pin.name)}<button class="pin-open-btn" onclick="switchTab('pin');S.activePinId='${escH(pin.id)}';renderPinTabs();">開く →</button></div>${rows}`;
   }).join('');
 }
 
@@ -3698,6 +3980,9 @@ function renderStats(){
   let msg='タスクを追加してスタート！';
   if(total>0){ if(pct===100) msg='全タスク完了！最高の一日！🎉'; else if(pct>=80) msg='もうすぐゴール！あと少し！'; else if(pct>=50) msg='半分以上完了！いい調子！'; else if(pct>0) msg='順調に進んでいる！続けよう！'; else msg=`${total}件登録済み。さあ始めよう！`; }
   $('progressMsg').textContent=msg;
+  // C12: item collection count in stats
+  const statItemEl=$('statItemCount');
+  if(statItemEl) statItemEl.textContent=`道具: ${(S.gachaCollection||[]).length}/55`;
 }
 
 // =====================================================
@@ -3797,11 +4082,17 @@ function buildTaskCard(task){
 
   const dueTag=task.due?`<span class="tag ${overdue?'tag-overdue':(dueSoon?'tag-due-ok':'tag-cat')}">${overdue?'⚠️ 期限切れ':(dueSoon?'📅 今日':'📅 '+fmtDate(task.due))}</span>`:'';
   const repeatTag=(task.repeat&&task.repeat!=='none')?`<span class="tag tag-repeat">${task.repeat==='daily'?'📅 毎日':'📆 毎週'}</span>`:'';
+  // B5: boss damage preview
+  let bossDmgPreview='';
+  if(!done && S.bossState && !S.bossState.defeated){
+    const baseDmg=task.priority==='high'?3:1;
+    bossDmgPreview=`<span class="boss-dmg-preview">⚔️+${baseDmg}</span>`;
+  }
 
   return `<div class="task-card ${done?'done':''} priority-${task.priority}" data-task-id="${task.id}">
     <div class="task-check ${done?'is-done':''}" onclick="toggleTask('${task.id}')">${done?'✓':''}</div>
     <div class="task-body">
-      <div class="task-title">${escH(task.title)}</div>
+      <div class="task-title">${escH(task.title)}${bossDmgPreview}</div>
       ${memoHtml}
       ${subtaskHtml}
       <div class="task-tags">
@@ -3913,24 +4204,35 @@ function renderAchievements(){
       <button class="achiev-filter-btn ${_achievFilter==='unlocked'?'af-active':''}" onclick="setAchievFilter('unlocked')">✅ 解除済み (${unlockedCount})</button>
       <button class="achiev-filter-btn ${_achievFilter==='locked'?'af-active':''}" onclick="setAchievFilter('locked')">🔒 未解除 (${total-unlockedCount})</button>
     </div>
-    <div class="badge-grid">
-      ${filtered.map((a,i)=>{
-        const isUnlocked=unlockedIds.includes(a.id);
-        const dateStr=S.achievUnlockDates[a.id];
-        const isNew=dateStr&&(now-new Date(dateStr).getTime())<THREE_DAYS;
-        const prog=!isUnlocked&&a.progress?a.progress(S):null;
-        const progPct=prog?Math.round(prog.cur/prog.max*100):0;
-        const catCls=CAT_CLASS[a.cat]||'';
-        return `<div class="badge-card ${isUnlocked?'bc-unlocked':'bc-locked'} ${catCls}" style="animation-delay:${i*0.045}s" onclick="showBadgeDetail('${a.id}')">
-          ${isNew?'<div class="badge-new-tag">NEW</div>':''}
-          ${!isUnlocked?'<div class="badge-lock-overlay">🔒</div>':''}
-          <span class="badge-emoji">${a.emoji}</span>
-          <div class="badge-name">${escH(a.name)}</div>
-          <div class="badge-desc">${escH(a.desc)}</div>
-          ${isUnlocked&&dateStr?`<div class="badge-unlock-date">🗓 ${fmtDate(dateStr.split('T')[0])}</div>`:''}
-          ${prog?`<div class="badge-prog-bar-bg"><div class="badge-prog-bar" style="width:${progPct}%"></div></div><div class="badge-prog-txt">${prog.cur}/${prog.max}</div>`:''}
-        </div>`;
-      }).join('')}
+    <div class="cert-gallery-wrap">
+      <div class="cert-section-hdr">
+        <span class="cert-section-ttl">🏅 賞状ギャラリー</span>
+        <span class="cert-section-cnt">${unlockedCount}/${total} 解除</span>
+      </div>
+      <div class="cert-gallery">
+        ${filtered.map((a,i)=>{
+          const isUnlocked=unlockedIds.includes(a.id);
+          const dateStr=S.achievUnlockDates[a.id];
+          const isNew=dateStr&&(now-new Date(dateStr).getTime())<THREE_DAYS;
+          const prog=!isUnlocked&&a.progress?a.progress(S):null;
+          const progPct=prog?Math.round(prog.cur/prog.max*100):0;
+          const s=a.stars||1;
+          const starsHtml='★'.repeat(s)+'☆'.repeat(3-s);
+          const starsColor=['','#9B6DD6','#5BC8E8','#F5C842'][s];
+          const effHtml=isUnlocked&&a.effect?`<div class="cert-effect">${fmtEffect(a.effect)}</div>`:'';
+          return `<div class="cert-card ${isUnlocked?'cert-unlocked':'cert-locked'} cert-bs${s}" style="animation-delay:${i*0.04}s" onclick="showBadgeDetail('${a.id}')">
+            ${isNew?'<div class="cert-new-tag">NEW</div>':''}
+            ${!isUnlocked?'<div class="cert-lock-icon">🔒</div>':''}
+            <span class="cert-stars" style="color:${starsColor}">${starsHtml}</span>
+            <span class="cert-emoji">${a.emoji}</span>
+            <div class="cert-name">${escH(a.name)}</div>
+            <div class="cert-desc">${escH(a.desc)}</div>
+            ${effHtml}
+            ${isUnlocked&&dateStr?`<div class="cert-date">🗓 ${fmtDate(dateStr.split('T')[0])}</div>`:''}
+            ${prog?`<div class="cert-prog-bar"><div class="cert-prog-fill" style="width:${progPct}%"></div></div><div class="cert-prog-txt">${prog.cur}/${prog.max}</div>`:''}
+          </div>`;
+        }).join('')}
+      </div>
     </div>
   `;
 
@@ -4007,23 +4309,29 @@ function renderTitleCollection(){
       const bu=(S.unlockedAchievements||[]).includes(b.id);
       return (bu?1:0)-(au?1:0);
     });
-    $('titleGrid').innerHTML=tabsHtml+`<div class="title-grid-inner">`+sorted.map(a=>{
+    const now2=Date.now();const THREE_DAYS=3*24*60*60*1000;
+    const certCards=sorted.map((a,i)=>{
       const isUnlocked=(S.unlockedAchievements||[]).includes(a.id);
-      const s=a.stars||1;
-      const starsHtml=`<span class="badge-stars bs${s}">${'★'.repeat(s)}${'☆'.repeat(3-s)}</span>`;
-      const effHtml=isUnlocked&&a.effect?`<div class="badge-effect-tag">${fmtEffect(a.effect)}</div>`:'';
-      const b=a.unlockBonus;
-      const bonusHtml=isUnlocked&&b?`<div class="badge-unlock-bonus">🎁 解除時 ${b.xp?'+'+b.xp+'XP':''}${b.coins?' +'+b.coins+'🪙':''}</div>`:'';
+      const dateStr=(S.achievUnlockDates||{})[a.id];
+      const isNew=dateStr&&(now2-new Date(dateStr).getTime())<THREE_DAYS;
       const prog=(!isUnlocked&&a.progress)?a.progress(S):null;
-      const progHtml=prog?`<div class="title-prog-bar"><div class="title-prog-fill" style="width:${Math.round(prog.cur/prog.max*100)}%"></div></div><div class="title-prog-txt">${prog.cur}/${prog.max}</div>`:'';
-      return `<div class="title-badge${isUnlocked?'':' locked'} tc-${a.cat}" title="${isUnlocked?a.desc:'???'}">
-        ${starsHtml}
-        <span class="title-emoji">${a.emoji}</span>
-        <div class="title-name">${isUnlocked?a.name:'???'}</div>
-        <div class="title-desc">${isUnlocked?a.desc:'まだ解放されていません'}</div>
-        ${bonusHtml}${effHtml}${progHtml}
+      const progPct=prog?Math.round(prog.cur/prog.max*100):0;
+      const s=a.stars||1;
+      const starsColor=['','#9B6DD6','#5BC8E8','#F5C842'][s];
+      const effHtml=isUnlocked&&a.effect?`<div class="cert-effect">${fmtEffect(a.effect)}</div>`:'';
+      return `<div class="cert-card ${isUnlocked?'cert-unlocked':'cert-locked'} cert-bs${s}" style="animation-delay:${i*0.04}s" onclick="showBadgeDetail('${a.id}')">
+        ${isNew?'<div class="cert-new-tag">NEW</div>':''}
+        ${!isUnlocked?'<div class="cert-lock-icon">🔒</div>':''}
+        <span class="cert-stars" style="color:${starsColor}">${'★'.repeat(s)}${'☆'.repeat(3-s)}</span>
+        <span class="cert-emoji">${a.emoji}</span>
+        <div class="cert-name">${isUnlocked?escH(a.name):'???'}</div>
+        <div class="cert-desc">${isUnlocked?escH(a.desc):'まだ解放されていません'}</div>
+        ${effHtml}
+        ${isUnlocked&&dateStr?`<div class="cert-date">🗓 ${fmtDate(dateStr.split('T')[0])}</div>`:''}
+        ${prog?`<div class="cert-prog-bar"><div class="cert-prog-fill" style="width:${progPct}%"></div></div><div class="cert-prog-txt">${prog.cur}/${prog.max}</div>`:''}
       </div>`;
-    }).join('')+`</div>`;
+    }).join('');
+    $('titleGrid').innerHTML=tabsHtml+`<div class="cert-gallery">${certCards}</div>`;
   }
 }
 
@@ -4573,10 +4881,22 @@ function showGacha(rarity, key){
     if(!S.gachaCollection) S.gachaCollection=[];
     if(!S.gachaCollection.find(c=>c.id===item.id)){
       S.gachaCollection.push({id:item.id,at:Date.now()});
-      save();
+    }
+    // C10: itemCounts
+    if(!S.itemCounts) S.itemCounts={};
+    S.itemCounts[item.id]=(S.itemCounts[item.id]||0)+1;
+    save();
+    // C6: equip button
+    const equipBtn=$('gachaEquipBtn');
+    if(equipBtn){
+      const alreadyEquipped=S.equippedItem===item.id;
+      equipBtn.textContent=alreadyEquipped?'✅ 装備済':'🗡️ 装備する';
+      equipBtn.onclick=()=>{ equipItem(item.id); equipBtn.textContent=S.equippedItem===item.id?'✅ 装備済':'🗡️ 装備する'; };
+      equipBtn.style.display='inline-block';
     }
   } else {
     ['gachaItemSep','gachaItemEmoji','gachaItemName','gachaItemDesc','gachaItemEffect'].forEach(id=>{ const el=$(id); if(el) el.style.display='none'; });
+    const equipBtn=$('gachaEquipBtn'); if(equipBtn) equipBtn.style.display='none';
   }
 
   const overlay=$('gachaOverlay');
@@ -4657,9 +4977,55 @@ function renderCoinDisplay(){
 // =====================================================
 // TERRITORY MAP
 // =====================================================
+// C7: render item collection
+function renderItemCollection(){
+  const el=$('itemCollectionSection');
+  if(!el) return;
+  const coll=S.gachaCollection||[];
+  const counts=S.itemCounts||{};
+  const collectedIds=new Set(coll.map(c=>c.id));
+  const total=GACHA_ITEMS.length;
+  const collectedCount=collectedIds.size;
+  // progress bar
+  const pct=Math.round(collectedCount/total*100);
+  const filled=Math.round(pct/10);
+  const progressBar='█'.repeat(filled)+'░'.repeat(10-filled);
+  // group by era
+  const eras=[...new Set(GACHA_ITEMS.map(it=>it.unlockAt))].sort((a,b)=>a-b);
+  let html=`<div class="item-coll-header">
+    <span class="item-coll-title">🎒 道具コレクション</span>
+    <span class="item-coll-count">[${progressBar}] ${collectedCount}/${total}</span>
+  </div>`;
+  eras.forEach(era=>{
+    const eraItems=GACHA_ITEMS.filter(it=>it.unlockAt===era);
+    const eraName=ERA_NAMES.find(e=>e.at===era)?.name||`${era}+`;
+    html+=`<details class="item-era-section" open><summary class="item-era-hdr">── ${eraName} ──</summary><div class="item-coll-grid">`;
+    eraItems.forEach(item=>{
+      const collected=collectedIds.has(item.id);
+      const rarity=getItemRarity(item);
+      const isEquipped=S.equippedItem===item.id;
+      const cnt=counts[item.id]||0;
+      const borderColor=isEquipped?'var(--gold)':rarity.color;
+      const opacity=collected?1:0.35;
+      const glowStyle=isEquipped?`box-shadow:0 0 12px ${rarity.color};`:'';
+      html+=`<div class="item-coll-card" style="border-color:${borderColor};opacity:${opacity};${glowStyle}" title="${item.name}: ${item.desc}">
+        <div class="icc-emoji">${collected?item.emoji:'???'}</div>
+        <div class="icc-name" style="color:${rarity.color}">${collected?item.name:'?'}</div>
+        ${cnt>1?`<div class="icc-cnt">×${cnt}</div>`:''}
+        ${isEquipped?'<div class="icc-equipped">装備中</div>':''}
+        ${collected&&!isEquipped?`<button class="icc-equip-btn" onclick="equipItem('${item.id}')">装備</button>`:''}
+        ${collected&&isEquipped?`<button class="icc-equip-btn equip-active" onclick="equipItem('${item.id}')">外す</button>`:''}
+        ${collected?`<button class="icc-sell-btn" onclick="sellItem('${item.id}')">売却+${Math.floor(item.unlockAt*0.1)+5}🪙</button>`:''}
+      </div>`;
+    });
+    html+='</div></details>';
+  });
+  el.innerHTML=html;
+}
 function renderMap(){
   renderCoinDisplay();
   renderBoss();
+  renderItemCollection();
   renderCharJournal();
   renderMapCurrentView(getJpStep());
   updateJpHUD();
@@ -4927,37 +5293,107 @@ function getWeekKey(){
 function initBoss(){
   const wk=getWeekKey();
   if(!S.bossState||S.bossState.weekKey!==wk){
+    const prevWk=S.bossState?S.bossState.weekKey:null;
+    const wasDefeated=S.bossState&&S.bossState.defeated;
     const idx=Math.floor(Math.random()*BOSSES.length);
     const b=BOSSES[idx];
-    S.bossState={weekKey:wk,bossIdx:idx,hp:b.maxHp,maxHp:b.maxHp,defeated:false};
+    // B1: difficulty scaling
+    const mult=Math.floor((S.totalCompleted||0)/100);
+    const scaledHp=Math.round(b.maxHp*(Math.min(3,1+mult*0.25)));
+    // B3: bossStreak check
+    if(wasDefeated && prevWk){
+      const prevDate=new Date(prevWk+'T00:00:00');
+      const thisDate=new Date(wk+'T00:00:00');
+      if(Math.round((thisDate-prevDate)/86400000)<=7) S.bossStreak=(S.bossStreak||0)+1;
+      else S.bossStreak=0;
+    } else if(!wasDefeated) S.bossStreak=0;
+    S.bossState={weekKey:wk,bossIdx:idx,hp:scaledHp,maxHp:scaledHp,defeated:false,dmgDealt:0,combo:0,log:[]};
     save();
   }
 }
-function dealBossDamage(dmg){
+// D19: quick attack button costs 5 coins
+function bossQuickAttack(){
+  if(!S.bossState||S.bossState.defeated){showToast('ボスはいない！');return;}
+  if((S.coins||0)<5){showToast('コイン不足（5🪙必要）');return;}
+  S.coins-=5; save(); dealBossDamage(1);
+}
+function dealBossDamage(dmg, taskCategory){
   if(!S.bossState||S.bossState.defeated) return;
-  S.bossState.hp=Math.max(0,S.bossState.hp-dmg);
   const boss=BOSSES[S.bossState.bossIdx];
+  // C2: equipped item boss bonus
+  const equipped=S.equippedItem?GACHA_ITEMS.find(x=>x.id===S.equippedItem):null;
+  const itemBossBonus=equipped?(equipped.bossBonus||0):0;
+  // A8: weakness bonus
+  let weaknessBonus=0;
+  if(taskCategory && boss.weakness===taskCategory){ weaknessBonus=1; }
+  const totalDmg=dmg+itemBossBonus+weaknessBonus;
+  S.bossState.hp=Math.max(0,S.bossState.hp-totalDmg);
+  // A9: dmgDealt
+  S.bossState.dmgDealt=(S.bossState.dmgDealt||0)+totalDmg;
+  // A10: combo
+  S.bossState.combo=(S.bossState.combo||0)+1;
+  const combo=S.bossState.combo;
+  // B4: attack log
+  if(!S.bossState.log) S.bossState.log=[];
+  S.bossState.log.push(`⚔️ ${totalDmg}ダメ — HP${S.bossState.hp}/${S.bossState.maxHp}`);
+  if(S.bossState.log.length>3) S.bossState.log=S.bossState.log.slice(-3);
   if(S.bossState.hp<=0){
     S.bossState.defeated=true;
-    earnCoins(boss.reward.coins);
-    addXP(boss.reward.xp);
-    save();
-    spawnConfetti();
-    showBossVictory(boss);
-    setBubble('boss');
+    S.bossDefeats=(S.bossDefeats||0)+1;
+    // D20: bossHistory
+    if(!S.bossHistory) S.bossHistory={};
+    S.bossHistory[S.bossState.bossIdx]=(S.bossHistory[S.bossState.bossIdx]||0)+1;
+    S.bossState.combo=0;
+    if((S.bossStreak||0)>=3){ earnCoins(50); addXP(30); showToast(`🔥 ${S.bossStreak}週連続討伐！+50🪙+30XP！`); }
+    earnCoins(boss.reward.coins); addXP(boss.reward.xp);
+    save(); spawnConfetti(); spawnBossDefeatText(); showBossVictory(boss); setBubble('boss');
   } else {
     save();
     const hitMsg=rand(boss.hit);
-    showToast(`⚔️ ${boss.name}に${dmg}ダメージ！「${hitMsg}」HP:${S.bossState.hp}/${boss.maxHp}`);
+    let toastMsg=`⚔️ ${boss.name}に${totalDmg}ダメージ！「${hitMsg}」HP:${S.bossState.hp}/${S.bossState.maxHp}`;
+    if(weaknessBonus>0) toastMsg+=' ⚡弱点！';
+    if(combo>=2) toastMsg+=` [${combo}コンボ！]`;
+    if(combo===5){ earnCoins(10); save(); toastMsg+=' 5コンボ！+10🪙！'; S.bossState.combo=0; }
+    showToast(toastMsg);
     setBubble('boss');
+    // A3: shake
+    const emojiEl=document.querySelector('#bossSection .boss-emoji');
+    if(emojiEl){ emojiEl.classList.add('boss-hit-shake'); setTimeout(()=>emojiEl.classList.remove('boss-hit-shake'),400); }
+    // A4+D12: floating dmg with color
+    const dmgColor=weaknessBonus>0?'#9B6DD6':(itemBossBonus>0?'#F5C842':'#E8354A');
+    spawnBossDmgFloat(totalDmg, dmgColor);
     if(currentTab==='map') renderBoss();
+    // D14: HP text flash
+    setTimeout(()=>{const hpEl=$('bossHpTxt');if(hpEl){hpEl.classList.add('flashing');setTimeout(()=>hpEl.classList.remove('flashing'),500);}},50);
   }
+}
+// D18: defeat celebration
+function spawnBossDefeatText(){
+  const sec=$('bossSection'); if(!sec) return;
+  const div=document.createElement('div');
+  div.textContent='討伐！'; div.style.cssText='position:absolute;left:50%;top:40%;transform:translate(-50%,-50%);font-family:\'Dela Gothic One\',sans-serif;font-size:32px;color:#F5C842;text-shadow:0 0 20px rgba(245,200,66,0.9);z-index:500;pointer-events:none;animation:bossDefeatFloat 1.5s ease forwards;';
+  sec.style.position='relative'; sec.appendChild(div);
+  setTimeout(()=>div.remove(),1500);
+}
+// A4+D12: floating damage number with color coding
+function spawnBossDmgFloat(dmg, color){
+  const sec=$('bossSection'); if(!sec) return;
+  const div=document.createElement('div');
+  div.className='boss-dmg-float';
+  div.textContent=`-${dmg}❤️`;
+  div.style.left=`${40+Math.random()*20}%`;
+  div.style.top='40%';
+  if(color) div.style.color=color;
+  sec.style.position='relative'; sec.appendChild(div);
+  setTimeout(()=>div.remove(),1000);
 }
 function showBossVictory(boss){
   $('bvBossEmoji').textContent=boss.emoji;
   $('bvBossName').textContent=boss.name;
   $('bvCoins').textContent=`+${boss.reward.coins}🪙`;
   $('bvXp').textContent=`+${boss.reward.xp} XP`;
+  const defEl=$('bvBossDefeats'); if(defEl) defEl.textContent=`通算: ${S.bossDefeats||1}体`;
+  const strEl=$('bvBossStreak'); if(strEl) strEl.textContent=(S.bossStreak||0)>=2?`${S.bossStreak}週連続討伐！🔥`:'';
   $('bossVictoryOverlay').classList.add('open');
 }
 function closeBossVictory(){
@@ -4990,27 +5426,90 @@ function renderBoss(){
   const b=BOSSES[S.bossState.bossIdx];
   const bs=S.bossState;
   const pct=Math.round(bs.hp/bs.maxHp*100);
+  // A7: countdown to next Monday
+  const now=new Date();
+  const day=now.getDay();
+  const daysUntilMon=day===0?1:(8-day)%7||7;
+  const countdownHtml=`<div class="boss-countdown">📅 リセットまで: ${daysUntilMon}日</div>`;
+  // C8: equipped item info
+  const equipped=S.equippedItem?GACHA_ITEMS.find(x=>x.id===S.equippedItem):null;
+  const equippedHtml=equipped?`<div class="boss-equipped-badge">🗡️ ${equipped.emoji}${equipped.name}${equipped.bossBonus?` (+${equipped.bossBonus}ダメ/タスク)`:''}</div>`:'';
+  // D16: week task count
+  const weekTaskCount=(S.totalCompleted||0);
   if(bs.defeated){
     el.innerHTML=`<div class="boss-card boss-dead">
-      <div class="boss-title">✦ 今週のボス ✦</div>
+      <div class="boss-title">⚔️ 冒険 — 今週のボス ⚔️</div>
       <div class="boss-emoji">💀</div>
       <div class="boss-name">${b.name}</div>
-      <div class="boss-defeated-msg">倒した！来週また新しいボスが現れる…</div>
+      <div class="boss-defeated-msg">✅ 討伐完了！来週また新しいボスが現れる…</div>
       <div class="boss-reward">獲得: +${b.reward.coins}🪙 +${b.reward.xp}XP</div>
+      <div class="boss-defeats-total">今週のボスを討伐！通算: ${S.bossDefeats||0}体</div>
+      ${countdownHtml}
+      ${equippedHtml}
     </div>`;
-  } else {
-    el.innerHTML=`<div class="boss-card">
-      <div class="boss-title">⚔️ 今週のボス ⚔️</div>
-      <div class="boss-emoji">${b.emoji}</div>
-      <div class="boss-name" style="color:${b.color};">${b.name}</div>
-      <div class="boss-hp-wrap">
-        <div class="boss-hp-bar ${pct>60?'hp-high':pct>30?'hp-mid':'hp-low'}" style="width:${pct}%;"></div>
-      </div>
-      <div class="boss-hp-txt">HP: ${bs.hp} / ${bs.maxHp}</div>
-      <div class="boss-hint">タスク完了→1ダメ ⚡高優先→3ダメ 🍅ポモドーロ→5ダメ</div>
-      <div class="boss-reward-preview">討伐報酬: +${b.reward.coins}🪙 +${b.reward.xp}XP</div>
-    </div>`;
+    // D20: bestiary below
+    renderBossHistory(el);
+    return;
   }
+  // A1: phase badge
+  const phaseName=pct>60?'健康💚':pct>30?'弱化🟡':'瀕死🔴';
+  // A2: gradient bar color
+  const barColor=pct>60?'#4CAF7D':pct>30?'#F5C842':'#E8354A';
+  // B2: enrage class
+  const enrageClass=pct<=30?'boss-enrage':'';
+  const enrageHtml=pct<=30?'<div class="boss-enrage-label">激怒中！🔥</div>':'';
+  // A8: weakness tag
+  const CAT_EMOJI_MAP={'仕事':'💼','勉強':'📚','生活':'🏠','投資':'📈','運動':'💪','その他':'🌀'};
+  const weakEmoji=CAT_EMOJI_MAP[b.weakness]||'⚡';
+  const weaknessHtml=`<div class="boss-weakness-row">弱点: ${weakEmoji}${b.weakness}</div>`;
+  // B4: attack log
+  const logHtml=(bs.log&&bs.log.length>0)?`<div class="boss-log">${bs.log.slice(-2).map(l=>`<div class="boss-log-item">${l}</div>`).join('')}</div>`:'';
+  // A9: dmgDealt
+  const dmgDealtHtml=`<div class="boss-dmg-dealt">今週のダメージ: ${bs.dmgDealt||0}</div>`;
+  // combo display
+  const comboHtml=(bs.combo||0)>=2?`<div class="boss-combo-badge">${bs.combo}コンボ中！</div>`:'';
+  el.innerHTML=`<div class="boss-card ${enrageClass}">
+    <div class="boss-title">⚔️ 冒険 — 今週のボス ⚔️</div>
+    ${enrageHtml}
+    <div class="boss-phase-badge">${phaseName}</div>
+    <div class="boss-emoji">${b.emoji}</div>
+    <div class="boss-name" style="color:${b.color};">${b.name}</div>
+    ${weaknessHtml}
+    <div class="boss-hp-wrap">
+      <div class="boss-hp-bar" style="width:${pct}%;background:${barColor};transition:width 0.5s ease,background 0.5s ease;"></div>
+    </div>
+    <div class="boss-hp-txt" id="bossHpTxt">HP: ${bs.hp} / ${bs.maxHp}</div>
+    ${dmgDealtHtml}
+    ${comboHtml}
+    <div class="boss-hint">タスク完了→1ダメ ⚡高優先→3ダメ 🍅ポモドーロ→5ダメ</div>
+    <div class="boss-reward-preview">討伐報酬: +${b.reward.coins}🪙 +${b.reward.xp}XP</div>
+    ${equippedHtml}
+    ${countdownHtml}
+    ${logHtml}
+    <div class="boss-week-progress">今週の総完了タスク: ${weekTaskCount}件</div>
+    <button class="boss-quick-attack-btn" onclick="bossQuickAttack()">⚔️ 直接攻撃 (-5🪙)</button>
+  </div>`;
+  // D20: bestiary
+  renderBossHistory(el);
+}
+// D20: boss bestiary
+function renderBossHistory(parentEl){
+  const bh=S.bossHistory||{};
+  const bestiaryHtml=`<div class="boss-bestiary">
+    <div class="boss-bestiary-title" onclick="this.parentElement.querySelector('.boss-bestiary-list').style.display=this.parentElement.querySelector('.boss-bestiary-list').style.display==='none'?'grid':'none'">👹 ボス図鑑 ▾</div>
+    <div class="boss-bestiary-list" style="display:none">${BOSSES.map((bo,i)=>{
+      const cnt=bh[i]||0;
+      const seen=cnt>0||false;
+      return `<div class="boss-bestiary-card ${seen?'seen':'unseen'}">
+        <div class="bbe">${seen?bo.emoji:'❓'}</div>
+        <div class="bbn">${seen?bo.name:'???'}</div>
+        <div class="bbd">${seen?`討伐${cnt}回`:'未確認'}</div>
+      </div>`;
+    }).join('')}</div>
+  </div>`;
+  const bDiv=document.createElement('div');
+  bDiv.innerHTML=bestiaryHtml;
+  parentEl.appendChild(bDiv.firstElementChild);
 }
 
 // =====================================================
@@ -6660,8 +7159,35 @@ let _pinChartTab = 'radar'; // 'radar'|'trend'|'bar'
 let _trendMetricId = null;
 
 function getActivePin(){
-  return (S.pins||[]).find(p=>p.id===S.activePinId)||null;
+  const pins=S.pins||[];
+  const found=pins.find(p=>p.id===S.activePinId);
+  if(!found&&pins.length){ S.activePinId=pins[0].id; return pins[0]; }
+  return found||null;
 }
+function getRelativeDate(dateStr){
+  if(!dateStr) return '';
+  const today=todayStr();
+  if(dateStr===today) return '今日';
+  const d=new Date(today); d.setDate(d.getDate()-1);
+  const yStr=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  if(dateStr===yStr) return '昨日';
+  const diff=Math.floor((new Date(today)-new Date(dateStr))/86400000);
+  if(diff<7) return `${diff}日前`;
+  if(diff<30) return `${Math.floor(diff/7)}週間前`;
+  return dateStr;
+}
+function getPinPB(pin,metricId){
+  let pb=null;
+  (pin.log||[]).forEach(e=>{ const v=(e.values||{})[metricId]; if(v!=null&&(pb===null||v>pb)) pb=v; });
+  return pb;
+}
+function getPinWeekCount(pin){
+  const d=new Date();
+  const mon=new Date(d); mon.setDate(d.getDate()-((d.getDay()+6)%7));
+  const monStr=`${mon.getFullYear()}-${String(mon.getMonth()+1).padStart(2,'0')}-${String(mon.getDate()).padStart(2,'0')}`;
+  return (pin.log||[]).filter(e=>e.date>=monStr).length;
+}
+let _updatePinMetaTimer=null;
 
 function migratePinsData(){
   if(!S.pins) S.pins=[];
@@ -6695,11 +7221,14 @@ function closeExercisePanelBg(e){
 }
 
 function addNewPin(){
-  const name=prompt('新しいPinの名前を入力してください\n例: 勉強、読書、食事、睡眠…');
+  const name=prompt('新しいPinの名前を入力してください\n例: 勉強、読書、食事、睡眠、体重管理…');
   if(!name||!name.trim()) return;
-  const icons=['📌','📚','🍱','🧠','🎯','😴','🏃','✍️','🌿','💊','🎸','🧘'];
-  const icon=icons[Math.floor(Math.random()*icons.length)];
-  const id='pin_'+Date.now();
+  const icons=['📌','📚','🍱','🧠','🎯','😴','🏃','✍️','🌿','💊','🎸','🧘','💤','🏋️','🧪','🎮','🎨','🌊','🦷','💰'];
+  const usedIcons=(S.pins||[]).map(p=>p.icon);
+  const unused=icons.filter(i=>!usedIcons.includes(i));
+  const pool=unused.length?unused:icons;
+  const icon=pool[Math.floor(Math.random()*pool.length)];
+  const id='pin_'+Date.now()+'_'+Math.random().toString(36).slice(2,6);
   if(!S.pins) S.pins=[];
   S.pins.push({id,name:name.trim(),icon,goal:'',metrics:[],log:[]});
   S.activePinId=id;
@@ -6718,9 +7247,11 @@ function switchPin(id){
 }
 
 function deletePin(id){
-  if(!confirm('このPinをすべての記録ごと削除しますか？')) return;
+  const pin=(S.pins||[]).find(p=>p.id===id);
+  const logCount=(pin?.log||[]).length;
+  if(!confirm(`「${pin?.name||'このPin'}」を削除しますか？\n記録 ${logCount} 件も削除されます。`)) return;
   S.pins=(S.pins||[]).filter(p=>p.id!==id);
-  if(S.activePinId===id) S.activePinId=S.pins[0]?.id||null;
+  if(S.activePinId===id) S.activePinId=(S.pins||[])[0]?.id||null;
   save();
   renderExercisePanel();
 }
@@ -6729,6 +7260,11 @@ function renderExercisePanel(){
   migratePinsData();
   renderPinTabs();
   renderActivePinContent();
+  // パネルタイトルをアクティブPin名に更新
+  const pin=getActivePin();
+  const titleEl=$('exPanelTitle'),subEl=$('exPanelSubtitle');
+  if(titleEl) titleEl.textContent=pin?`${pin.icon||'📌'} ${pin.name}`:'🚩 Pin';
+  if(subEl)   subEl.textContent=pin?`${(pin.log||[]).length}件の記録`:'複数の目標を記録できる';
 }
 
 function renderPinTabs(){
@@ -6747,14 +7283,28 @@ function renderActivePinContent(){
   if(!body) return;
   const pin=getActivePin();
   if(!pin){
-    body.innerHTML=`<div class="log-empty" style="margin-top:50px;">＋ボタンでPinを追加してください</div>`;
+    body.innerHTML=`<div class="pin-empty-guide"><span class="eg-icon">🚩</span>＋ボタンで新しいPinを追加してください<br><small style="font-size:10px;opacity:0.6">運動・読書・食事など何でも記録できます</small></div>`;
     return;
   }
   if(!pin.metrics) pin.metrics=[];
   if(!pin.log) pin.log=[];
 
+  const today=todayStr();
+  const todayLogs=pin.log.filter(e=>e.date===today);
+  const hasTodayRecord=todayLogs.length>0;
   const latest=pin.log[pin.log.length-1];
   const latestVals=latest?latest.values:{};
+  const weekCount=getPinWeekCount(pin);
+
+  // 今日記録済みバナー
+  const todayBanner=hasTodayRecord?`<div class="pin-today-banner">✅ 今日 ${todayLogs.length}回 記録済み！</div>`:'';
+
+  // 週間プログレス
+  const weekHTML=`<div class="pin-week-prog">
+    <div class="pin-week-prog-label">TODAY'S WEEK ${weekCount}回 記録</div>
+    <div class="pin-week-prog-bar-bg"><div class="pin-week-prog-bar-fill" style="width:${Math.min(weekCount/7*100,100)}%"></div></div>
+    <div class="pin-week-prog-txt">今週 ${weekCount} 回</div>
+  </div>`;
 
   // goal
   const goalHTML=`
@@ -6772,7 +7322,7 @@ function renderActivePinContent(){
 
   // chart section
   let chartHTML='';
-  if(pin.metrics.length>0||pin.log.length>0){
+  if(pin.log.length>0){
     const tabs=`<div class="pin-chart-tabs">
       <button class="pct-btn${_pinChartTab==='radar'?' pct-active':''}" onclick="switchPinChart('radar')">🕷️ レーダー</button>
       <button class="pct-btn${_pinChartTab==='trend'?' pct-active':''}" onclick="switchPinChart('trend')">📈 トレンド</button>
@@ -6786,34 +7336,62 @@ function renderActivePinContent(){
       const sel=metrics.map(m=>`<option value="${escH(m.id)}"${m.id===_trendMetricId?' selected':''}>${escH(m.name)}</option>`).join('');
       canvasHTML=metrics.length?`<select class="pin-trend-sel" onchange="_trendMetricId=this.value;renderPinTrendChart(getActivePin())">${sel}</select><canvas id="exTrendCanvas" style="width:100%;display:block;"></canvas>`
         :`<div style="color:rgba(255,255,255,0.3);font-size:10px;text-align:center;padding:16px;">項目を追加するとグラフが表示されます</div>`;
-    } else canvasHTML=`<canvas id="exBarCanvas" style="width:100%;display:block;"></canvas>`;
+    } else {
+      canvasHTML=`<canvas id="exBarCanvas" style="width:100%;display:block;"></canvas>`;
+    }
     chartHTML=tabs+`<div class="ex-chart-wrap cwrap-${_pinChartTab==='radar'?'radar':_pinChartTab==='trend'?'trend':'bar'}">${canvasHTML}</div>`;
+  } else if(pin.metrics.length>0){
+    chartHTML=`<div style="background:rgba(255,255,255,0.03);border:2px dashed rgba(255,255,255,0.1);border-radius:14px;padding:20px;text-align:center;margin-bottom:14px;color:rgba(255,255,255,0.3);font-size:11px;">📊 最初の記録を入力するとグラフが表示されます</div>`;
   }
 
   // input form
-  const inputItems=pin.metrics.map(m=>`
-    <div class="ex-input-item">
+  const inputItems=pin.metrics.map(m=>{
+    const pb=getPinPB(pin,m.id);
+    return `<div class="ex-input-item">
       <div class="ex-input-label">${escH(m.name)}</div>
-      <input class="ex-input-field" type="number" id="exInput_${escH(m.id)}" min="0" step="0.1" placeholder="${latestVals[m.id]||'0'}">
+      <input class="ex-input-field" type="number" id="exInput_${escH(m.id)}" min="0" step="0.1" inputmode="decimal" placeholder="${latestVals[m.id]!=null?latestVals[m.id]:'0'}">
       <div class="ex-input-unit">${escH(m.unit)}</div>
-    </div>`).join('');
+      ${pb!=null?`<div class="ex-input-pb">PB: ${pb}${escH(m.unit)}</div>`:''}
+    </div>`;
+  }).join('');
+  const saveBtnLabel=hasTodayRecord?`🚩 ${escH(pin.name)} 追加記録 (${todayLogs.length}回目)`:`🚩 ${escH(pin.name)} を記録`;
   const formHTML=`
-    <div class="ex-form-title">TODAY'S PIN</div>
-    ${pin.metrics.length?`<div class="ex-input-grid">${inputItems}</div>`:'<div style="font-size:10px;color:rgba(255,255,255,0.3);margin-bottom:10px;text-align:center;">⬇️ 項目設定から記録項目を追加</div>'}
-    <div class="ex-title-row"><input class="ex-title-input" id="exTitleInput" type="text" placeholder="メモ（任意）"></div>
-    <button class="ex-save-btn" onclick="saveExerciseLog()">🚩 ${escH(pin.name)} を記録</button>`;
+    <div class="ex-form-title">${hasTodayRecord?'ADD RECORD':'TODAY\'S PIN'}</div>
+    ${pin.metrics.length?`
+      <div class="pin-form-actions">
+        <button class="pin-form-action-btn" onclick="fillLastPinValues()" title="前回の値を入力">📋 前回をコピー</button>
+        <button class="pin-form-action-btn" onclick="clearPinInputs()" title="入力をクリア">✕ クリア</button>
+      </div>
+      <div class="ex-input-grid">${inputItems}</div>`
+    :'<div style="font-size:10px;color:rgba(255,255,255,0.3);margin-bottom:10px;text-align:center;">⬇️ 項目設定から記録項目を追加</div>'}
+    <div class="ex-title-row"><input class="ex-title-input" id="exTitleInput" type="text" placeholder="メモ（任意）" onkeydown="if(event.key==='Enter')saveExerciseLog()"></div>
+    <button class="ex-save-btn" onclick="saveExerciseLog()">${saveBtnLabel}</button>`;
 
   // history
-  const histRows=[...pin.log].reverse().slice(0,30);
-  const histHTML=histRows.length===0?'<div class="log-empty">記録がまだありません</div>':
-    `<div class="ex-hist-title" style="margin-top:4px;">HISTORY</div>`+histRows.map(e=>{
+  const histRows=[...pin.log].reverse().slice(0,40);
+  const histHTML=histRows.length===0?`<div class="pin-empty-guide"><span class="eg-icon" style="font-size:28px">📝</span>記録がまだありません<br><small style="font-size:10px;opacity:0.6">上のフォームから最初の記録を入力してみよう</small></div>`:
+    `<div class="ex-hist-title" style="margin-top:4px;">HISTORY (${pin.log.length}件)</div>`+histRows.map((e,idx)=>{
+      const prevEntry=pin.log[pin.log.length-1-idx-1];
+      const prevVals=prevEntry?.values||{};
+      const isToday=e.date===today;
       const chips=(pin.metrics||[]).filter(m=>e.values&&e.values[m.id]!=null)
-        .map(m=>`<span class="ex-hist-chip">${escH(m.name)} ${e.values[m.id]}${escH(m.unit)}</span>`).join('');
-      return `<div class="ex-hist-item">
+        .map(m=>{
+          const val=e.values[m.id];
+          const pv=prevVals[m.id];
+          let deltaClass='',deltaLabel='';
+          if(pv!=null){
+            const diff=val-pv;
+            if(diff>0){deltaClass=' delta-up';deltaLabel=` ↑+${diff%1?diff.toFixed(1):diff}`;}
+            else if(diff<0){deltaClass=' delta-dn';deltaLabel=` ↓${diff%1?diff.toFixed(1):diff}`;}
+            else {deltaClass=' delta-eq';}
+          }
+          return `<span class="ex-hist-chip${deltaClass}">${escH(m.name)} ${val}${escH(m.unit)}${deltaLabel}</span>`;
+        }).join('');
+      return `<div class="ex-hist-item${isToday?' hist-today':''}">
         <div class="ex-hist-hdr">
-          <span class="ex-hist-date">${escH(e.date||'')}</span>
-          <span class="ex-hist-name">${escH(e.title||'')}</span>
-          <button class="ex-hist-del" onclick="deletePinLogEntry('${escH(pin.id)}','${escH(e.id)}')" title="削除">🗑</button>
+          <span class="ex-hist-date">${getRelativeDate(e.date)}</span>
+          <span class="ex-hist-name">${escH(e.title||'')}${e.title?'<span class="ex-hist-memo-icon">📝</span>':''}</span>
+          <button class="ex-hist-del" onclick="confirmDeletePinEntry('${escH(pin.id)}','${escH(e.id)}')" title="削除">🗑</button>
         </div>
         ${chips?`<div class="ex-hist-chips">${chips}</div>`:''}
       </div>`;
@@ -6827,8 +7405,8 @@ function renderActivePinContent(){
     </div>
     <div id="exSettingsArea" style="display:none;margin-bottom:14px;">
       <div class="pin-name-row">
-        <input class="pin-icon-input" id="pinIconInput" type="text" placeholder="🏷" value="${escH(pin.icon||'📌')}" oninput="updatePinMeta()">
-        <input class="ex-metric-name" id="pinNameInput" type="text" placeholder="Pin名" value="${escH(pin.name||'')}" style="flex:1;" oninput="updatePinMeta()">
+        <input class="pin-icon-input" id="pinIconInput" type="text" maxlength="2" placeholder="絵文字" value="${escH(pin.icon||'📌')}" oninput="updatePinMetaDebounced()">
+        <input class="ex-metric-name" id="pinNameInput" type="text" placeholder="Pin名" value="${escH(pin.name||'')}" style="flex:1;" oninput="updatePinMetaDebounced()">
       </div>
       <div id="exMetricRows"></div>
       <div class="ex-add-metric-row">
@@ -6838,7 +7416,7 @@ function renderActivePinContent(){
       </div>
     </div>`;
 
-  body.innerHTML=goalHTML+chartHTML+formHTML+histHTML+settingsHTML;
+  body.innerHTML=todayBanner+goalHTML+weekHTML+chartHTML+formHTML+histHTML+settingsHTML;
 
   if(_exSettingsOpen){
     $('exSettingsArea').style.display='block';
@@ -6892,7 +7470,7 @@ function renderPinBarChart(pin){
   const labels=[],counts=[];
   for(let i=13;i>=0;i--){
     const d=new Date(); d.setDate(d.getDate()-i);
-    const ds=d.toISOString().split('T')[0];
+    const ds=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
     labels.push(`${d.getMonth()+1}/${d.getDate()}`);
     counts.push(logs.filter(e=>e.date===ds).length);
   }
@@ -6947,10 +7525,14 @@ function saveExerciseLog(){
   const metrics=pin.metrics||[];
   const prevVals=(pin.log||[]).length>0?(pin.log[pin.log.length-1].values||{}):{};
   const values={};let hasNew=false;
+  const pbHits=[];
   metrics.forEach(m=>{
     const v=parseFloat($('exInput_'+m.id)?.value||'');
-    if(!isNaN(v)&&v>0){values[m.id]=v;hasNew=true;}
-    else if(prevVals[m.id]!=null){values[m.id]=prevVals[m.id];}
+    if(!isNaN(v)&&v>0){
+      values[m.id]=v;hasNew=true;
+      const pb=getPinPB(pin,m.id);
+      if(pb===null||v>pb) pbHits.push(`${m.name} PB🏆`);
+    } else if(prevVals[m.id]!=null){values[m.id]=prevVals[m.id];}
   });
   const title=$('exTitleInput')?.value.trim()||'';
   if(!hasNew&&!title){showToast('⚠️ 値かメモを入力してください');return;}
@@ -6958,7 +7540,10 @@ function saveExerciseLog(){
   pin.log.push({id:'e'+Date.now(),date:todayStr(),values,title});
   if(pin.log.length>180) pin.log=pin.log.slice(-180);
   save();
-  showToast(`🚩 ${pin.name} を記録しました！`);
+  const summary=metrics.filter(m=>values[m.id]!=null).map(m=>`${m.name}:${values[m.id]}${m.unit}`).join(' · ');
+  const pbStr=pbHits.length?` 🎉 ${pbHits.join(' ')}!`:'';
+  showToast(`🚩 記録しました！${summary?'\n'+summary:''}${pbStr}`);
+  clearPinInputs();
   renderActivePinContent();
 }
 
@@ -6967,6 +7552,26 @@ function deletePinLogEntry(pinId,entryId){
   pin.log=(pin.log||[]).filter(e=>e.id!==entryId);
   save();
   renderActivePinContent();
+}
+function confirmDeletePinEntry(pinId,entryId){
+  const pin=(S.pins||[]).find(p=>p.id===pinId); if(!pin) return;
+  const entry=(pin.log||[]).find(e=>e.id===entryId); if(!entry) return;
+  const label=entry.date+(entry.title?` "${entry.title}"`:'');
+  if(confirm(`「${label}」の記録を削除しますか？`)) deletePinLogEntry(pinId,entryId);
+}
+function fillLastPinValues(){
+  const pin=getActivePin(); if(!pin) return;
+  const last=(pin.log||[]).slice(-1)[0]; if(!last) return;
+  (pin.metrics||[]).forEach(m=>{
+    const el=$('exInput_'+m.id); if(!el) return;
+    const v=(last.values||{})[m.id];
+    if(v!=null) el.value=v;
+  });
+}
+function clearPinInputs(){
+  const pin=getActivePin(); if(!pin) return;
+  (pin.metrics||[]).forEach(m=>{ const el=$('exInput_'+m.id); if(el) el.value=''; });
+  const memo=$('exTitleInput'); if(memo) memo.value='';
 }
 // legacy alias used elsewhere
 function deleteExerciseLog(id){ deletePinLogEntry(S.activePinId,id); }
