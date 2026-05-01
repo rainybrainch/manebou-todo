@@ -52,7 +52,7 @@ nav{position:sticky;top:0;z-index:200;background:rgba(26,26,46,0.94);backdrop-fi
 .bubble-zone{background:rgba(13,18,40,0.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:11px 14px 13px;border-bottom:2px solid rgba(245,200,66,0.2);}
 .bubble-inner{display:flex;gap:11px;align-items:flex-start;max-width:760px;margin:0 auto;}
 .bubble-char-col{flex-shrink:0;text-align:center;}
-.bubble-char-img{width:46px;height:46px;border-radius:50%;border:3px solid var(--gold);object-fit:cover;background:white;cursor:pointer;transition:transform 0.15s;box-shadow:0 0 12px rgba(245,200,66,0.3);}
+.bubble-char-img{width:46px;height:46px;border-radius:50%;border:3px solid var(--gold);object-fit:cover;background:rgba(26,26,46,0.7);cursor:pointer;transition:transform 0.15s;box-shadow:0 0 12px rgba(245,200,66,0.3);}
 .bubble-char-img:hover{transform:scale(1.1);}
 .bubble-char-nm{font-size:8px;color:rgba(255,255,255,0.5);font-weight:700;margin-top:3px;}
 .bubble{flex:1;background:rgba(255,255,255,0.96);border:3px solid var(--dark);border-radius:18px 18px 18px 4px;padding:9px 14px;font-size:13px;font-weight:700;line-height:1.65;color:var(--dark);box-shadow:3px 3px 0 var(--gold);min-height:44px;display:flex;align-items:center;transition:opacity 0.25s;position:relative;}
@@ -748,6 +748,8 @@ html.dark .tile-sheet-subtitle{color:#555;}
 .jpm-btn.jpm-done:hover{opacity:1;}
 .jpm-btn.jpm-locked{background:rgba(255,255,255,.03);color:rgba(255,255,255,.18);cursor:default;}
 .jpm-btn.jpm-locked:hover{opacity:1;}
+.jpm-char-sprite{position:absolute;bottom:32px;right:8px;width:110px;height:auto;pointer-events:none;z-index:0;filter:drop-shadow(0 4px 18px rgba(0,0,0,0.5));animation:jpmFloat 3s ease-in-out infinite;}
+@keyframes jpmFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 .jpm-btn.jpm-max:hover{opacity:1;}
 html.dark .jp-stat{background:rgba(255,255,255,0.03);border-color:rgba(255,255,255,0.07);}
 </style>
@@ -1171,6 +1173,14 @@ html.dark .jp-stat{background:rgba(255,255,255,0.03);border-color:rgba(255,255,2
     <button class="pom-preset" onclick="setBreakDuration(10,this)">10分</button>
     <button class="pom-preset" onclick="setBreakDuration(15,this)">15分</button>
   </div>
+  <div class="pom-section-label">セット数</div>
+  <div class="pom-presets" id="pomSetPresets">
+    <button class="pom-preset sel" onclick="setPomSets(0,this)">∞</button>
+    <button class="pom-preset" onclick="setPomSets(2,this)">2</button>
+    <button class="pom-preset" onclick="setPomSets(3,this)">3</button>
+    <button class="pom-preset" onclick="setPomSets(4,this)">4</button>
+    <button class="pom-preset" onclick="setPomSets(5,this)">5</button>
+  </div>
 </div>
 
 <!-- FAB -->
@@ -1210,6 +1220,7 @@ html.dark .jp-stat{background:rgba(255,255,255,0.03);border-color:rgba(255,255,2
 <div class="jpm-overlay" id="jpmOverlay" onclick="bgCloseJp(event)">
   <div class="jpm-sheet">
     <button class="jpm-close" onclick="closeJpModal()">✕</button>
+    <img class="jpm-char-sprite" id="jpmCharSprite" src="" alt="" onerror="this.style.display='none'">
     <div class="jpm-handle"></div>
     <img class="jpm-year-banner" id="jpmYearBanner" src="" alt="" onerror="this.style.display='none'">
     <div class="jpm-body">
@@ -1472,7 +1483,7 @@ function getNextTileToUnlock(unlockedTiles){
 
 const CHARS = {
   'おーる局長': {
-    imgs: ['images/img5.webp','images/img5-2.webp','images/img5-3.webp'],
+    imgs: ['images/img5.webp','images/img5-2.webp','images/img5-3.webp','images/img5-4.png'],
     role:'知恵の案内役', color:'#5BC8E8',
     add:     ['それは良い一手だ。計画的に進めよう。','目標を明確にするのは賢明な判断だ。','ネクストヒント：一度に1つずつ片付けることが成功の秘訣だ。','まず書き出すこと。それが最初の一歩だ。'],
     complete:['見事な判断力だ！次のステップへ進もう。','計画通り！継続が力を生む。','この調子で行けば、未来は明るい。','一つ一つの達成が歴史を作る。'],
@@ -1484,7 +1495,7 @@ const CHARS = {
     boss:    ['ボスにダメージ！一手一手が歴史を動かす。','着実に削っていこう。','これが継続の力だ。'],
   },
   'えんだ': {
-    imgs: ['images/img6.webp','images/img6-2.webp','images/img6-3.webp'],
+    imgs: ['images/img6.webp','images/img6-2.webp','images/img6-3.webp','images/img6-4.png'],
     role:'挑戦者', color:'#E8354A',
     add:     ['よっしゃ！どんどんやっていこう！','新しい挑戦、最高だ！絶対やり遂げよう！','いいね！全部やり切るぞ！','追加完了！テンション上がってきた！'],
     complete:['やったーーー！完了！！次は何だ！','さすが！どんどん行こう！','テンション上がる！この調子でいけ！','完了した！勢い止めるなよ！'],
@@ -1496,7 +1507,7 @@ const CHARS = {
     boss:    ['ボスにダメージ！ぶっ倒すぞ！','どんどん攻めよう！','このまま一気に倒す！'],
   },
   'ためぞう': {
-    imgs: ['images/img7.webp','images/img7-2.webp','images/img7-3.webp'],
+    imgs: ['images/img7.webp','images/img7-2.webp','images/img7-3.webp','images/img7-4.png'],
     role:'堅実派', color:'#4CAF7D',
     add:     ['一つずつ確実にやることが大切だよ。','コツコツ積み上げることが成功の基本！','無理しないで、着実にこなしていこうね。','メモしておくことが大事。忘れないようにね。'],
     complete:['よかった…一つ減った。ほっ。','着実に前進！コツコツが大事！','リスクを一つ減らせた気分…！','計画通り完了！これが安心感だよ。'],
@@ -1508,7 +1519,7 @@ const CHARS = {
     boss:    ['ボスにダメージ！少しずつ確実に。','焦らず着実に削っていこう。','このペースなら倒せるよ！'],
   },
   'カウッシー': {
-    imgs: ['images/img8.webp','images/img8-2.webp','images/img8-3.webp'],
+    imgs: ['images/img8.webp','images/img8-2.webp','images/img8-3.webp','images/img8-4.png'],
     role:'自由人', color:'#9B6DD6',
     add:     ['パーッとやっちゃおう！','やること多い方が楽しいじゃん！','どんどん増やしていこうぜ！','やる気出てきたぞ！いっぱい登録しよ！'],
     complete:['終わった？じゃあご褒美タイムだ！','やったじゃん！自分にご褒美あげていいよ！','よっしゃ！完了記念に何か食べようか笑','最高！一つ終わったら一個ご褒美のルールで行こう！'],
@@ -3015,7 +3026,7 @@ function renderBarChart(){
 // =====================================================
 // POMODORO (work / break cycle)
 // =====================================================
-let pomState={phase:'work',secondsLeft:25*60,active:false,interval:null,sessions:0,workMinutes:25,breakMinutes:5};
+let pomState={phase:'work',secondsLeft:25*60,active:false,interval:null,sessions:0,workMinutes:25,breakMinutes:5,targetSets:0,endTime:null};
 
 function openPomPanel(){ $('pomPanel').classList.add('open'); }
 function closePomPanel(){ $('pomPanel').classList.remove('open'); }
@@ -3028,8 +3039,10 @@ function startPomodoro(){
   pomState.active=true;
   $('pomPlayBtn').textContent='⏸';
   $('pomLabel').textContent=pomState.phase==='work'?'集中中 🎯':'休憩中 ☕';
+  if(pomState.phase==='work') playCuckoo();
   clearInterval(pomState.interval);
   pomState.endTime = Date.now() + pomState.secondsLeft * 1000;
+  savePomState();
   pomState.interval=setInterval(()=>{
     pomState.secondsLeft = Math.max(0, Math.round((pomState.endTime - Date.now()) / 1000));
     updatePomDisplay();
@@ -3046,17 +3059,20 @@ function pausePomodoro(){
   clearInterval(pomState.interval);
   $('pomPlayBtn').textContent='▶';
   $('pomLabel').textContent='一時停止';
+  savePomState();
 }
 
 function resetPomodoro(){
   pausePomodoro();
   pomState.phase='work';
   pomState.secondsLeft=25*60;
+  pomState.endTime=null;
   $('pomLabel').textContent='準備中';
   $('pomPlayBtn').textContent='▶';
   const badge=$('pomPhaseBadge');
   if(badge){badge.textContent='集中';badge.className='pom-phase-badge';}
   updatePomDisplay();
+  savePomState();
 }
 
 function addPomTime(){
@@ -3107,11 +3123,25 @@ function renderPomSessions(){
 
 function pomDone(){
   $('pomPlayBtn').textContent='▶';
-  playBeep();
+  playCuckoo();
   const badge=$('pomPhaseBadge');
   if(pomState.phase==='work'){
     pomState.sessions++;
     renderPomSessions();
+    // セット数上限チェック
+    if(pomState.targetSets>0 && pomState.sessions>=pomState.targetSets){
+      pomState.phase='work';
+      pomState.secondsLeft=pomState.workMinutes*60;
+      pomState.endTime=null;
+      if(badge){badge.textContent='完了';badge.className='pom-phase-badge';}
+      $('pomLabel').textContent=`🎉 ${pomState.targetSets}セット完了！`;
+      $('pomFill').style.stroke='var(--gold)';
+      onPomodoroWorkComplete();
+      updatePomDisplay();
+      save(); savePomState();
+      showToast(`🎉 ${pomState.targetSets}セット達成！お疲れ様！`);
+      return;
+    }
     pomState.phase='break';
     pomState.secondsLeft=pomState.breakMinutes*60;
     if(badge){badge.textContent='休憩';badge.className='pom-phase-badge break-phase';}
@@ -3128,7 +3158,7 @@ function pomDone(){
     $('pomFill').style.stroke='var(--gold)';
     updatePomDisplay();
     showToast('☀️ 休憩終了！次の集中を始めよう');
-    save();
+    save(); savePomState();
   }
 }
 
@@ -3143,6 +3173,107 @@ function playBeep(){
       g.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+t+0.28);
       o.start(ctx.currentTime+t);o.stop(ctx.currentTime+t+0.32);
     });
+  }catch(e){}
+}
+
+function playCuckoo(){
+  try{
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    // カッコウ: 800Hz(カッ) → 630Hz(クー) の2音
+    [[800,0],[630,0.44]].forEach(([freq,delay])=>{
+      const t=ctx.currentTime+delay;
+      const o=ctx.createOscillator(),g=ctx.createGain();
+      const o2=ctx.createOscillator(),g2=ctx.createGain();
+      o.type='sine'; o.frequency.setValueAtTime(freq,t);
+      o.frequency.linearRampToValueAtTime(freq*0.96,t+0.3);
+      o2.type='sine'; o2.frequency.setValueAtTime(freq*2,t);
+      o2.frequency.linearRampToValueAtTime(freq*2*0.96,t+0.3);
+      o.connect(g); g.connect(ctx.destination);
+      o2.connect(g2); g2.connect(ctx.destination);
+      g.gain.setValueAtTime(0,t);
+      g.gain.linearRampToValueAtTime(0.28,t+0.04);
+      g.gain.setValueAtTime(0.24,t+0.22);
+      g.gain.linearRampToValueAtTime(0,t+0.34);
+      g2.gain.setValueAtTime(0,t);
+      g2.gain.linearRampToValueAtTime(0.07,t+0.04);
+      g2.gain.linearRampToValueAtTime(0,t+0.34);
+      o.start(t); o.stop(t+0.36);
+      o2.start(t); o2.stop(t+0.36);
+    });
+  }catch(e){}
+}
+
+function setPomSets(n,btn){
+  pomState.targetSets=n;
+  document.querySelectorAll('#pomSetPresets .pom-preset').forEach(b=>b.classList.remove('sel'));
+  if(btn) btn.classList.add('sel');
+  showToast(n===0?'∞ 無制限モード':`${n}セットで終了`);
+  savePomState();
+}
+
+function savePomState(){
+  try{
+    localStorage.setItem('mb2_pom',JSON.stringify({
+      phase:pomState.phase, secondsLeft:pomState.secondsLeft,
+      endTime:pomState.endTime||null, active:pomState.active,
+      sessions:pomState.sessions, workMinutes:pomState.workMinutes,
+      breakMinutes:pomState.breakMinutes, targetSets:pomState.targetSets||0
+    }));
+  }catch(e){}
+}
+
+function restorePomState(){
+  try{
+    const saved=JSON.parse(localStorage.getItem('mb2_pom')||'null');
+    if(!saved) return;
+    pomState.phase=saved.phase||'work';
+    pomState.sessions=saved.sessions||0;
+    pomState.workMinutes=saved.workMinutes||25;
+    pomState.breakMinutes=saved.breakMinutes||5;
+    pomState.targetSets=saved.targetSets||0;
+    // プリセットUI同期
+    document.querySelectorAll('#pomWorkPresets .pom-preset').forEach(b=>{
+      b.classList.toggle('sel',parseInt(b.textContent)===pomState.workMinutes);
+    });
+    document.querySelectorAll('#pomBreakPresets .pom-preset').forEach(b=>{
+      b.classList.toggle('sel',parseInt(b.textContent)===pomState.breakMinutes);
+    });
+    document.querySelectorAll('#pomSetPresets .pom-preset').forEach(b=>{
+      const v=b.textContent==='∞'?0:parseInt(b.textContent);
+      b.classList.toggle('sel',v===pomState.targetSets);
+    });
+    if(saved.active&&saved.endTime){
+      const remaining=Math.round((saved.endTime-Date.now())/1000);
+      if(remaining<=0){
+        // 閉じている間に終了していた
+        pomState.active=false;
+        setTimeout(()=>{
+          if(saved.phase==='work'){
+            pomState.sessions++;
+            pomState.phase='break';
+            pomState.secondsLeft=pomState.breakMinutes*60;
+            onPomodoroWorkComplete();
+            renderPomSessions();
+            showToast('🍅 ポモドーロ完了！（閉じている間に終わりました）');
+            updatePomDisplay();
+          } else {
+            pomState.phase='work';
+            pomState.secondsLeft=pomState.workMinutes*60;
+            showToast('☀️ 休憩終了！次の集中を始めよう');
+            updatePomDisplay();
+          }
+          savePomState();
+        },900);
+      } else {
+        pomState.secondsLeft=remaining;
+        pomState.endTime=saved.endTime;
+        setTimeout(()=>{ startPomodoro(); showToast('⏱ ポモドーロを再開しました'); },700);
+      }
+    } else {
+      pomState.secondsLeft=saved.secondsLeft||pomState.workMinutes*60;
+    }
+    updatePomDisplay();
+    renderPomSessions();
   }catch(e){}
 }
 
@@ -3242,6 +3373,7 @@ function init(){
   renderToday();
   initBoss();
   renderHabitPool();
+  restorePomState();
   checkAndNotifyNewTitles();
 
   // Enter key in modal title
@@ -3478,6 +3610,15 @@ function openJpModal(id,idx){
   // 年バナー画像
   const banner=document.getElementById('jpmYearBanner');
   if(banner){ banner.style.display='block'; banner.src=getJpImgPath(idx); }
+
+  // アクティブキャラの透過スプライト
+  const sprite=document.getElementById('jpmCharSprite');
+  if(sprite){
+    const ch=CHARS[S.activeChar];
+    const spriteImg=ch&&ch.imgs[3];
+    if(spriteImg){ sprite.style.display='block'; sprite.src=spriteImg; }
+    else{ sprite.style.display='none'; }
+  }
 
   // 年バッジ
   const badge=document.getElementById('jpmYearBadge');
