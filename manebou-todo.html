@@ -1141,6 +1141,13 @@ html.dark .tile-sheet-subtitle{color:#555;}
 .jp-s-node.s-fog .jp-s-lbl{display:none;}
 .jp-field-overlay{position:absolute;top:8px;left:8px;z-index:10;pointer-events:none;}
 .jp-field-badge{display:inline-flex;align-items:center;gap:5px;font-size:9px;font-weight:900;padding:3px 10px;border-radius:20px;background:rgba(0,0,10,.6);border:1.5px solid rgba(245,200,66,.4);color:var(--gold);backdrop-filter:blur(6px);}
+.jp-field-loc{position:absolute;top:0;left:0;right:0;z-index:5;display:flex;flex-direction:column;align-items:center;padding-top:10px;pointer-events:none;text-align:center;}
+.jp-field-loc-reg{font-size:9px;font-weight:900;letter-spacing:3px;color:rgba(255,255,255,.45);margin-bottom:2px;}
+.jp-field-loc-name{font-family:'Dela Gothic One',sans-serif;font-size:20px;color:#fff;text-shadow:0 2px 18px rgba(0,0,0,1),0 0 40px rgba(255,255,255,.15);}
+.jp-field-pref-svg{position:absolute;right:10px;top:6px;width:80px;height:68px;z-index:2;pointer-events:none;opacity:.18;overflow:visible;}
+.jp-s-spotlight{position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);width:100px;height:90px;background:radial-gradient(ellipse at 50% 90%,rgba(245,200,66,.4) 0%,transparent 70%);pointer-events:none;z-index:1;}
+.jp-s-node.s-current{padding-top:120px;}
+.jp-s-node.s-current .jp-s-charimg{filter:drop-shadow(0 4px 16px rgba(0,0,0,.9)) drop-shadow(0 0 20px rgba(245,200,66,.4));}
 </style>
 </head>
 <body>
@@ -1159,7 +1166,6 @@ html.dark .tile-sheet-subtitle{color:#555;}
     <div class="nav-coin" id="navCoin">🪙0</div>
     <div class="nav-streak" id="navStreak">🔥0</div>
     <div class="nav-date" id="navDate"></div>
-    <a class="nav-login-link" href="https://rainybrainch.github.io/manebou-hp/home.html" style="text-decoration:none;border-color:rgba(91,200,232,0.4);color:var(--sky)">🏠 HP</a>
     <img id="navUserAvatar" class="nav-user-avatar" src="" alt="" onclick="openNavPopup()" title="アカウント">
     <span id="navLoginLink" class="nav-login-link" onclick="openNavPopup()">ログイン</span>
     <span id="navUserName" class="nav-login-link" onclick="openNavPopup()" style="display:none;border-color:rgba(76,175,125,0.5);color:var(--green)"></span>
@@ -1290,6 +1296,7 @@ html.dark .tile-sheet-subtitle{color:#555;}
       <button class="ysn-btn ysn-active" id="ysn-tasks" onclick="setYattaSection('tasks')">📋 タスク</button>
       <button class="ysn-btn" id="ysn-habit" onclick="setYattaSection('habit')">🎯 習慣</button>
       <button class="ysn-btn" id="ysn-pin" onclick="setYattaSection('pin')">🚩 Pin</button>
+      <button class="ysn-btn" id="ysn-pom" onclick="setYattaSection('pom')">🍅 ポモ</button>
     </div>
 
     <!-- ── タスク ── -->
@@ -1423,7 +1430,7 @@ html.dark .tile-sheet-subtitle{color:#555;}
     <div class="coll-tabs">
       <button class="coll-tab active" data-ctab="costume" onclick="switchCollTab('costume')">👕 衣装</button>
       <button class="coll-tab" data-ctab="badge" onclick="switchCollTab('badge')">🏅 バッジ</button>
-      <button class="coll-tab" data-ctab="record" onclick="switchCollTab('record')">📊 記録</button>
+      <button class="coll-tab" data-ctab="record" onclick="switchCollTab('record')">✨ ガチャ</button>
       <button class="coll-tab" data-ctab="theme" onclick="switchCollTab('theme')">🎨 テーマ</button>
     </div>
 
@@ -1445,21 +1452,8 @@ html.dark .tile-sheet-subtitle{color:#555;}
       </div>
     </div>
 
-    <!-- 記録パネル -->
+    <!-- ガチャパネル -->
     <div class="coll-panel" id="cpanel-record">
-      <div class="pom-summary-card">
-        <div>
-          <div class="pom-sum-num" id="collPomTotal">0</div>
-          <div class="pom-sum-label">総セッション数</div>
-        </div>
-        <div style="margin-left:auto;text-align:right;">
-          <div style="font-size:20px;font-family:'Dela Gothic One',sans-serif;color:rgba(91,200,232,0.7)" id="collPomMinutes">0</div>
-          <div class="pom-sum-label">累計分</div>
-        </div>
-      </div>
-      <div class="badges-title">セッション履歴</div>
-      <div id="collPomList"></div>
-      <div class="coll-section-title">✨ ガチャ図鑑</div>
       <div class="gacha-journal-card">
         <div class="gacha-journal-hdr">
           <span class="gacha-journal-title-txt">✨ ガチャ図鑑</span>
@@ -3145,7 +3139,7 @@ function switchCollTab(tab){
   });
   // lazy render on first visit
   if(tab==='badge') renderCollBadges();
-  if(tab==='record'){ renderCollPom(); renderGachaJournal(); }
+  if(tab==='record') renderGachaJournal();
   if(tab==='theme') renderThemeSelector();
 }
 
@@ -3154,7 +3148,6 @@ function renderCollection(){
   renderCollCostume();
   // render others only if already visited
   renderCollBadges();
-  renderCollPom();
   renderGachaJournal();
   renderThemeSelector();
   // restore active tab
@@ -4664,6 +4657,7 @@ function renderNavPopup(){
       <hr class="nav-popup-divider">
       <button class="nav-popup-btn" onclick="closeNavPopup();switchTab('settings')">⚙️ 設定</button>
       <a class="nav-popup-btn" href="https://rainybrainch.github.io/manebou-hp/home.html">🏠 アカウントページへ</a>
+      <a class="nav-popup-btn" href="https://rainybrainch.github.io/manebou-hp/calc.html">💰 マネぼうアプリへ</a>
       <button class="nav-popup-btn danger" onclick="closeNavPopup();fbSignOut()">🚪 ログアウト</button>
     `;
   } else {
@@ -5019,19 +5013,23 @@ function setMapView(v){
 // ─── フィールドビュー ───────────────────────────────────
 function buildStageChainHtml(step){
   const start=Math.max(0,step-8),end=Math.min(JP_ORDER.length-1,step+8);
+  const charName=S.selectedChar||'おーる局長';
   let html='';
   for(let i=start;i<=end;i++){
     const id=JP_ORDER[i],s=JP_ALL[id];
     const color=JP_RC[s?.region]||'#888';
     const dist=Math.abs(i-step);
     const sf=Math.max(0.44,1-dist*0.1);
-    const cs=Math.round(44*sf),is=Math.round(68*sf),cw=Math.round(36*Math.max(0.52,1-dist*0.07)),fs=Math.round(9*sf);
-    const stCls=i<step?'s-visited':i===step?'s-current':'s-fog';
+    const isCur=i===step;
+    const cs=Math.round(44*sf),cw=Math.round(36*Math.max(0.52,1-dist*0.07)),fs=Math.round(9*sf);
+    const is=isCur?120:Math.round(68*sf);
+    const stCls=i<step?'s-visited':isCur?'s-current':'s-fog';
     const showChar=i<=step,n=i+1,year=getJpYear(i);
-    const csrc=`../../../画像/マネぼう/imgキャラ/おーる局長/All (${n}).png`;
+    const csrc=getCharJourneyImg(charName,n)||`../../../画像/マネぼう/imgキャラ/おーる局長/All (${n}).png`;
     if(i>start) html+=`<div class="jp-s-connector${i<=step?' c-visited':''}" style="width:${cw}px;"></div>`;
     html+=`<div class="jp-s-node ${stCls}" style="--jrc:${color};" data-step="${i}" onclick="openJpModal('${escH(id)}',${i})">
       ${showChar?`<img class="jp-s-charimg" src="${escH(csrc)}" alt="" style="width:${is}px;height:${is}px;" onerror="this.style.display='none'">`:''}
+      ${isCur?'<div class="jp-s-spotlight"></div>':''}
       <div class="jp-s-circ" style="width:${cs}px;height:${cs}px;font-size:${fs}px;">${s?.emoji||'🗾'}</div>
       <div class="jp-s-lbl">${year}<br>${jpShort(s?.name||'')}</div>
     </div>`;
@@ -5063,15 +5061,23 @@ function renderMapCurrentView(step){
   const progress=S.jpMap?S.jpMap.progress||0:0;
   const needed=getJpTilesNeeded(step);
   const n=step+1;
+  const shape=JP_SHAPES[id]||'';
+  const svgSilhouette=shape?`<svg class="jp-field-pref-svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet"><polygon points="${shape}" fill="${color}" stroke="none"/></svg>`:'';
+  const skyTint=`background:linear-gradient(180deg,#01071a 0%,#060e35 30%,${color}22 55%,#153440 82%,#1a3830 100%)`;
   card.innerHTML=`
     <div class="jp-field-view" id="jpFieldView">
-      <div class="jp-field-sky"></div>
+      <div class="jp-field-sky" style="${skyTint}"></div>
       <div class="jp-field-ground"></div>
       <div class="jp-field-scroll" id="jpFieldScroll">
         <div class="jp-field-chain" id="jpFieldChain">${buildStageChainHtml(step)}</div>
       </div>
+      <div class="jp-field-loc">
+        <div class="jp-field-loc-reg">${jpRegLabel(s.region).toUpperCase()}</div>
+        <div class="jp-field-loc-name">${escH(s.name)}</div>
+      </div>
+      ${svgSilhouette}
       <div class="jp-field-overlay">
-        <div class="jp-field-badge">📍 Stage ${n}/56 · ${escH(s.name)}</div>
+        <div class="jp-field-badge">📍 Stage ${n}/56</div>
       </div>
     </div>
     <div class="map-dest-body">
