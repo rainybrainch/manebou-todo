@@ -467,6 +467,19 @@ nav{position:sticky;top:0;z-index:200;background:rgba(26,26,46,0.94);backdrop-fi
 
 /* collection tab */
 .coll-section-title{font-family:'Dela Gothic One',sans-serif;font-size:11px;color:#888;letter-spacing:3px;margin:18px 0 10px;}
+/* badge collection cards */
+.badge-coll-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.badge-coll-label{font-family:'Dela Gothic One',sans-serif;font-size:13px;color:var(--purple);}
+.badge-coll-count{font-size:10px;color:rgba(255,255,255,0.35);font-weight:700;}
+.badge-coll-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:4px;}
+.bci{background:rgba(155,109,214,0.08);border:2.5px solid var(--purple);border-radius:14px;padding:14px 6px 10px;text-align:center;position:relative;transition:transform 0.15s,border-color 0.15s,box-shadow 0.15s;}
+.bci:not(.bci-locked){cursor:default;}
+.bci:not(.bci-locked):hover{transform:translate(-2px,-3px);border-color:#c9a4ff;box-shadow:0 4px 14px rgba(155,109,214,0.35);}
+.bci.bci-locked{opacity:0.18;filter:grayscale(1);border-color:rgba(255,255,255,0.1);background:rgba(255,255,255,0.03);}
+.bci-emoji{font-size:28px;display:block;margin-bottom:6px;line-height:1;}
+.bci-name{font-size:9px;font-weight:700;color:#fff;line-height:1.35;word-break:break-all;}
+.bci-desc{font-size:7px;color:rgba(255,255,255,0.35);margin-top:4px;line-height:1.5;}
+.bci-new{position:absolute;top:-5px;right:-5px;background:var(--gold);color:var(--dark);font-size:7px;font-weight:700;border-radius:20px;padding:2px 5px;white-space:nowrap;}
 /* adventure gacha / costume cards */
 .adv-gacha-card{background:var(--dark);border:3px solid var(--gold);border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:4px 4px 0 var(--gold-dark);}
 .adv-gacha-hdr{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
@@ -1008,6 +1021,31 @@ html.dark .tile-sheet-subtitle{color:#555;}
 .jp-tile-bar{height:5px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden;margin-bottom:6px;}
 .jp-tile-bar-inner{height:100%;background:linear-gradient(90deg,var(--gold),#f59e0b);border-radius:3px;transition:width 0.4s ease;}
 .jp-tile-label{font-size:10px;color:rgba(255,255,255,0.5);margin-bottom:6px;}
+/* ========== 3D フィールドビュー（現在地・にゃんこ大戦争スタイル） ========== */
+.jp-field-view{width:100%;height:210px;position:relative;overflow:hidden;border-radius:16px 16px 0 0;background:#020824;flex-shrink:0;}
+.jp-field-sky{position:absolute;inset:0;background:linear-gradient(180deg,#01071a 0%,#060e35 35%,#0c1e5c 60%,#153440 82%,#1a3830 100%);z-index:0;}
+.jp-field-sky::before{content:'';position:absolute;width:100%;height:60%;top:0;z-index:1;background-image:radial-gradient(1px 1px at 12% 18%,rgba(255,255,255,.85),transparent),radial-gradient(1px 1px at 28% 12%,rgba(255,255,255,.6),transparent),radial-gradient(1.5px 1.5px at 42% 8%,rgba(255,255,255,.95),transparent),radial-gradient(1px 1px at 58% 22%,rgba(255,255,255,.5),transparent),radial-gradient(1px 1px at 72% 14%,rgba(255,255,255,.7),transparent),radial-gradient(1px 1px at 87% 19%,rgba(255,255,255,.65),transparent),radial-gradient(1px 1px at 20% 38%,rgba(255,255,255,.4),transparent),radial-gradient(1px 1px at 38% 28%,rgba(255,255,255,.55),transparent),radial-gradient(1px 1px at 65% 32%,rgba(255,255,255,.4),transparent),radial-gradient(1px 1px at 92% 30%,rgba(255,255,255,.5),transparent),radial-gradient(1px 1px at 5% 45%,rgba(255,255,255,.35),transparent),radial-gradient(1px 1px at 52% 44%,rgba(255,255,255,.3),transparent),radial-gradient(1.5px 1.5px at 33% 6%,rgba(255,255,255,.9),transparent),radial-gradient(1px 1px at 78% 36%,rgba(255,255,255,.45),transparent);}
+.jp-field-ground{position:absolute;bottom:0;left:0;right:0;height:88px;background:linear-gradient(180deg,#1e3d28 0%,#0f2418 55%,#081510 100%);z-index:2;}
+.jp-field-ground::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent calc(10% - 0.5px),rgba(80,180,100,.07) calc(10% - 0.5px),rgba(80,180,100,.07) 10%);mask-image:linear-gradient(180deg,transparent 0%,rgba(0,0,0,.8) 100%);-webkit-mask-image:linear-gradient(180deg,transparent 0%,rgba(0,0,0,.8) 100%);}
+.jp-field-scroll{position:absolute;inset:0;overflow-x:auto;overflow-y:hidden;z-index:3;scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch;}
+.jp-field-scroll::-webkit-scrollbar{display:none;}
+.jp-field-chain{display:flex;align-items:flex-end;min-width:max-content;height:100%;padding:0 44vw 22px;}
+.jp-s-node{display:inline-flex;flex-direction:column;align-items:center;position:relative;padding-top:76px;flex-shrink:0;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;}
+.jp-s-node.s-fog{padding-top:20px;pointer-events:none;}
+.jp-s-circ{border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;border:2px solid rgba(255,255,255,.2);background:rgba(10,20,55,.8);color:rgba(255,255,255,.3);transition:transform .2s;}
+.jp-s-node.s-visited .jp-s-circ{background:var(--jrc,#4a8f6e);border-color:rgba(255,255,255,.65);color:#fff;box-shadow:0 0 10px var(--jrc,transparent);}
+.jp-s-node.s-current .jp-s-circ{background:var(--gold);border-color:var(--gold);color:#000;box-shadow:0 0 0 5px rgba(245,200,66,.25),0 0 24px rgba(245,200,66,.85);animation:jpPulse 1.6s ease-in-out infinite;}
+.jp-s-node.s-fog .jp-s-circ{background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.07);filter:blur(.5px);}
+.jp-s-connector{align-self:flex-end;height:3px;flex-shrink:0;background:rgba(255,255,255,.12);border-radius:2px;margin-bottom:30px;}
+.jp-s-connector.c-visited{background:rgba(100,200,130,.45);}
+.jp-s-charimg{position:absolute;top:4px;left:50%;transform:translateX(-50%);object-fit:contain;pointer-events:none;filter:drop-shadow(0 3px 10px rgba(0,0,0,.85));}
+.jp-s-node.s-current .jp-s-charimg{animation:jpmFloat 2.5s ease-in-out infinite;}
+.jp-s-lbl{font-size:7px;color:rgba(255,255,255,.4);text-align:center;margin-top:4px;white-space:nowrap;font-weight:700;line-height:1.3;}
+.jp-s-node.s-visited .jp-s-lbl{color:rgba(255,255,255,.72);}
+.jp-s-node.s-current .jp-s-lbl{color:var(--gold);font-size:8px;font-weight:900;}
+.jp-s-node.s-fog .jp-s-lbl{display:none;}
+.jp-field-overlay{position:absolute;top:8px;left:8px;z-index:10;pointer-events:none;}
+.jp-field-badge{display:inline-flex;align-items:center;gap:5px;font-size:9px;font-weight:900;padding:3px 10px;border-radius:20px;background:rgba(0,0,10,.6);border:1.5px solid rgba(245,200,66,.4);color:var(--gold);backdrop-filter:blur(6px);}
 </style>
 </head>
 <body>
@@ -1279,28 +1317,14 @@ html.dark .tile-sheet-subtitle{color:#555;}
       <div id="collCostumeList"><!-- renderCollCostume() で描画 --></div>
     </div>
 
-    <!-- バッジ・実績 -->
-    <div class="coll-section-title">🏅 バッジ &amp; 実績</div>
-    <div class="level-card">
-      <div class="lv-card-top">
-        <div class="lv-icon" id="collLvIcon">🌱</div>
-        <div class="lv-info">
-          <div class="lv-num" id="collLvNum">Lv. 1</div>
-          <div class="lv-name" id="collLvName">家計簿デビュー</div>
-          <div class="lv-xp" id="collLvXpInfo">0 / 100 XP</div>
-        </div>
-      </div>
-      <div class="lv-bar-bg"><div class="lv-bar-fill" id="collLvBarFill" style="width:0%"></div></div>
-      <div class="lv-bar-labels"><span id="collLvCurXp">0 XP</span><span id="collLvNextXp">次のレベルまで 100 XP</span></div>
-    </div>
-    <div class="badges-title">ACHIEVEMENTS</div>
-    <div id="collBadgeGrid" class="badge-grid"></div>
+    <!-- バッジ -->
+    <div class="coll-section-title">🏅 バッジ</div>
     <div class="title-coll-card">
-      <div class="title-coll-hdr">
-        <span class="title-coll-title-txt">🏅 バッジコレクション</span>
-        <span class="title-coll-count" id="collTitleUnlockedCount">0 / 0</span>
+      <div class="badge-coll-hdr">
+        <span class="badge-coll-label">🏅 バッジコレクション</span>
+        <span class="badge-coll-count" id="collTitleUnlockedCount">0 / 0</span>
       </div>
-      <div class="title-grid" id="collTitleGrid"></div>
+      <div class="badge-coll-grid" id="collTitleGrid"></div>
     </div>
 
     <!-- ポモドーロ記録 -->
@@ -2940,34 +2964,39 @@ function renderCollection(){
 }
 
 function renderCollBadges(){
-  const lv=getLevel(S.xp);
-  const next=getNextLevel(S.xp);
-  const pct=getLvProgress(S.xp);
-  const setEl=(id,v)=>{const e=$(id);if(e)e.textContent=v;};
-  const setStyle=(id,k,v)=>{const e=$(id);if(e)e.style[k]=v;};
-  setEl('collLvIcon', lv.icon);
-  setEl('collLvNum', 'Lv. '+lv.lv);
-  setEl('collLvName', lv.name);
-  setEl('collLvXpInfo', S.xp+' / '+next+' XP');
-  setStyle('collLvBarFill','width',pct+'%');
-  setEl('collLvCurXp', S.xp+' XP');
-  setEl('collLvNextXp', '次のレベルまで '+(next-S.xp)+' XP');
-  // badge grid
-  const bg=$('collBadgeGrid');
-  if(bg) bg.innerHTML=$('badgeGrid')?$('badgeGrid').innerHTML:'';
-  // title grid
   const cond=checkTitleConditions();
   const unlocked=TITLES.filter(t=>cond[t.id]).length;
-  setEl('collTitleUnlockedCount', unlocked+' / '+TITLES.length);
+  const countEl=$('collTitleUnlockedCount');
+  if(countEl) countEl.textContent=`${unlocked} / ${TITLES.length}`;
   const tg=$('collTitleGrid');
-  if(tg){
-    const sorted=[...TITLES].sort((a,b)=>(cond[b.id]?1:0)-(cond[a.id]?1:0));
-    tg.innerHTML=sorted.map(t=>`<div class="title-badge${cond[t.id]?'':' locked'}">
-      <span class="title-emoji">${t.emoji}</span>
-      <div class="title-name">${escH(t.name)}</div>
-      <div class="title-desc">${escH(t.desc)}</div>
-    </div>`).join('');
-  }
+  if(!tg) return;
+  // 解放済み → 先頭、未解放 → 後ろ
+  const sorted=[...TITLES].sort((a,b)=>(cond[b.id]?1:0)-(cond[a.id]?1:0));
+  // どのキャラに装備中か
+  const charTitles=S.charTitles||{};
+  const equippedMap={};
+  CHAR_ORDER.forEach(name=>{ if(charTitles[name]) equippedMap[charTitles[name]]=name; });
+  tg.innerHTML=sorted.map(t=>{
+    const isUnlocked=cond[t.id];
+    const equippedBy=equippedMap[t.id];
+    const newTag=isUnlocked&&!(S.knownTitleIds||[]).includes(t.id)
+      ?'<span class="bci-new">NEW</span>':'' ;
+    if(isUnlocked){
+      return `<div class="bci">
+        ${newTag}
+        <span class="bci-emoji">${t.emoji}</span>
+        <div class="bci-name">${escH(t.name)}</div>
+        <div class="bci-desc">${escH(t.desc)}</div>
+        ${equippedBy?`<div style="margin-top:5px;font-size:7px;font-weight:700;color:var(--gold);">✅ ${escH(equippedBy)}</div>`:''}
+      </div>`;
+    } else {
+      return `<div class="bci bci-locked">
+        <span class="bci-emoji">🔒</span>
+        <div class="bci-name">？？？</div>
+        <div class="bci-desc">${escH(t.desc)}</div>
+      </div>`;
+    }
+  }).join('');
 }
 
 function renderCollPom(){
