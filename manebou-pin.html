@@ -502,7 +502,7 @@ nav{position:sticky;top:0;z-index:200;background:rgba(26,26,46,0.96);backdrop-fi
 .badges-title{font-family:'Dela Gothic One',sans-serif;font-size:13px;color:#888;letter-spacing:3px;margin:16px 0 10px;}
 .badge-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:18px;}
 .badge-card{background:var(--white);border:3px solid var(--dark);border-radius:14px;padding:12px 8px;text-align:center;box-shadow:3px 3px 0 var(--dark);transition:transform 0.15s;}
-.badge-card:hover:not(.locked){transform:translate(-2px,-2px);}
+.badge-card.bc-unlocked:hover{transform:translate(-2px,-2px);}
 .badge-card.locked{opacity:0.38;filter:grayscale(1);}
 .badge-emoji{font-size:30px;display:block;margin-bottom:5px;}
 .badge-name{font-size:10px;font-weight:700;margin-bottom:3px;line-height:1.3;}
@@ -822,6 +822,16 @@ html.dark .pom-preset.sel{background:#E6EDF3;color:#0D1117;border-color:#E6EDF3;
 .gacha-coins-none{font-size:12px;color:rgba(255,255,255,0.3);font-weight:700;margin-bottom:16px;}
 .gacha-close-btn{padding:11px 36px;background:var(--gold);color:var(--dark);border:none;border-radius:14px;font-family:'Dela Gothic One',sans-serif;font-size:15px;cursor:pointer;box-shadow:3px 3px 0 var(--gold-dark);transition:transform 0.15s;}
 .gacha-close-btn:hover{transform:translate(-1px,-1px);}
+/* ── ガチャアイテム ── */
+.gacha-item-sep{display:flex;align-items:center;gap:7px;margin:10px 0 8px;color:rgba(255,255,255,0.25);font-size:9px;font-weight:700;letter-spacing:2px;}
+.gacha-item-sep::before,.gacha-item-sep::after{content:'';flex:1;height:1px;background:rgba(255,255,255,0.1);}
+@keyframes itemEmojiBounce{0%,100%{transform:translateY(0) scale(1)}45%{transform:translateY(-10px) scale(1.12)}}
+.gacha-item-emoji{font-size:54px;display:block;margin:2px auto 6px;line-height:1;animation:itemEmojiBounce 2.2s ease-in-out infinite;}
+.gacha-item-name{font-family:'Dela Gothic One',sans-serif;font-size:18px;color:var(--white);margin-bottom:5px;}
+.gacha-item-desc{font-size:11px;color:rgba(255,255,255,0.5);font-weight:700;line-height:1.6;margin-bottom:8px;padding:0 6px;}
+@keyframes effectPop{0%{transform:scale(0.7);opacity:0}60%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+.gacha-item-effect{display:inline-block;background:rgba(245,200,66,0.14);border:1.5px solid rgba(245,200,66,0.45);border-radius:20px;padding:5px 16px;font-family:'Dela Gothic One',sans-serif;font-size:13px;color:var(--gold);margin-bottom:14px;animation:effectPop 0.4s cubic-bezier(0.34,1.56,0.64,1) 0.25s both;}
+.gacha-item-era{font-size:8px;font-weight:700;color:rgba(255,255,255,0.25);letter-spacing:1px;margin-bottom:2px;}
 .gacha-overlay.open.legend-mode .gacha-card{border-color:#FFD700;box-shadow:0 0 40px rgba(255,215,0,0.5);}
 
 /* ====== THEME SELECTOR ====== */
@@ -1450,6 +1460,84 @@ html.dark .tile-sheet-subtitle{color:#555;}
          .modal-sheet::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.12);border-radius:3px;}
          html.dark .modal-sheet::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);}
 /* 40 */ .pin-icon-input{color:#fff !important;}
+
+/* ====== ACHIEVEMENT UI REVAMP ====== */
+
+/* サマリーカード */
+.achiev-summary-card{background:var(--dark);border:3px solid var(--gold);border-radius:18px;padding:16px 18px;margin-bottom:14px;box-shadow:4px 4px 0 var(--gold-dark);display:flex;align-items:center;gap:16px;}
+.achiev-sum-left{text-align:center;flex-shrink:0;}
+.achiev-sum-big{font-family:'Dela Gothic One',sans-serif;font-size:40px;color:var(--gold);line-height:1;}
+.achiev-sum-total{font-size:11px;color:rgba(255,255,255,0.4);font-weight:700;}
+.achiev-sum-right{flex:1;min-width:0;}
+.achiev-sum-label{font-size:9px;color:rgba(255,255,255,0.4);letter-spacing:3px;font-weight:700;margin-bottom:5px;}
+.achiev-sum-bar-bg{height:10px;background:rgba(255,255,255,0.1);border-radius:999px;overflow:hidden;margin-bottom:4px;border:1px solid rgba(255,255,255,0.12);}
+.achiev-sum-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold-dark),var(--gold));border-radius:999px;transition:width 0.6s ease;}
+.achiev-sum-pct{font-family:'Dela Gothic One',sans-serif;font-size:18px;color:var(--gold);}
+
+/* NEXTターゲットカード */
+.achiev-next-card{background:rgba(91,200,232,0.07);border:2px solid rgba(91,200,232,0.3);border-radius:14px;padding:12px 14px;margin-bottom:14px;display:flex;align-items:center;gap:12px;}
+.achiev-next-badge{font-size:9px;font-weight:700;letter-spacing:2px;color:var(--sky);background:rgba(91,200,232,0.12);border:1.5px solid rgba(91,200,232,0.3);border-radius:6px;padding:2px 7px;margin-bottom:6px;display:inline-block;}
+.achiev-next-emoji{font-size:34px;flex-shrink:0;}
+.achiev-next-body{flex:1;min-width:0;}
+.achiev-next-name{font-size:13px;font-weight:700;color:#fff;margin-bottom:4px;}
+.achiev-next-prog-bar{height:7px;background:rgba(255,255,255,0.1);border-radius:999px;overflow:hidden;margin-bottom:3px;}
+.achiev-next-prog-fill{height:100%;background:linear-gradient(90deg,var(--sky),var(--green));border-radius:999px;transition:width 0.5s ease;}
+.achiev-next-prog-txt{font-size:10px;color:rgba(255,255,255,0.45);font-weight:700;}
+
+/* フィルターボタン */
+.achiev-filter-row{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px;-webkit-overflow-scrolling:touch;}
+.achiev-filter-btn{flex-shrink:0;padding:8px 14px;border:2px solid rgba(255,255,255,0.12);border-radius:999px;font-size:11px;font-weight:700;cursor:pointer;background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.45);transition:all 0.18s;font-family:inherit;white-space:nowrap;min-height:40px;}
+.achiev-filter-btn:hover{background:rgba(255,255,255,0.09);color:rgba(255,255,255,0.7);}
+.achiev-filter-btn.af-active{background:var(--gold);border-color:var(--gold);color:var(--dark);}
+
+/* バッジカード リデザイン */
+.badge-card{position:relative;overflow:hidden;transition:transform 0.18s,box-shadow 0.18s;}
+@keyframes bcFadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.badge-card{animation:bcFadeIn 0.3s ease both;}
+
+/* 解除済み：ゴールドグロー */
+@keyframes bcGlow{0%,100%{box-shadow:3px 3px 0 var(--gold-dark),0 0 6px rgba(245,200,66,0.2)}50%{box-shadow:3px 3px 0 var(--gold-dark),0 0 18px rgba(245,200,66,0.55)}}
+.badge-card.bc-unlocked{background:linear-gradient(145deg,#fffdf0,#fff8d6);border-color:var(--gold);box-shadow:3px 3px 0 var(--gold-dark);animation:bcFadeIn 0.3s ease both,bcGlow 3.5s ease-in-out 0.5s infinite;}
+html.dark .badge-card.bc-unlocked{background:linear-gradient(145deg,rgba(40,30,0,0.9),rgba(30,22,0,0.95));border-color:var(--gold);}
+
+/* 未解除 */
+.badge-card.bc-locked{opacity:0.42;filter:grayscale(0.8);}
+html.dark .badge-card.bc-locked{background:#161B22;border-color:#30363D;box-shadow:3px 3px 0 #30363D;}
+
+/* 絵文字大きく */
+.badge-emoji{font-size:38px;}
+
+/* 解除日表示 */
+.badge-unlock-date{font-size:8px;color:var(--gold-dark);font-weight:700;margin-top:4px;letter-spacing:0.5px;}
+html.dark .badge-unlock-date{color:var(--gold);}
+
+/* NEWラベル */
+.badge-new-tag{position:absolute;top:-1px;right:-1px;background:var(--red);color:#fff;font-size:7px;font-weight:700;padding:3px 6px;border-radius:0 14px 0 8px;letter-spacing:1px;z-index:2;}
+
+/* 🔒 オーバーレイ */
+.badge-lock-overlay{position:absolute;bottom:5px;right:7px;font-size:14px;opacity:0.45;line-height:1;}
+
+/* 進捗バー (ロックバッジ) */
+.badge-prog-bar-bg{height:4px;background:rgba(0,0,0,0.1);border-radius:999px;overflow:hidden;margin-top:5px;}
+.badge-prog-bar{height:100%;background:linear-gradient(90deg,var(--sky),var(--green));border-radius:999px;transition:width 0.5s ease;}
+.badge-prog-txt{font-size:8px;color:#888;font-weight:700;margin-top:2px;text-align:right;}
+html.dark .badge-prog-bar-bg{background:rgba(255,255,255,0.1);}
+html.dark .badge-prog-txt{color:#555;}
+
+/* カテゴリラインカラー */
+.badge-card.bc-cat-task{border-top:4px solid var(--sky);}
+.badge-card.bc-cat-streak{border-top:4px solid var(--gold);}
+.badge-card.bc-cat-char{border-top:4px solid var(--purple);}
+.badge-card.bc-cat-level{border-top:4px solid var(--green);}
+
+/* ヒートマップ：今日のセル */
+.hm-cell.hm-today{outline:2px solid var(--gold);outline-offset:1px;border-radius:5px;}
+
+/* ヒートマップ凡例 */
+.hm-legend{display:flex;align-items:center;gap:4px;margin-top:8px;justify-content:flex-end;}
+.hm-legend-label{font-size:8px;color:#aaa;font-weight:700;}
+.hm-legend-cell{display:inline-block;width:11px;height:11px;border-radius:3px;flex-shrink:0;}
+html.dark .hm-legend-label{color:#555;}
 </style>
 </head>
 <body>
@@ -1716,8 +1804,7 @@ html.dark .tile-sheet-subtitle{color:#555;}
         <div class="lv-bar-bg"><div class="lv-bar-fill" id="lvBarFill" style="width:0%"></div></div>
         <div class="lv-bar-labels"><span id="lvCurXp">0 XP</span><span id="lvNextXp">次のレベルまで 100 XP</span></div>
       </div>
-      <div class="badges-title">ACHIEVEMENTS</div>
-      <div id="badgeGrid" class="badge-grid"></div>
+      <div id="achievSection"></div>
       <div class="barchart-title">WEEKLY COMPLETIONS</div>
       <div class="barchart-wrap">
         <svg id="barChartSvg" class="barchart-svg" viewBox="0 0 280 110" preserveAspectRatio="none"></svg>
@@ -1729,6 +1816,15 @@ html.dark .tile-sheet-subtitle{color:#555;}
           <span class="hm-day">日</span><span class="hm-day">月</span><span class="hm-day">火</span>
           <span class="hm-day">水</span><span class="hm-day">木</span><span class="hm-day">金</span>
           <span class="hm-day">土</span>
+        </div>
+        <div class="hm-legend">
+          <span class="hm-legend-label">少ない</span>
+          <span class="hm-cell hm-0 hm-legend-cell"></span>
+          <span class="hm-cell hm-1 hm-legend-cell"></span>
+          <span class="hm-cell hm-2 hm-legend-cell"></span>
+          <span class="hm-cell hm-3 hm-legend-cell"></span>
+          <span class="hm-cell hm-4 hm-legend-cell"></span>
+          <span class="hm-legend-label">多い</span>
         </div>
       </div>
       <div class="title-coll-card">
@@ -2160,6 +2256,13 @@ html.dark .tile-sheet-subtitle{color:#555;}
     <div class="gacha-zone-label" id="gachaZoneLabel"></div>
     <div class="gacha-coins-row" id="gachaCoinsRow" style="display:none;"></div>
     <div class="gacha-coins-none" id="gachaCoinsNone" style="display:none;">通常解放</div>
+    <!-- ガチャアイテム -->
+    <div class="gacha-item-sep" id="gachaItemSep" style="display:none;">道具をゲット！</div>
+    <div class="gacha-item-era" id="gachaItemEra"></div>
+    <div class="gacha-item-emoji" id="gachaItemEmoji" style="display:none;"></div>
+    <div class="gacha-item-name" id="gachaItemName" style="display:none;"></div>
+    <div class="gacha-item-desc" id="gachaItemDesc" style="display:none;"></div>
+    <div class="gacha-item-effect" id="gachaItemEffect" style="display:none;"></div>
     <button class="gacha-close-btn" onclick="closeGacha()">マップを見る →</button>
   </div>
 </div>
@@ -2357,6 +2460,108 @@ const GACHA_RARITIES = [
   {id:'take',   name:'⭐⭐ 竹',            prob:0.24,  coins:10,  stars:'⭐⭐',    color:'#5BC8E8'},
   {id:'matsu',  name:'⭐ 松',              prob:0.715, coins:0,   stars:'⭐',     color:'#4CAF7D'},
 ];
+
+// =====================================================
+// GACHA ITEMS（道具ガチャ）
+// unlockAt = 総タスク完了数（5年ごとにプール拡張）
+// =====================================================
+const GACHA_ITEMS = [
+  // ── 0〜4歳 era (unlock:0) ─────────────────────
+  {id:'i01',emoji:'🔨',name:'節約の小槌',       desc:'小さな習慣が大きな富を生む',               effect:'XP +5',          unlockAt:0,   bonus:{xp:5}          },
+  {id:'i02',emoji:'📌',name:'メモ針',            desc:'大事なことを絶対に忘れない',               effect:'+5コイン',       unlockAt:0,   bonus:{coins:5}       },
+  {id:'i03',emoji:'🪣',name:'こつこつバケツ',    desc:'毎日少しずつ積み立てる器',                 effect:'+8コイン',       unlockAt:0,   bonus:{coins:8}       },
+  {id:'i04',emoji:'🔦',name:'照らしライト',      desc:'次にすべきことが見えてくる',               effect:'XP +10',         unlockAt:0,   bonus:{xp:10}         },
+  {id:'i05',emoji:'🎯',name:'狙い矢',            desc:'目標に向かって一直線に進む',               effect:'XP +6、+4コイン',unlockAt:0,   bonus:{xp:6,coins:4}  },
+  {id:'i06',emoji:'📏',name:'測りじゃく',        desc:'進捗をはっきり見える化する',               effect:'+6コイン',       unlockAt:0,   bonus:{coins:6}       },
+  {id:'i07',emoji:'🪄',name:'やる気棒',          desc:'叩くとやる気がわいてくる不思議な棒',       effect:'XP +12',         unlockAt:0,   bonus:{xp:12}         },
+  {id:'i08',emoji:'🔔',name:'提出ベル',          desc:'期限を鳴らして教えてくれる',               effect:'XP +8、+3コイン',unlockAt:0,   bonus:{xp:8,coins:3}  },
+  // ── 5〜9歳 era (unlock:5) ─────────────────────
+  {id:'i09',emoji:'⚙️',name:'歯車時計',          desc:'時間を無駄なく活用する知恵',               effect:'XP +15',         unlockAt:5,   bonus:{xp:15}         },
+  {id:'i10',emoji:'🔭',name:'遠眼鏡',            desc:'先を見通す観察力を育てる',                 effect:'+12コイン',      unlockAt:5,   bonus:{coins:12}      },
+  {id:'i11',emoji:'🧲',name:'チャンス磁石',      desc:'いい機会をぐんぐん引き寄せる',             effect:'XP +13',         unlockAt:5,   bonus:{xp:13}         },
+  {id:'i12',emoji:'🔑',name:'節約鍵',            desc:'無駄な出費をしっかりロック',               effect:'+10コイン',      unlockAt:5,   bonus:{coins:10}      },
+  {id:'i13',emoji:'🪛',name:'調整ドライバー',    desc:'ちょっとずつ改善を続ける職人技',           effect:'XP +10、+5コイン',unlockAt:5,  bonus:{xp:10,coins:5} },
+  {id:'i14',emoji:'🧰',name:'基本工具箱',        desc:'どんな問題にも対応できる備え',             effect:'XP +12、+6コイン',unlockAt:5,  bonus:{xp:12,coins:6} },
+  // ── 10〜14歳 era (unlock:15) ─────────────────
+  {id:'i15',emoji:'🛠️',name:'多機能ツール',      desc:'様々な問題に対応できる万能選手',           effect:'XP +15、+10コイン',unlockAt:15, bonus:{xp:15,coins:10}},
+  {id:'i16',emoji:'⚖️',name:'判断天秤',          desc:'最善の選択をする力を磨く',                 effect:'XP +20',         unlockAt:15,  bonus:{xp:20}         },
+  {id:'i17',emoji:'🪝',name:'引き上げフック',    desc:'どん底から這い上がる底力',                 effect:'+14コイン',      unlockAt:15,  bonus:{coins:14}      },
+  {id:'i18',emoji:'🔬',name:'虫眼鏡',            desc:'細かいところまで丁寧に観察',               effect:'XP +18',         unlockAt:15,  bonus:{xp:18}         },
+  {id:'i19',emoji:'🪚',name:'改革のこぎり',      desc:'いらないものを思い切って切り捨てる',       effect:'+16コイン',      unlockAt:15,  bonus:{coins:16}      },
+  {id:'i20',emoji:'📐',name:'精密定規',          desc:'正確に測って計画を完璧に立てる',           effect:'XP +16、+10コイン',unlockAt:15, bonus:{xp:16,coins:10}},
+  // ── 15〜19歳 era (unlock:30) ─────────────────
+  {id:'i21',emoji:'🔩',name:'強化ボルト',        desc:'土台を固め基盤を盤石にする',               effect:'XP +22、+8コイン',unlockAt:30, bonus:{xp:22,coins:8} },
+  {id:'i22',emoji:'📡',name:'情報アンテナ',      desc:'必要な情報を素早くキャッチ',               effect:'XP +20、+10コイン',unlockAt:30,bonus:{xp:20,coins:10}},
+  {id:'i23',emoji:'🔋',name:'充電池',            desc:'枯渇したエネルギーを一気に蓄える',         effect:'XP +25',         unlockAt:30,  bonus:{xp:25}         },
+  {id:'i24',emoji:'🧪',name:'実験フラスコ',      desc:'新しいことに果敢に挑戦する精神',           effect:'+18コイン',      unlockAt:30,  bonus:{coins:18}      },
+  {id:'i25',emoji:'🧲',name:'強力磁石',          desc:'もっと強く富を引き寄せる進化版',           effect:'XP +18、+12コイン',unlockAt:30,bonus:{xp:18,coins:12}},
+  {id:'i26',emoji:'🛒',name:'賢い買い物カゴ',    desc:'費用対効果を最大化する買い物術',           effect:'XP +15、+15コイン',unlockAt:30,bonus:{xp:15,coins:15}},
+  // ── 20〜24歳 era (unlock:50) ─────────────────
+  {id:'i27',emoji:'🏹',name:'黄金の弓矢',        desc:'目標を正確に射抜く集中力',                 effect:'XP +30、+15コイン',unlockAt:50,bonus:{xp:30,coins:15}},
+  {id:'i28',emoji:'🔮',name:'水晶球',            desc:'未来を予測し先手を打つ先見力',             effect:'XP +25、+20コイン',unlockAt:50,bonus:{xp:25,coins:20}},
+  {id:'i29',emoji:'⚡',name:'雷のハンマー',      desc:'強力なエネルギーで物事に打ち込む',         effect:'XP +40',         unlockAt:50,  bonus:{xp:40}         },
+  {id:'i30',emoji:'🗝️',name:'宝探し鍵',          desc:'隠れたチャンスと宝を見つける',             effect:'+28コイン',      unlockAt:50,  bonus:{coins:28}      },
+  {id:'i31',emoji:'🧿',name:'守護のお守り',      desc:'大切なものをしっかり守り抜く',             effect:'XP +28、+15コイン',unlockAt:50,bonus:{xp:28,coins:15}},
+  // ── 25〜29歳 era (unlock:100) ─────────────────
+  {id:'i32',emoji:'🗡️',name:'財運の剣',          desc:'富を切り開く決断力と行動力',               effect:'+35コイン',      unlockAt:100, bonus:{coins:35}      },
+  {id:'i33',emoji:'🪄',name:'魔法の杖',          desc:'困難をやわらかく解決する不思議な力',       effect:'XP +35、+22コイン',unlockAt:100,bonus:{xp:35,coins:22}},
+  {id:'i34',emoji:'⚗️',name:'賢者の石',          desc:'知識と経験が凝縮した最高の結晶',           effect:'XP +45',         unlockAt:100, bonus:{xp:45}         },
+  {id:'i35',emoji:'🌊',name:'満潮の錨',          desc:'チャンスの波に乗り続ける安定感',           effect:'XP +30、+28コイン',unlockAt:100,bonus:{xp:30,coins:28}},
+  {id:'i36',emoji:'🔱',name:'三叉の鉾',          desc:'知識・経験・行動の三位一体パワー',         effect:'XP +50',         unlockAt:100, bonus:{xp:50}         },
+  // ── 30〜34歳 era (unlock:150) ─────────────────
+  {id:'i37',emoji:'🔭',name:'宇宙望遠鏡',        desc:'無限の可能性を見渡す大きな眼',             effect:'XP +40、+22コイン',unlockAt:150,bonus:{xp:40,coins:22}},
+  {id:'i38',emoji:'🧲',name:'黄金磁石',          desc:'富と幸運をぐんぐん引き寄せる上位版',       effect:'+40コイン',      unlockAt:150, bonus:{coins:40}      },
+  {id:'i39',emoji:'🏆',name:'勝利のトロフィー',  desc:'努力と継続が確かに報われた証',             effect:'XP +50、+20コイン',unlockAt:150,bonus:{xp:50,coins:20}},
+  {id:'i40',emoji:'🌡️',name:'情熱温度計',        desc:'モチベーションの高さをリアルに可視化',     effect:'XP +38、+15コイン',unlockAt:150,bonus:{xp:38,coins:15}},
+  {id:'i41',emoji:'🛡️',name:'鉄壁の盾',          desc:'どんな失敗にも動じない圧倒的な強さ',       effect:'XP +45、+28コイン',unlockAt:150,bonus:{xp:45,coins:28}},
+  // ── 35〜39歳 era (unlock:200) ─────────────────
+  {id:'i42',emoji:'⚙️',name:'精密歯車',          desc:'あらゆる機構を制する完全制御',             effect:'XP +50、+25コイン',unlockAt:200,bonus:{xp:50,coins:25}},
+  {id:'i43',emoji:'🗺️',name:'黄金の地図',        desc:'成功への確かな道筋を描く力',               effect:'XP +45、+35コイン',unlockAt:200,bonus:{xp:45,coins:35}},
+  {id:'i44',emoji:'🎭',name:'変革の仮面',        desc:'固定観念をぶち壊す創造的思考力',           effect:'+52コイン',      unlockAt:200, bonus:{coins:52}      },
+  {id:'i45',emoji:'⚔️',name:'英雄の剣',          desc:'困難を乗り越えてきた勇者の証',             effect:'XP +60、+25コイン',unlockAt:200,bonus:{xp:60,coins:25}},
+  // ── 40〜44歳 era (unlock:300) ─────────────────
+  {id:'i46',emoji:'💎',name:'ダイヤの指輪',      desc:'努力が形になった永遠の輝き',               effect:'XP +70、+30コイン',unlockAt:300,bonus:{xp:70,coins:30}},
+  {id:'i47',emoji:'🌟',name:'星の指揮棒',        desc:'人々を導く特別なカリスマ性',               effect:'XP +65、+40コイン',unlockAt:300,bonus:{xp:65,coins:40}},
+  {id:'i48',emoji:'⚡',name:'雷神の鎚',          desc:'天空のエネルギーを操る伝説の武器',         effect:'XP +80',         unlockAt:300, bonus:{xp:80}         },
+  {id:'i49',emoji:'🔮',name:'時空の水晶',        desc:'過去と未来を自在に見渡す神秘の力',         effect:'XP +60、+50コイン',unlockAt:300,bonus:{xp:60,coins:50}},
+  // ── 45〜49歳 era (unlock:400) ─────────────────
+  {id:'i50',emoji:'👑',name:'マネぼう王冠',      desc:'財の世界で頂点に立った者だけの証',         effect:'XP +100、+30コイン',unlockAt:400,bonus:{xp:100,coins:30}},
+  {id:'i51',emoji:'🌈',name:'虹色の万能薬',      desc:'あらゆる問題を解決する奇跡の道具',         effect:'XP +80、+60コイン',unlockAt:400,bonus:{xp:80,coins:60}},
+  {id:'i52',emoji:'🌙',name:'月の羅針盤',        desc:'迷った時に進むべき方向を静かに示す',       effect:'XP +70、+70コイン',unlockAt:400,bonus:{xp:70,coins:70}},
+  // ── FIRE era (unlock:500) ─────────────────────
+  {id:'i53',emoji:'☀️',name:'太陽の聖剣',        desc:'最高の輝きで人生を切り開く究極の刃',       effect:'XP +100、+100コイン',unlockAt:500,bonus:{xp:100,coins:100}},
+  {id:'i54',emoji:'🌌',name:'銀河の設計図',      desc:'宇宙規模の視野で描く大きな人生設計',       effect:'XP +120、+80コイン',unlockAt:500,bonus:{xp:120,coins:80}},
+  {id:'i55',emoji:'🎭',name:'命運のカード',      desc:'運命を大きく変える力が宿った一枚',         effect:'XP +90、+90コイン',unlockAt:500,bonus:{xp:90,coins:90}},
+];
+
+// era name for display
+const ERA_NAMES = [
+  {at:0,   name:'0〜4歳'},
+  {at:5,   name:'5〜9歳'},
+  {at:15,  name:'10〜14歳'},
+  {at:30,  name:'15〜19歳'},
+  {at:50,  name:'20〜24歳'},
+  {at:100, name:'25〜29歳'},
+  {at:150, name:'30〜34歳'},
+  {at:200, name:'35〜39歳'},
+  {at:300, name:'40〜44歳'},
+  {at:400, name:'45〜49歳'},
+  {at:500, name:'50歳〜FIRE'},
+];
+function getGachaPool(){
+  const total=S.totalCompleted||0;
+  return GACHA_ITEMS.filter(it=>it.unlockAt<=total);
+}
+function pickGachaItem(){
+  const pool=getGachaPool();
+  if(!pool.length) return null;
+  return pool[Math.floor(Math.random()*pool.length)];
+}
+function getEraName(total){
+  let name=ERA_NAMES[0].name;
+  for(const e of ERA_NAMES){ if(total>=e.at) name=e.name; }
+  return name;
+}
 
 const CHAR_ZONES = [
   {char:'おーる局長', xMin:0,xMax:3,yMin:0,yMax:3, color:'#5BC8E8'},
@@ -2657,19 +2862,19 @@ const LEVELS = [
 const XP_BY_PRIORITY = { high:30, medium:20, low:10 };
 
 const ACHIEVEMENTS = [
-  { id:'first',   emoji:'🌱', name:'最初の一歩',    desc:'初めてタスクを完了',         check:s=>s.totalCompleted>=1    },
-  { id:'five',    emoji:'⭐', name:'5タスク達成',   desc:'5つのタスクを完了',          check:s=>s.totalCompleted>=5    },
-  { id:'twenty',  emoji:'🌟', name:'20タスク達成',  desc:'20のタスクを完了',           check:s=>s.totalCompleted>=20   },
-  { id:'hundred', emoji:'💯', name:'100タスク達成', desc:'100のタスクを完了！すごい！', check:s=>s.totalCompleted>=100 },
-  { id:'streak3', emoji:'🔥', name:'3日連続',       desc:'3日連続でタスクを完了',      check:s=>s.streak>=3           },
-  { id:'streak7', emoji:'🌈', name:'7日連続',       desc:'1週間連続でタスク完了',      check:s=>s.streak>=7           },
-  { id:'streak14',emoji:'🌙', name:'2週間連続',     desc:'2週間連続でタスク完了！',    check:s=>s.streak>=14          },
-  { id:'streak30',emoji:'👑', name:'1ヶ月連続',     desc:'30日連続！王者の証！',       check:s=>s.streak>=30          },
-  { id:'highpri', emoji:'⚡', name:'高優先マスター', desc:'高優先タスクを10つ完了',    check:s=>s.highCompleted>=10   },
-  { id:'invest',  emoji:'📈', name:'投資家の本能',  desc:'投資タスクを5つ完了',        check:s=>s.investCompleted>=5  },
-  { id:'allchar', emoji:'🎭', name:'全キャラ制覇',  desc:'全キャラクターを使った',     check:s=>s.charsUsed>=4        },
-  { id:'lv5',     emoji:'🎖', name:'レベル5達成',   desc:'レベル5に到達',              check:s=>s.xp>=700             },
-  { id:'lv10',    emoji:'🏆', name:'マネぼうマスター',desc:'レベル10に到達！最高峰！', check:s=>s.xp>=3200            },
+  { id:'first',   emoji:'🌱', name:'最初の一歩',     desc:'初めてタスクを完了',         cat:'task',   check:s=>s.totalCompleted>=1,   progress:s=>({cur:Math.min(s.totalCompleted,1),   max:1})    },
+  { id:'five',    emoji:'⭐', name:'5タスク達成',    desc:'5つのタスクを完了',          cat:'task',   check:s=>s.totalCompleted>=5,   progress:s=>({cur:Math.min(s.totalCompleted,5),   max:5})    },
+  { id:'twenty',  emoji:'🌟', name:'20タスク達成',   desc:'20のタスクを完了',           cat:'task',   check:s=>s.totalCompleted>=20,  progress:s=>({cur:Math.min(s.totalCompleted,20),  max:20})   },
+  { id:'hundred', emoji:'💯', name:'100タスク達成',  desc:'100のタスクを完了！すごい！', cat:'task',  check:s=>s.totalCompleted>=100, progress:s=>({cur:Math.min(s.totalCompleted,100), max:100})  },
+  { id:'streak3', emoji:'🔥', name:'3日連続',        desc:'3日連続でタスクを完了',      cat:'streak', check:s=>s.streak>=3,           progress:s=>({cur:Math.min(s.streak,3),   max:3})    },
+  { id:'streak7', emoji:'🌈', name:'7日連続',        desc:'1週間連続でタスク完了',      cat:'streak', check:s=>s.streak>=7,           progress:s=>({cur:Math.min(s.streak,7),   max:7})    },
+  { id:'streak14',emoji:'🌙', name:'2週間連続',      desc:'2週間連続でタスク完了！',    cat:'streak', check:s=>s.streak>=14,          progress:s=>({cur:Math.min(s.streak,14),  max:14})   },
+  { id:'streak30',emoji:'👑', name:'1ヶ月連続',      desc:'30日連続！王者の証！',       cat:'streak', check:s=>s.streak>=30,          progress:s=>({cur:Math.min(s.streak,30),  max:30})   },
+  { id:'highpri', emoji:'⚡', name:'高優先マスター',  desc:'高優先タスクを10つ完了',    cat:'task',   check:s=>s.highCompleted>=10,   progress:s=>({cur:Math.min(s.highCompleted||0,10),  max:10}) },
+  { id:'invest',  emoji:'📈', name:'投資家の本能',   desc:'投資タスクを5つ完了',        cat:'task',   check:s=>s.investCompleted>=5,  progress:s=>({cur:Math.min(s.investCompleted||0,5), max:5})  },
+  { id:'allchar', emoji:'🎭', name:'全キャラ制覇',   desc:'全キャラクターを使った',     cat:'char',   check:s=>s.charsUsed>=4,        progress:s=>({cur:Math.min(s.charsUsed||0,4), max:4})   },
+  { id:'lv5',     emoji:'🎖', name:'レベル5達成',    desc:'レベル5に到達',              cat:'level',  check:s=>s.xp>=700,             progress:s=>({cur:Math.min(s.xp,700),   max:700})  },
+  { id:'lv10',    emoji:'🏆', name:'マネぼうマスター',desc:'レベル10に到達！最高峰！',  cat:'level',  check:s=>s.xp>=3200,            progress:s=>({cur:Math.min(s.xp,3200),  max:3200}) },
 ];
 
 const CAT_EMOJI = {'仕事':'💼','勉強':'📚','生活':'🏠','投資':'📈','運動':'💪','その他':'🌀'};
@@ -2794,10 +2999,12 @@ function addXP(amount){
 // ACHIEVEMENTS
 // =====================================================
 function checkAchievements(){
+  if(!S.achievUnlockDates) S.achievUnlockDates={};
   ACHIEVEMENTS.forEach(a=>{
     if(S.unlockedAchievements.includes(a.id)) return;
     if(a.check(S)){
       S.unlockedAchievements.push(a.id);
+      S.achievUnlockDates[a.id]=new Date().toISOString();
       save();
       setTimeout(()=>showToast(`${a.emoji} 実績解除「${a.name}」！`), 400);
     }
@@ -3547,7 +3754,27 @@ function buildTaskCard(task){
 // =====================================================
 // RENDER: ACHIEVEMENTS TAB
 // =====================================================
+let _achievFilter='all';
+function setAchievFilter(f){ _achievFilter=f; renderAchievements(); }
+
+function showBadgeDetail(id){
+  const a=ACHIEVEMENTS.find(x=>x.id===id);
+  if(!a) return;
+  const unlocked=S.unlockedAchievements.includes(a.id);
+  if(!S.achievUnlockDates) S.achievUnlockDates={};
+  const dateStr=S.achievUnlockDates[a.id];
+  const dateLabel=dateStr?` (${fmtDate(dateStr.split('T')[0])}解除)`:'';
+  if(unlocked){
+    showToast(`${a.emoji} ${a.name}${dateLabel}`);
+  } else {
+    const prog=a.progress?a.progress(S):null;
+    const progLabel=prog?` — ${prog.cur}/${prog.max}`:' — まだ未解除';
+    showToast(`🔒 ${a.name}${progLabel}`);
+  }
+}
+
 function renderAchievements(){
+  // Level card
   const lv=getLevel(S.xp);
   const next=getNextLevel(S.xp);
   const pct=getLvProgress(S.xp);
@@ -3559,32 +3786,105 @@ function renderAchievements(){
   $('lvCurXp').textContent=S.xp+' XP';
   $('lvNextXp').textContent=next?`次まで ${next.xp-S.xp} XP`:'MAX LEVEL 達成！';
 
-  // Badge grid
-  $('badgeGrid').innerHTML=ACHIEVEMENTS.map(a=>{
-    const unlocked=S.unlockedAchievements.includes(a.id);
-    return `<div class="badge-card ${unlocked?'':'locked'}">
-      <span class="badge-emoji">${a.emoji}</span>
-      <div class="badge-name">${escH(a.name)}</div>
-      <div class="badge-desc">${escH(a.desc)}</div>
-    </div>`;
-  }).join('');
+  // Achievement section
+  if(!S.achievUnlockDates) S.achievUnlockDates={};
+  const total=ACHIEVEMENTS.length;
+  const unlockedIds=S.unlockedAchievements||[];
+  const unlockedCount=unlockedIds.length;
+  const sumPct=total>0?Math.round(unlockedCount/total*100):0;
+  const now=Date.now();
+  const THREE_DAYS=3*24*60*60*1000;
 
-  // Heatmap (35 days)
-  const grid=$('heatmapGrid');
-  const cells=[];
-  const completed=S.completedDates||{};
-  for(let i=34;i>=0;i--){
-    const d=new Date();d.setDate(d.getDate()-i);
-    const ds=d.toISOString().split('T')[0];
-    const cnt=completed[ds]||0;
-    let cls='hm-0';if(cnt>=4)cls='hm-4';else if(cnt>=3)cls='hm-3';else if(cnt>=2)cls='hm-2';else if(cnt>=1)cls='hm-1';
-    cells.push(`<div class="hm-cell ${cls}" title="${fmtDate(ds)}: ${cnt}件完了"></div>`);
+  // Next target: 未解除の中で進捗率が最も高いもの
+  const nextTarget=ACHIEVEMENTS
+    .filter(a=>!unlockedIds.includes(a.id)&&a.progress)
+    .map(a=>({...a,prog:a.progress(S)}))
+    .filter(a=>a.prog.max>0)
+    .sort((a,b)=>(b.prog.cur/b.prog.max)-(a.prog.cur/a.prog.max))[0]||null;
+
+  // Sort: 解除済み優先
+  const sorted=[...ACHIEVEMENTS].sort((a,b)=>{
+    const aU=unlockedIds.includes(a.id)?1:0;
+    const bU=unlockedIds.includes(b.id)?1:0;
+    return bU-aU;
+  });
+
+  // Filter
+  const CAT_CLASS={task:'bc-cat-task',streak:'bc-cat-streak',char:'bc-cat-char',level:'bc-cat-level'};
+  const filtered=sorted.filter(a=>{
+    if(_achievFilter==='unlocked') return unlockedIds.includes(a.id);
+    if(_achievFilter==='locked')   return !unlockedIds.includes(a.id);
+    return true;
+  });
+
+  const achievEl=$('achievSection');
+  if(!achievEl) return;
+  achievEl.innerHTML=`
+    <div class="achiev-summary-card">
+      <div class="achiev-sum-left">
+        <div class="achiev-sum-big">${unlockedCount}</div>
+        <div class="achiev-sum-total">/ ${total}</div>
+      </div>
+      <div class="achiev-sum-right">
+        <div class="achiev-sum-label">ACHIEVEMENTS</div>
+        <div class="achiev-sum-bar-bg"><div class="achiev-sum-bar-fill" style="width:${sumPct}%"></div></div>
+        <div class="achiev-sum-pct">${sumPct}%</div>
+      </div>
+    </div>
+    ${nextTarget?`<div class="achiev-next-card">
+      <span class="achiev-next-emoji">${nextTarget.emoji}</span>
+      <div class="achiev-next-body">
+        <div class="achiev-next-badge">⚡ NEXT TARGET</div>
+        <div class="achiev-next-name">${escH(nextTarget.name)}</div>
+        <div class="achiev-next-prog-bar"><div class="achiev-next-prog-fill" style="width:${Math.round(nextTarget.prog.cur/nextTarget.prog.max*100)}%"></div></div>
+        <div class="achiev-next-prog-txt">${nextTarget.prog.cur} / ${nextTarget.prog.max}</div>
+      </div>
+    </div>`:''}
+    <div class="achiev-filter-row">
+      <button class="achiev-filter-btn ${_achievFilter==='all'?'af-active':''}" onclick="setAchievFilter('all')">全て (${total})</button>
+      <button class="achiev-filter-btn ${_achievFilter==='unlocked'?'af-active':''}" onclick="setAchievFilter('unlocked')">✅ 解除済み (${unlockedCount})</button>
+      <button class="achiev-filter-btn ${_achievFilter==='locked'?'af-active':''}" onclick="setAchievFilter('locked')">🔒 未解除 (${total-unlockedCount})</button>
+    </div>
+    <div class="badge-grid">
+      ${filtered.map((a,i)=>{
+        const isUnlocked=unlockedIds.includes(a.id);
+        const dateStr=S.achievUnlockDates[a.id];
+        const isNew=dateStr&&(now-new Date(dateStr).getTime())<THREE_DAYS;
+        const prog=!isUnlocked&&a.progress?a.progress(S):null;
+        const progPct=prog?Math.round(prog.cur/prog.max*100):0;
+        const catCls=CAT_CLASS[a.cat]||'';
+        return `<div class="badge-card ${isUnlocked?'bc-unlocked':'bc-locked'} ${catCls}" style="animation-delay:${i*0.045}s" onclick="showBadgeDetail('${a.id}')">
+          ${isNew?'<div class="badge-new-tag">NEW</div>':''}
+          ${!isUnlocked?'<div class="badge-lock-overlay">🔒</div>':''}
+          <span class="badge-emoji">${a.emoji}</span>
+          <div class="badge-name">${escH(a.name)}</div>
+          <div class="badge-desc">${escH(a.desc)}</div>
+          ${isUnlocked&&dateStr?`<div class="badge-unlock-date">🗓 ${fmtDate(dateStr.split('T')[0])}</div>`:''}
+          ${prog?`<div class="badge-prog-bar-bg"><div class="badge-prog-bar" style="width:${progPct}%"></div></div><div class="badge-prog-txt">${prog.cur}/${prog.max}</div>`:''}
+        </div>`;
+      }).join('')}
+    </div>
+  `;
+
+  // Heatmap (35 days) — ローカル日付で今日ハイライト
+  const heatEl=$('heatmapGrid');
+  if(heatEl){
+    const cells=[];
+    const completed=S.completedDates||{};
+    const todayKey=todayStr();
+    for(let i=34;i>=0;i--){
+      const d=new Date();d.setDate(d.getDate()-i);
+      const ds=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+      const cnt=completed[ds]||0;
+      let cls='hm-0';if(cnt>=4)cls='hm-4';else if(cnt>=3)cls='hm-3';else if(cnt>=2)cls='hm-2';else if(cnt>=1)cls='hm-1';
+      const todayCls=ds===todayKey?' hm-today':'';
+      cells.push(`<div class="hm-cell ${cls}${todayCls}" title="${fmtDate(ds)}: ${cnt}件完了"></div>`);
+    }
+    heatEl.innerHTML=cells.join('');
   }
-  grid.innerHTML=cells.join('');
 
-  // Bar chart
+  // Bar chart & Title collection
   renderBarChart();
-  // Title collection (char journal → 冒険タブ, gacha journal → ガチャタブ)
   renderTitleCollection();
 }
 
@@ -4112,6 +4412,47 @@ function showGacha(rarity, key){
     $('gachaCoinsRow').style.display='none';
     $('gachaCoinsNone').style.display='block';
   }
+  // ── ガチャアイテム ──
+  const item=pickGachaItem();
+  if(item){
+    // 効果を即時適用
+    if(item.bonus.xp)    addXP(item.bonus.xp);
+    if(item.bonus.coins) earnCoins(item.bonus.coins);
+    // 表示
+    const sep=$('gachaItemSep');
+    const itemEmoji=$('gachaItemEmoji');
+    const itemName=$('gachaItemName');
+    const itemDesc=$('gachaItemDesc');
+    const itemEff=$('gachaItemEffect');
+    const itemEra=$('gachaItemEra');
+    sep.style.display='flex';
+    itemEmoji.style.display='block';
+    itemName.style.display='block';
+    itemDesc.style.display='block';
+    itemEff.style.display='inline-block';
+    // reset animation
+    [itemEmoji,itemEff].forEach(el=>{el.style.animation='none';requestAnimationFrame(()=>{el.style.animation='';});});
+    itemEmoji.textContent=item.emoji;
+    itemName.textContent=item.name;
+    itemDesc.textContent=item.desc;
+    itemEff.textContent='⚡ '+item.effect;
+    itemEra.textContent=`── ${getEraName(S.totalCompleted||0)} ──`;
+    // レア度に合わせてエフェクト色変更
+    itemEff.style.borderColor='rgba(245,200,66,0.45)';
+    itemEff.style.color='var(--gold)';
+    if(rarity.id==='legend'||rarity.id==='card'){itemEff.style.borderColor='#FFD700';itemEff.style.color='#FFD700';}
+    else if(rarity.id==='ume'){itemEff.style.borderColor='#e879f9';itemEff.style.color='#e879f9';}
+    else if(rarity.id==='take'){itemEff.style.borderColor='var(--sky)';itemEff.style.color='var(--sky)';}
+    // コレクション記録
+    if(!S.gachaCollection) S.gachaCollection=[];
+    if(!S.gachaCollection.find(c=>c.id===item.id)){
+      S.gachaCollection.push({id:item.id,at:Date.now()});
+      save();
+    }
+  } else {
+    ['gachaItemSep','gachaItemEmoji','gachaItemName','gachaItemDesc','gachaItemEffect'].forEach(id=>{ const el=$(id); if(el) el.style.display='none'; });
+  }
+
   const overlay=$('gachaOverlay');
   const rarityClass=isCard?'rarity-card':isLegend?'rarity-legend':rarity.id==='ume'?'rarity-ume':rarity.id==='take'?'rarity-take':'';
   overlay.className='gacha-overlay'+(isLegend||isCard?' legend-mode':'')+(rarityClass?' '+rarityClass:'');
