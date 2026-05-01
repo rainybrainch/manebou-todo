@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>マネぼうTODO | タスク管理 ver2</title>
 <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 :root {
   --sky:#5BC8E8; --red:#E8354A; --gold:#F5C842; --gold-dark:#D4A017;
@@ -40,7 +41,16 @@ nav{position:sticky;top:0;z-index:200;background:rgba(26,26,46,0.94);backdrop-fi
 .bottom-dock{position:fixed;bottom:0;left:0;right:0;z-index:250;background:rgba(26,26,46,0.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);}
 
 /* ====== CHARACTER BAR ====== */
-.char-bar{border-top:3px solid rgba(245,200,66,0.3);padding:10px 14px;display:flex;align-items:center;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.char-bar{border-top:3px solid rgba(245,200,66,0.3);padding:6px 10px;display:flex;align-items:center;gap:6px;}
+.char-scroll{flex:1;display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.char-actions{display:flex;gap:6px;flex-shrink:0;}
+.char-action-btn{height:44px;padding:0 13px;border-radius:14px;font-size:12px;font-weight:900;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;white-space:nowrap;transition:transform 0.15s,box-shadow 0.15s;-webkit-tap-highlight-color:transparent;border:2.5px solid transparent;line-height:1.2;}
+.char-action-btn:active{transform:scale(0.9);}
+.char-action-icon{font-size:16px;line-height:1;}
+.char-action-label{font-size:9px;font-weight:700;letter-spacing:0.3px;opacity:0.9;}
+.char-action-task{background:rgba(245,200,66,0.12);border-color:var(--gold);color:var(--gold);box-shadow:0 0 8px rgba(245,200,66,0.15);}
+.char-action-ai{background:rgba(155,109,214,0.2);border-color:var(--purple);color:#c9a4ff;box-shadow:0 0 8px rgba(155,109,214,0.2);}
+.char-action-ex{background:rgba(91,200,232,0.15);border-color:var(--sky);color:var(--sky);box-shadow:0 0 8px rgba(91,200,232,0.2);}
 .char-bar-label{font-size:8px;color:rgba(255,255,255,0.35);letter-spacing:2px;flex-shrink:0;font-weight:700;}
 .char-btn{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;border:none;background:rgba(255,255,255,0.04);padding:8px 10px;flex-shrink:0;border-radius:16px;border:2px solid transparent;transition:all 0.2s;}
 .char-btn:hover{background:rgba(255,255,255,0.08);transform:translateY(-2px);}
@@ -199,14 +209,58 @@ nav{position:sticky;top:0;z-index:200;background:rgba(26,26,46,0.94);backdrop-fi
 .btn-submit:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--gold-dark);}
 .btn-submit:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--gold-dark);}
 
-/* ====== FAB ====== */
-.fab{position:fixed;bottom:170px;right:14px;z-index:300;height:46px;padding:0 18px;border-radius:23px;background:var(--dark);border:3px solid var(--gold);color:var(--gold);font-size:13px;font-weight:700;cursor:pointer;box-shadow:4px 4px 0 var(--gold-dark);display:flex;align-items:center;justify-content:center;gap:5px;white-space:nowrap;transition:transform 0.2s,box-shadow 0.2s;-webkit-tap-highlight-color:transparent;}
-.fab:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--gold-dark);}
-.fab:active{transform:scale(0.95);}
+/* ====== EXERCISE PANEL ====== */
+.ex-panel{position:fixed;inset:0;z-index:600;display:flex;align-items:stretch;justify-content:flex-end;pointer-events:none;}
+.ex-panel.open{pointer-events:all;}
+.ex-panel-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.5);opacity:0;transition:opacity 0.3s;}
+.ex-panel.open .ex-panel-overlay{opacity:1;}
+.ex-panel-sheet{position:relative;width:min(420px,100vw);background:var(--dark);border-left:3px solid var(--sky);border-top:3px solid var(--sky);border-radius:20px 0 0 0;display:flex;flex-direction:column;transform:translateX(110%);transition:transform 0.35s cubic-bezier(0.17,0.89,0.32,1.1);max-height:100vh;overflow:hidden;}
+.ex-panel.open .ex-panel-sheet{transform:translateX(0);}
+.ex-panel-hdr{display:flex;align-items:center;padding:16px 16px 12px;border-bottom:2px solid rgba(91,200,232,0.2);flex-shrink:0;gap:8px;}
+.ex-panel-title{font-family:'Dela Gothic One',sans-serif;font-size:15px;color:var(--sky);flex:1;}
+.ex-panel-close{background:rgba(255,255,255,0.07);border:none;color:rgba(255,255,255,0.5);font-size:15px;cursor:pointer;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;}
+.ex-panel-body{flex:1;overflow-y:auto;padding:14px 16px;-webkit-overflow-scrolling:touch;}
+/* goal */
+.ex-goal-card{background:rgba(91,200,232,0.07);border:2px solid rgba(91,200,232,0.25);border-radius:14px;padding:12px 14px;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.ex-goal-text{flex:1;font-size:12px;font-weight:700;color:rgba(255,255,255,0.8);}
+.ex-goal-edit{background:none;border:1.5px solid rgba(91,200,232,0.4);border-radius:8px;color:var(--sky);font-size:10px;font-weight:700;padding:4px 8px;cursor:pointer;}
+.ex-goal-input-row{display:flex;gap:8px;margin-top:8px;}
+.ex-goal-input{flex:1;background:rgba(255,255,255,0.07);border:1.5px solid rgba(91,200,232,0.3);border-radius:8px;color:#fff;font-size:12px;padding:8px 10px;font-family:inherit;}
+.ex-goal-save{background:var(--sky);border:none;border-radius:8px;color:#000;font-size:11px;font-weight:900;padding:8px 12px;cursor:pointer;}
+/* chart */
+.ex-chart-wrap{background:rgba(255,255,255,0.03);border:2px solid rgba(91,200,232,0.12);border-radius:16px;padding:14px;margin-bottom:14px;display:flex;align-items:center;justify-content:center;}
+/* input form */
+.ex-form-title{font-family:'Dela Gothic One',sans-serif;font-size:11px;color:var(--sky);letter-spacing:2px;margin-bottom:10px;}
+.ex-input-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+.ex-input-item{display:flex;flex-direction:column;gap:4px;}
+.ex-input-label{font-size:9px;font-weight:700;color:rgba(255,255,255,0.4);letter-spacing:0.5px;}
+.ex-input-field{background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.12);border-radius:8px;color:#fff;font-size:14px;font-weight:700;padding:8px 10px;font-family:inherit;text-align:right;transition:border-color 0.2s;}
+.ex-input-field:focus{outline:none;border-color:var(--sky);}
+.ex-input-unit{font-size:8px;color:rgba(255,255,255,0.3);text-align:right;margin-top:1px;}
+.ex-title-row{display:flex;gap:8px;margin-bottom:10px;}
+.ex-title-input{flex:1;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.12);border-radius:8px;color:#fff;font-size:12px;padding:8px 10px;font-family:inherit;}
+.ex-title-input:focus{outline:none;border-color:var(--sky);}
+.ex-save-btn{width:100%;padding:13px;background:var(--sky);color:#000;border:none;border-radius:12px;font-family:'Dela Gothic One',sans-serif;font-size:14px;cursor:pointer;margin-bottom:16px;transition:opacity 0.15s;}
+.ex-save-btn:active{opacity:0.8;}
+/* history */
+.ex-hist-title{font-family:'Dela Gothic One',sans-serif;font-size:11px;color:rgba(255,255,255,0.4);letter-spacing:2px;margin-bottom:8px;}
+.ex-hist-item{background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.08);border-radius:12px;padding:10px 12px;margin-bottom:8px;cursor:pointer;transition:border-color 0.2s;}
+.ex-hist-item:hover{border-color:rgba(91,200,232,0.4);}
+.ex-hist-hdr{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.ex-hist-date{font-size:10px;color:var(--sky);font-weight:700;}
+.ex-hist-name{font-size:11px;font-weight:700;color:rgba(255,255,255,0.7);flex:1;}
+.ex-hist-del{background:none;border:none;color:rgba(255,80,80,0.5);font-size:14px;cursor:pointer;padding:0 2px;}
+.ex-hist-chips{display:flex;flex-wrap:wrap;gap:4px;}
+.ex-hist-chip{font-size:9px;font-weight:700;padding:2px 7px;border-radius:8px;background:rgba(91,200,232,0.1);border:1px solid rgba(91,200,232,0.25);color:var(--sky);}
+/* settings toggle */
+.ex-settings-toggle{width:100%;padding:10px;background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;color:rgba(255,255,255,0.4);font-size:11px;font-weight:700;cursor:pointer;margin-bottom:10px;font-family:inherit;}
+.ex-metric-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.ex-metric-name{flex:1;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:12px;padding:6px 10px;font-family:inherit;}
+.ex-metric-unit{width:56px;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:12px;padding:6px 8px;font-family:inherit;text-align:center;}
+.ex-metric-del{background:none;border:none;color:rgba(255,80,80,0.5);font-size:16px;cursor:pointer;}
+.ex-add-metric-row{display:flex;gap:8px;margin-top:6px;}
+.ex-add-btn{background:rgba(91,200,232,0.15);border:1.5px solid rgba(91,200,232,0.35);border-radius:8px;color:var(--sky);font-size:11px;font-weight:700;padding:8px 12px;cursor:pointer;white-space:nowrap;}
 /* ====== AI PANEL ====== */
-.ai-fab{position:fixed;bottom:228px;right:14px;z-index:300;height:40px;padding:0 14px;border-radius:20px;background:var(--purple);border:3px solid var(--dark);color:white;font-size:12px;font-weight:700;cursor:pointer;box-shadow:4px 4px 0 rgba(155,109,214,0.5);display:flex;align-items:center;justify-content:center;gap:5px;white-space:nowrap;transition:transform 0.2s;-webkit-tap-highlight-color:transparent;}
-.ai-fab:hover{transform:translate(-2px,-2px);}
-.ai-fab:active{transform:scale(0.95);}
 .ai-panel{position:fixed;inset:0;z-index:600;display:flex;align-items:stretch;justify-content:flex-end;pointer-events:none;}
 .ai-panel.open{pointer-events:all;}
 .ai-panel-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.45);opacity:0;transition:opacity 0.3s;}
@@ -227,9 +281,34 @@ nav{position:sticky;top:0;z-index:200;background:rgba(26,26,46,0.94);backdrop-fi
 .ai-open-btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 rgba(155,109,214,0.4);}
 .ai-open-btn:active{transform:translate(1px,1px);box-shadow:2px 2px 0 rgba(155,109,214,0.4);}
 /* ====== TOAST ====== */
-.toast{position:fixed;top:60px;left:50%;transform:translateX(-50%) translateY(-80px);z-index:9999;background:var(--dark);color:white;border:3px solid var(--gold);border-radius:14px;padding:10px 18px;font-size:13px;font-weight:700;box-shadow:4px 4px 0 var(--gold-dark);white-space:nowrap;transition:transform 0.4s cubic-bezier(0.17,0.89,0.32,1.1);pointer-events:none;}
+.toast{position:fixed;top:60px;left:50%;transform:translateX(-50%) translateY(-200px);z-index:9999;background:var(--dark);color:white;border:3px solid var(--gold);border-radius:14px;padding:10px 18px;font-size:13px;font-weight:700;box-shadow:4px 4px 0 var(--gold-dark);white-space:nowrap;transition:transform 0.4s cubic-bezier(0.17,0.89,0.32,1.1);pointer-events:none;}
 .toast.show{transform:translateX(-50%) translateY(0);}
 
+/* ====== YATTA SUB-NAV ====== */
+.yatta-sub-nav{display:flex;gap:5px;margin-bottom:14px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px;scrollbar-width:none;}
+.yatta-sub-nav::-webkit-scrollbar{display:none;}
+.ysn-btn{flex-shrink:0;padding:8px 14px;border-radius:20px;border:2px solid rgba(255,255,255,0.1);font-size:11px;font-weight:700;cursor:pointer;background:transparent;color:rgba(255,255,255,0.4);transition:all 0.2s;font-family:inherit;-webkit-tap-highlight-color:transparent;}
+.ysn-btn.ysn-active{background:rgba(245,200,66,0.12);color:var(--gold);border-color:rgba(245,200,66,0.4);}
+/* ポモドーロ・習慣ログ */
+.log-empty{text-align:center;padding:32px 16px;color:rgba(255,255,255,0.3);font-size:12px;font-weight:700;}
+.pom-summary-card{background:var(--dark);border:3px solid var(--sky);border-radius:16px;padding:16px;margin-bottom:14px;display:flex;gap:16px;align-items:center;box-shadow:3px 3px 0 rgba(91,200,232,0.3);}
+.pom-sum-num{font-family:'Dela Gothic One',sans-serif;font-size:36px;color:var(--sky);line-height:1;}
+.pom-sum-label{font-size:10px;color:rgba(255,255,255,0.4);font-weight:700;}
+.pom-log-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.07);}
+.pom-log-row:last-child{border-bottom:none;}
+.pom-log-date{font-size:11px;font-weight:700;color:rgba(255,255,255,0.7);min-width:80px;}
+.pom-log-dots{display:flex;gap:4px;flex-wrap:wrap;flex:1;}
+.pom-dot{width:20px;height:20px;border-radius:50%;background:var(--sky);opacity:0.8;display:flex;align-items:center;justify-content:center;font-size:9px;color:#000;font-weight:900;}
+.pom-log-min{font-size:10px;color:rgba(91,200,232,0.7);font-weight:700;flex-shrink:0;}
+.habit-log-section{margin-top:14px;}
+.habit-log-row{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.07);}
+.habit-log-row:last-child{border-bottom:none;}
+.habit-log-date{font-size:11px;font-weight:700;color:rgba(255,255,255,0.7);min-width:80px;padding-top:2px;}
+.habit-log-chips{display:flex;gap:5px;flex-wrap:wrap;flex:1;}
+.habit-chip{font-size:10px;font-weight:700;padding:3px 9px;border-radius:12px;background:rgba(155,109,214,0.18);border:1.5px solid rgba(155,109,214,0.4);color:#c9a4ff;}
+.habit-pool-summary{background:var(--dark);border:2px solid rgba(155,109,214,0.3);border-radius:14px;padding:14px;margin-bottom:14px;}
+.habit-pool-title{font-family:'Dela Gothic One',sans-serif;font-size:11px;color:var(--purple);margin-bottom:10px;letter-spacing:1px;}
+.habit-pool-chips{display:flex;gap:5px;flex-wrap:wrap;}
 /* ====== ACHIEVEMENTS ====== */
 .level-card{background:var(--dark);border:3px solid var(--gold);border-radius:18px;padding:18px 16px;margin-bottom:16px;box-shadow:5px 5px 0 var(--gold-dark);position:relative;overflow:hidden;}
 .level-card::after{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;border-radius:50%;background:rgba(245,200,66,0.08);pointer-events:none;}
@@ -340,9 +419,9 @@ nav{position:sticky;top:0;z-index:200;background:rgba(26,26,46,0.94);backdrop-fi
 .nav-streak{background:var(--gold);color:var(--dark);border:2px solid var(--dark);border-radius:9px;padding:3px 9px;font-family:'Dela Gothic One',sans-serif;font-size:10px;white-space:nowrap;}
 
 /* ====== SCROLLBAR ====== */
-.filter-row::-webkit-scrollbar,.char-bar::-webkit-scrollbar{height:3px;}
-.filter-row::-webkit-scrollbar-track,.char-bar::-webkit-scrollbar-track{background:transparent;}
-.filter-row::-webkit-scrollbar-thumb,.char-bar::-webkit-scrollbar-thumb{background:rgba(26,26,46,0.18);border-radius:99px;}
+.filter-row::-webkit-scrollbar,.char-scroll::-webkit-scrollbar{height:3px;}
+.filter-row::-webkit-scrollbar-track,.char-scroll::-webkit-scrollbar-track{background:transparent;}
+.filter-row::-webkit-scrollbar-thumb,.char-scroll::-webkit-scrollbar-thumb{background:rgba(26,26,46,0.18);border-radius:99px;}
 
 /* ====== COIN DISPLAY ====== */
 .coin-card{background:var(--dark);border:3px solid var(--gold);border-radius:16px;padding:13px 16px;margin-bottom:14px;box-shadow:4px 4px 0 var(--gold-dark);display:flex;align-items:center;gap:14px;}
@@ -652,11 +731,11 @@ html.dark .map-info-panel{border-color:rgba(245,200,66,0.2);}
 .habit-desc{font-size:10px;color:#aaa;font-weight:700;margin-bottom:8px;line-height:1.5;}
 
 /* ====== TILE INFO SHEET ====== */
-.tile-sheet-overlay{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,0.5);opacity:0;pointer-events:none;transition:opacity 0.25s;}
+.tile-sheet-overlay{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,0.5);opacity:0;pointer-events:none;transition:opacity 0.25s;display:flex;align-items:center;justify-content:center;padding:16px;}
 .tile-sheet-overlay.open{opacity:1;pointer-events:all;}
-.tile-sheet{position:absolute;bottom:0;left:0;right:0;background:var(--cream);border-radius:22px 22px 0 0;border-top:4px solid var(--dark);padding:14px 20px 36px;transform:translateY(100%);transition:transform 0.32s cubic-bezier(0.17,0.89,0.32,1.1);max-height:80vh;overflow-y:auto;}
-.tile-sheet-overlay.open .tile-sheet{transform:translateY(0);}
-.tile-sheet-handle{width:36px;height:4px;background:#ccc;border-radius:4px;margin:0 auto 14px;}
+.tile-sheet{position:relative;width:min(480px,92vw);background:var(--cream);border-radius:22px;border:4px solid var(--dark);padding:20px 20px 24px;transform:scale(0.88) translateY(20px);opacity:0;transition:transform 0.32s cubic-bezier(0.17,0.89,0.32,1.1),opacity 0.25s;max-height:82vh;overflow-y:auto;}
+.tile-sheet-overlay.open .tile-sheet{transform:scale(1) translateY(0);opacity:1;}
+.tile-sheet-handle{display:none;}
 .tile-sheet-header{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
 .tile-sheet-icon{font-size:34px;line-height:1;flex-shrink:0;}
 .tile-sheet-title{font-family:'Dela Gothic One',sans-serif;font-size:15px;line-height:1.2;}
@@ -668,7 +747,7 @@ html.dark .map-info-panel{border-color:rgba(245,200,66,0.2);}
 .tile-sheet-buy-btn:hover:not(:disabled){transform:translate(-2px,-2px);}
 .tile-sheet-buy-btn:disabled{background:#ccc;color:#888;box-shadow:3px 3px 0 #bbb;cursor:not-allowed;}
 .tile-sheet-cancel{width:100%;padding:10px;background:none;border:2px solid #ccc;border-radius:14px;font-family:'Dela Gothic One',sans-serif;font-size:13px;cursor:pointer;color:#888;}
-html.dark .tile-sheet{background:#161B22;border-color:#30363D;}
+html.dark .tile-sheet{background:#161B22;border-color:#30363D;border-radius:22px;}
 html.dark .tile-sheet-desc{background:rgba(255,255,255,0.05);color:#aaa;}
 html.dark .tile-sheet-cancel{border-color:#30363D;color:#555;}
 html.dark .tile-sheet-title{color:#E6EDF3;}
@@ -753,8 +832,30 @@ html.dark .tile-sheet-subtitle{color:#555;}
 .jp-node.jp-terr .jp-circle{width:18px;height:18px;font-size:5.5px;border-style:dashed;}
 .jp-node.jp-terr.jp-current .jp-circle{width:26px;height:26px;font-size:7px;}
 .jp-node.jp-terr.jp-visited .jp-circle{border-style:dashed;}
+/* 霧ノード（未到達） */
+.jp-node.jp-fog{pointer-events:none;z-index:2;}
+.jp-node.jp-fog:hover{transform:translate(-50%,-50%);}
+.jp-node.jp-fog .jp-circle{width:10px;height:10px;background:rgba(15,17,40,0.5);border:1.5px solid rgba(255,255,255,0.04);filter:blur(0.8px);}
+.jp-node.jp-fog .jp-step-lbl{display:none;}
+/* マップ表示切り替えスイッチャー */
+.map-view-switcher{display:flex;gap:5px;margin-bottom:14px;background:rgba(255,255,255,0.04);border-radius:14px;padding:4px;}
+.mvs-btn{flex:1;padding:9px 0;border-radius:10px;border:none;font-size:12px;font-weight:700;cursor:pointer;background:transparent;color:rgba(255,255,255,0.35);transition:all 0.2s;font-family:inherit;-webkit-tap-highlight-color:transparent;}
+.mvs-btn.mvs-active{background:rgba(245,200,66,0.12);color:var(--gold);border:1.5px solid rgba(245,200,66,0.3);}
+/* インライン現在地カード */
+.map-dest-card{background:#0d0f22;border-radius:20px;border:2px solid rgba(245,200,66,0.2);overflow:hidden;position:relative;margin-bottom:14px;}
+.map-dest-banner{width:100%;height:150px;object-fit:cover;display:block;}
+.map-dest-body{padding:14px 16px 16px;position:relative;z-index:1;}
+@keyframes mapDestFlash{0%,100%{opacity:1}40%,60%{opacity:0}}
+.map-dest-card.transitioning{animation:mapDestFlash 0.55s ease;}
 /* ルートSVG */
 .jp-route-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;overflow:visible;}
+.jp-land-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;}
+.jp-land-svg polygon,.jp-land-svg ellipse{
+  fill:rgba(80,140,220,0.08);
+  stroke:rgba(100,170,255,0.45);
+  stroke-width:0.55;
+  stroke-linejoin:round;
+}
 @keyframes jpBlink{0%,100%{opacity:1}50%{opacity:.4}}
 
 /* 日本マップ モーダル */
@@ -916,133 +1017,143 @@ html.dark .tile-sheet-subtitle{color:#555;}
   </div>
 </div>
 
-<!-- TAB: すべて -->
+<!-- TAB: やったこと -->
 <div class="tab-panel" id="tab-all">
   <div class="main">
-    <div class="stats-row">
-      <div class="stat-card">
-        <div class="stat-num" id="statTotal" style="color:var(--sky)">0</div>
-        <div class="stat-label">タスク数</div>
+    <!-- サブナビ -->
+    <div class="yatta-sub-nav">
+      <button class="ysn-btn ysn-active" id="ysn-tasks" onclick="setYattaSection('tasks')">📋 タスク</button>
+      <button class="ysn-btn" id="ysn-achiev" onclick="setYattaSection('achiev')">🏆 実績</button>
+      <button class="ysn-btn" id="ysn-habit" onclick="setYattaSection('habit')">🎯 習慣</button>
+      <button class="ysn-btn" id="ysn-pom" onclick="setYattaSection('pom')">🍅 ポモドーロ</button>
+    </div>
+
+    <!-- ── タスク ── -->
+    <div class="yatta-section" id="ys-tasks">
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-num" id="statTotal" style="color:var(--sky)">0</div><div class="stat-label">タスク数</div></div>
+        <div class="stat-card"><div class="stat-num" id="statDone" style="color:var(--green)">0</div><div class="stat-label">完了数</div></div>
+        <div class="stat-card"><div class="stat-num" id="statStreak" style="color:var(--gold)">0</div><div class="stat-label">🔥 連続日</div></div>
       </div>
-      <div class="stat-card">
-        <div class="stat-num" id="statDone" style="color:var(--green)">0</div>
-        <div class="stat-label">完了数</div>
+      <div class="progress-wrap">
+        <div class="progress-hdr">
+          <div class="progress-title">達成率</div>
+          <div class="progress-pct" id="progressPct">0%</div>
+        </div>
+        <div class="pbar-bg"><div class="pbar-fill" id="pbarFill"></div></div>
+        <div class="progress-msg" id="progressMsg">タスクを追加してスタート！</div>
       </div>
-      <div class="stat-card">
-        <div class="stat-num" id="statStreak" style="color:var(--gold)">0</div>
-        <div class="stat-label">🔥 連続日</div>
+      <div class="toolbar">
+        <div class="search-wrap">
+          <input id="searchInput" class="search-input" type="text" placeholder="タスクを検索…" oninput="renderAll()">
+        </div>
+        <select id="sortSelect" class="sort-select" onchange="renderAll()">
+          <option value="created">新着順</option>
+          <option value="priority">優先度順</option>
+          <option value="due">期限順</option>
+        </select>
+      </div>
+      <div class="section-header">
+        <span class="slabel">TASKS</span>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <button class="hide-done-btn" id="hideDoneBtn" onclick="toggleHideDone()">完了を隠す</button>
+          <button class="btn-clear-done" onclick="clearCompleted()">🗑 完了削除</button>
+          <span class="count-badge" id="countBadge">0件</span>
+        </div>
+      </div>
+      <div class="filter-row">
+        <button class="filter-btn active" data-filter="all"  onclick="setFilter('all',this)">📋 すべて</button>
+        <button class="filter-btn" data-filter="open"        onclick="setFilter('open',this)">⬜ 未完了</button>
+        <button class="filter-btn" data-filter="done"        onclick="setFilter('done',this)">✅ 完了済み</button>
+        <button class="filter-btn" data-filter="high"        onclick="setFilter('high',this)">🔴 高優先</button>
+        <button class="filter-btn" data-filter="投資"        onclick="setFilter('投資',this)">📈 投資</button>
+        <button class="filter-btn" data-filter="仕事"        onclick="setFilter('仕事',this)">💼 仕事</button>
+        <button class="filter-btn" data-filter="勉強"        onclick="setFilter('勉強',this)">📚 勉強</button>
+        <button class="filter-btn" data-filter="運動"        onclick="setFilter('運動',this)">💪 運動</button>
+      </div>
+      <div id="taskList" class="task-list"></div>
+    </div>
+
+    <!-- ── 実績 ── -->
+    <div class="yatta-section" id="ys-achiev" style="display:none">
+      <div class="level-card">
+        <div class="lv-card-top">
+          <div class="lv-icon" id="lvIcon">🌱</div>
+          <div class="lv-info">
+            <div class="lv-num" id="lvNum">Lv. 1</div>
+            <div class="lv-name" id="lvName">家計簿デビュー</div>
+            <div class="lv-xp" id="lvXpInfo">0 / 100 XP</div>
+          </div>
+        </div>
+        <div class="lv-bar-bg"><div class="lv-bar-fill" id="lvBarFill" style="width:0%"></div></div>
+        <div class="lv-bar-labels"><span id="lvCurXp">0 XP</span><span id="lvNextXp">次のレベルまで 100 XP</span></div>
+      </div>
+      <div class="badges-title">ACHIEVEMENTS</div>
+      <div id="badgeGrid" class="badge-grid"></div>
+      <div class="barchart-title">WEEKLY COMPLETIONS</div>
+      <div class="barchart-wrap">
+        <svg id="barChartSvg" class="barchart-svg" viewBox="0 0 280 110" preserveAspectRatio="none"></svg>
+      </div>
+      <div class="heatmap-title">ACTIVITY（過去35日）</div>
+      <div class="heatmap-wrap">
+        <div id="heatmapGrid" class="heatmap-grid"></div>
+        <div class="heatmap-labels">
+          <span class="hm-day">日</span><span class="hm-day">月</span><span class="hm-day">火</span>
+          <span class="hm-day">水</span><span class="hm-day">木</span><span class="hm-day">金</span>
+          <span class="hm-day">土</span>
+        </div>
+      </div>
+      <div class="title-coll-card">
+        <div class="title-coll-hdr">
+          <span class="title-coll-title-txt">🏅 称号コレクション</span>
+          <span class="title-coll-count" id="titleUnlockedCount">0 / 0</span>
+        </div>
+        <div class="title-grid" id="titleGrid"></div>
       </div>
     </div>
 
-    <div class="progress-wrap">
-      <div class="progress-hdr">
-        <div class="progress-title">達成率</div>
-        <div class="progress-pct" id="progressPct">0%</div>
+    <!-- ── 習慣 ── -->
+    <div class="yatta-section" id="ys-habit" style="display:none">
+      <div class="habit-pool-summary">
+        <div class="habit-pool-title">HABIT POOL</div>
+        <div class="habit-pool-chips" id="habitPoolSummary"></div>
       </div>
-      <div class="pbar-bg"><div class="pbar-fill" id="pbarFill"></div></div>
-      <div class="progress-msg" id="progressMsg">タスクを追加してスタート！</div>
+      <div class="badges-title" style="margin-top:4px;">習慣稼働ログ</div>
+      <div id="habitLogList"></div>
     </div>
 
-    <div class="toolbar">
-      <div class="search-wrap">
-        <input id="searchInput" class="search-input" type="text" placeholder="タスクを検索…" oninput="renderAll()">
+    <!-- ── ポモドーロ ── -->
+    <div class="yatta-section" id="ys-pom" style="display:none">
+      <div class="pom-summary-card">
+        <div>
+          <div class="pom-sum-num" id="pomTotalSessions">0</div>
+          <div class="pom-sum-label">総セッション数</div>
+        </div>
+        <div style="margin-left:auto;text-align:right;">
+          <div style="font-size:20px;font-family:'Dela Gothic One',sans-serif;color:rgba(91,200,232,0.7)" id="pomTotalMinutes">0</div>
+          <div class="pom-sum-label">累計分</div>
+        </div>
       </div>
-      <select id="sortSelect" class="sort-select" onchange="renderAll()">
-        <option value="created">新着順</option>
-        <option value="priority">優先度順</option>
-        <option value="due">期限順</option>
-      </select>
+      <div class="badges-title">セッション履歴</div>
+      <div id="pomLogList"></div>
     </div>
-
-    <div class="section-header">
-      <span class="slabel">TASKS</span>
-      <div style="display:flex;align-items:center;gap:6px;">
-        <button class="hide-done-btn" id="hideDoneBtn" onclick="toggleHideDone()">完了を隠す</button>
-        <button class="btn-clear-done" onclick="clearCompleted()">🗑 完了削除</button>
-        <span class="count-badge" id="countBadge">0件</span>
-      </div>
-    </div>
-    <div class="filter-row">
-      <button class="filter-btn active" data-filter="all"  onclick="setFilter('all',this)">📋 すべて</button>
-      <button class="filter-btn" data-filter="open"        onclick="setFilter('open',this)">⬜ 未完了</button>
-      <button class="filter-btn" data-filter="done"        onclick="setFilter('done',this)">✅ 完了済み</button>
-      <button class="filter-btn" data-filter="high"        onclick="setFilter('high',this)">🔴 高優先</button>
-      <button class="filter-btn" data-filter="投資"        onclick="setFilter('投資',this)">📈 投資</button>
-      <button class="filter-btn" data-filter="仕事"        onclick="setFilter('仕事',this)">💼 仕事</button>
-      <button class="filter-btn" data-filter="勉強"        onclick="setFilter('勉強',this)">📚 勉強</button>
-      <button class="filter-btn" data-filter="運動"        onclick="setFilter('運動',this)">💪 運動</button>
-    </div>
-    <div id="taskList" class="task-list"></div>
   </div>
 </div>
 
-<!-- TAB: 実績 -->
+<!-- TAB: ガチャ -->
 <div class="tab-panel" id="tab-achiev">
   <div class="main">
-    <div class="level-card">
-      <div class="lv-card-top">
-        <div class="lv-icon" id="lvIcon">🌱</div>
-        <div class="lv-info">
-          <div class="lv-num" id="lvNum">Lv. 1</div>
-          <div class="lv-name" id="lvName">家計簿デビュー</div>
-          <div class="lv-xp" id="lvXpInfo">0 / 100 XP</div>
-        </div>
-      </div>
-      <div class="lv-bar-bg"><div class="lv-bar-fill" id="lvBarFill" style="width:0%"></div></div>
-      <div class="lv-bar-labels"><span id="lvCurXp">0 XP</span><span id="lvNextXp">次のレベルまで 100 XP</span></div>
-    </div>
+    <!-- テーマ選択 -->
+    <div class="theme-stitle">THEMES</div>
+    <div class="theme-grid-row" id="themeGridRow"></div>
 
-    <div class="badges-title">ACHIEVEMENTS</div>
-    <div id="badgeGrid" class="badge-grid"></div>
-
-    <div class="barchart-title">WEEKLY COMPLETIONS</div>
-    <div class="barchart-wrap">
-      <svg id="barChartSvg" class="barchart-svg" viewBox="0 0 280 110" preserveAspectRatio="none"></svg>
-    </div>
-
-    <div class="heatmap-title">ACTIVITY（過去35日）</div>
-    <div class="heatmap-wrap">
-      <div id="heatmapGrid" class="heatmap-grid"></div>
-      <div class="heatmap-labels">
-        <span class="hm-day">日</span><span class="hm-day">月</span><span class="hm-day">火</span>
-        <span class="hm-day">水</span><span class="hm-day">木</span><span class="hm-day">金</span>
-        <span class="hm-day">土</span>
-      </div>
-    </div>
-
-    <!-- 称号コレクション -->
-    <div class="title-coll-card">
-      <div class="title-coll-hdr">
-        <span class="title-coll-title-txt">🏅 称号コレクション</span>
-        <span class="title-coll-count" id="titleUnlockedCount">0 / 0</span>
-      </div>
-      <div class="title-grid" id="titleGrid"></div>
-    </div>
-
-    <!-- キャラ図鑑 -->
-    <div class="char-journal-card">
-      <div class="char-journal-hdr-txt">📖 キャラ図鑑</div>
-      <div id="charJournalList"></div>
-    </div>
-
-    <!-- GACHA JOURNAL -->
+    <!-- ガチャ図鑑 -->
     <div class="gacha-journal-card">
       <div class="gacha-journal-hdr">
         <span class="gacha-journal-title-txt">✨ ガチャ図鑑</span>
         <span class="gacha-journal-total" id="gachaTotalPulls">総引数: 0回</span>
       </div>
       <div id="gachaRarityRows"></div>
-    </div>
-
-    <!-- DATA MANAGEMENT -->
-    <div class="data-card">
-      <div class="data-card-title">💾 データ管理</div>
-      <div class="data-btn-row">
-        <button class="data-btn data-btn-export" onclick="exportData()">📤 エクスポート</button>
-        <button class="data-btn data-btn-import" onclick="importData()">📥 インポート</button>
-        <button class="data-btn data-btn-reset" onclick="resetData()">🗑️ リセット</button>
-      </div>
-      <div class="data-info" id="dataInfo"></div>
     </div>
   </div>
 </div>
@@ -1072,27 +1183,47 @@ html.dark .tile-sheet-subtitle{color:#555;}
       </div>
     </div>
 
-    <!-- JAPAN MAP STATS -->
-    <div class="jp-stats-row">
-      <div class="jp-stat"><div class="jp-stat-num" id="jpStatFull" style="color:var(--gold)">0</div><div class="jp-stat-lbl">訪問済み</div></div>
-      <div class="jp-stat"><div class="jp-stat-num" id="jpStatPart" style="color:var(--sky)">1970</div><div class="jp-stat-lbl">現在の年</div></div>
-      <div class="jp-stat"><div class="jp-stat-num" id="jpStatLeft" style="color:var(--purple)">56</div><div class="jp-stat-lbl">残り旅程</div></div>
+    <!-- マップ表示切り替え -->
+    <div class="map-view-switcher">
+      <button class="mvs-btn mvs-active" id="mvs-current" onclick="setMapView('current')">📍 現在地</button>
+      <button class="mvs-btn" id="mvs-all" onclick="setMapView('all')">🗾 全体を見る</button>
     </div>
 
-    <!-- JAPAN MAP 3D 斜め視点 -->
-    <div class="jp-map-outer">
-      <div class="jp-map-tilt">
-        <div class="jp-map-stage" id="jpMapStage">
-          <div class="jp-sea" style="left:12%;top:48%">日本海</div>
-          <div class="jp-sea" style="left:83%;top:62%">太平洋</div>
-          <div class="jp-sea" style="left:14%;top:90%">東シナ海</div>
-        </div>
+    <!-- 現在地ビュー（デフォルト） -->
+    <div id="mapCurrentView">
+      <div class="map-dest-card" id="mapDestCard">
+        <!-- renderMapCurrentView() で描画 -->
       </div>
     </div>
 
-    <!-- Map info（最小化） -->
-    <div class="map-info-panel" style="font-size:10px;padding:6px 13px;opacity:0.5;">
-      🚆 タップで旅行 → 長崎（1970）からスタート！
+    <!-- 全体マップビュー -->
+    <div id="mapAllView" style="display:none">
+      <!-- JAPAN MAP STATS -->
+      <div class="jp-stats-row">
+        <div class="jp-stat"><div class="jp-stat-num" id="jpStatFull" style="color:var(--gold)">0</div><div class="jp-stat-lbl">訪問済み</div></div>
+        <div class="jp-stat"><div class="jp-stat-num" id="jpStatPart" style="color:var(--sky)">1970</div><div class="jp-stat-lbl">現在の年</div></div>
+        <div class="jp-stat"><div class="jp-stat-num" id="jpStatLeft" style="color:var(--purple)">56</div><div class="jp-stat-lbl">残り旅程</div></div>
+      </div>
+      <!-- JAPAN MAP 3D -->
+      <div class="jp-map-outer">
+        <div class="jp-map-tilt">
+          <div class="jp-map-stage" id="jpMapStage">
+            <svg class="jp-land-svg" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="52,22 56,20 60,18 65,15 66,11 62,8 58,5 56,7 54,11 54,17 52,22"/>
+              <polygon points="52,24 54,24 57,30 55,35 54,42 52,48 48,51 40,54 38,52 30,52 25,52 25,51 29,51 31,46 35,46 39,44 44,40 49,36 52,30 52,24"/>
+              <polygon points="29,52 39,52 40,55 36,59 29,57 27,54 29,52"/>
+              <polygon points="23,54 30,54 31,57 28,63 26,66 21,63 20,57 23,54"/>
+              <ellipse cx="18" cy="85" rx="4" ry="1.5"/>
+              <ellipse cx="47" cy="36" rx="1.5" ry="0.8"/>
+              <ellipse cx="38" cy="52" rx="1" ry="2"/>
+              <ellipse cx="22" cy="50" rx="1" ry="2"/>
+            </svg>
+            <div class="jp-sea" style="left:10%;top:42%">日本海</div>
+            <div class="jp-sea" style="left:65%;top:55%">太平洋</div>
+            <div class="jp-sea" style="left:8%;top:78%">東シナ海</div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- 旧タイルシステム（JS互換のため非表示で保持） -->
@@ -1114,9 +1245,11 @@ html.dark .tile-sheet-subtitle{color:#555;}
     <!-- Boss Section -->
     <div id="bossSection"></div>
 
-    <!-- Theme Selector -->
-    <div class="theme-stitle">THEMES</div>
-    <div class="theme-grid-row" id="themeGridRow"></div>
+    <!-- キャラ図鑑 -->
+    <div class="char-journal-card">
+      <div class="char-journal-hdr-txt">📖 キャラ図鑑</div>
+      <div id="charJournalList"></div>
+    </div>
   </div>
 </div>
 
@@ -1214,12 +1347,6 @@ html.dark .tile-sheet-subtitle{color:#555;}
   </div>
 </div>
 
-<!-- FAB -->
-<button class="fab" onclick="openModal()">＋ タスク追加</button>
-
-<!-- AI相談ボタン -->
-<button class="ai-fab" onclick="toggleAiPanel()">💬 AIに相談</button>
-
 <!-- AIパネル -->
 <div class="ai-panel" id="aiPanel" onclick="closeAiPanel(event)">
   <div class="ai-panel-overlay"></div>
@@ -1243,6 +1370,20 @@ html.dark .tile-sheet-subtitle{color:#555;}
       <div class="ai-placeholder-title" id="aiReadyLabel">AIアドバイザー</div>
       <div class="ai-placeholder-desc">タスク管理・生産性・節約について<br>AIキャラクターに相談できます</div>
       <button class="ai-open-btn" onclick="openAiChat()">Gemで開く →</button>
+    </div>
+  </div>
+</div>
+
+<!-- 運動記録パネル -->
+<div class="ex-panel" id="exPanel" onclick="closeExercisePanelBg(event)">
+  <div class="ex-panel-overlay"></div>
+  <div class="ex-panel-sheet">
+    <div class="ex-panel-hdr">
+      <span class="ex-panel-title">🏋️ 運動記録</span>
+      <button class="ex-panel-close" onclick="closeExercisePanel()">✕</button>
+    </div>
+    <div class="ex-panel-body" id="exPanelBody">
+      <!-- renderExercisePanel() で動的描画 -->
     </div>
   </div>
 </div>
@@ -1378,6 +1519,31 @@ html.dark .tile-sheet-subtitle{color:#555;}
       </div>
     </div>
 
+    <div class="settings-card">
+      <div class="settings-row">
+        <div class="settings-label-wrap">
+          <span class="settings-icon">📥</span>
+          <div>
+            <div class="settings-title">データをインポート</div>
+            <div class="settings-sub">JSONファイルからデータを復元</div>
+          </div>
+        </div>
+        <button class="settings-btn" onclick="importData()">読込</button>
+      </div>
+    </div>
+    <div class="settings-card">
+      <div class="settings-row">
+        <div class="settings-label-wrap">
+          <span class="settings-icon">🗑️</span>
+          <div>
+            <div class="settings-title">全データをリセット</div>
+            <div class="settings-sub">すべての記録を削除して初期化</div>
+          </div>
+        </div>
+        <button class="settings-btn danger" onclick="resetData()">リセット</button>
+      </div>
+    </div>
+
     <div class="section-header" style="margin-top:20px;"><span class="slabel">アプリ情報</span></div>
     <div class="settings-card">
       <div class="settings-info-row"><span>アプリ名</span><span>マネぼうTODO</span></div>
@@ -1391,20 +1557,25 @@ html.dark .tile-sheet-subtitle{color:#555;}
 <div class="bottom-dock">
   <div class="char-bar">
     <span class="char-bar-label">COACH</span>
-    <div id="charSelector" style="display:flex;gap:6px;"></div>
+    <div class="char-scroll" id="charSelector"></div>
+    <div class="char-actions">
+      <button class="char-action-btn char-action-task" onclick="openModal()"><span class="char-action-icon">＋</span><span class="char-action-label">タスク追加</span></button>
+      <button class="char-action-btn char-action-ai" onclick="toggleAiPanel()"><span class="char-action-icon">💬</span><span class="char-action-label">AI相談</span></button>
+      <button class="char-action-btn char-action-ex" onclick="openExercisePanel()"><span class="char-action-icon">🏋️</span><span class="char-action-label">運動記録</span></button>
+    </div>
   </div>
   <nav class="bottom-nav">
     <button class="bn-tab active" id="bnt-today" onclick="switchTab('today')">
       <span class="bn-icon">📝</span><span class="bn-label">やること</span>
     </button>
     <button class="bn-tab" id="bnt-all" onclick="switchTab('all')">
-      <span class="bn-icon">🏅</span><span class="bn-label">成果</span>
+      <span class="bn-icon">🏆</span><span class="bn-label">やったこと</span>
     </button>
     <button class="bn-tab" id="bnt-map" onclick="switchTab('map')">
       <span class="bn-icon">🗺️</span><span class="bn-label">冒険</span>
     </button>
     <button class="bn-tab" id="bnt-achiev" onclick="switchTab('achiev')">
-      <span class="bn-icon">🏆</span><span class="bn-label">実績</span>
+      <span class="bn-icon">🎰</span><span class="bn-label">ガチャ</span>
     </button>
     <button class="bn-tab" id="bnt-settings" onclick="switchTab('settings')">
       <span class="bn-icon">⚙️</span><span class="bn-label">設定</span>
@@ -1729,6 +1900,17 @@ let S = {
   tileRarities:   {},
   cardTiles:      {},
   habitPool:      [],
+  habitLog:       [],
+  pomodoroLog:    [],
+  exerciseMetrics:[
+    {id:'ex1',name:'ベンチプレス',unit:'kg'},
+    {id:'ex2',name:'スクワット',unit:'kg'},
+    {id:'ex3',name:'デッドリフト',unit:'kg'},
+    {id:'ex4',name:'懸垂',unit:'回'},
+    {id:'ex5',name:'ランニング',unit:'km'},
+  ],
+  exerciseLog:    [],
+  exerciseGoal:   '',
   bossState:      null,
   loginStreak:    0,
   lastLoginDate:  '',
@@ -2121,9 +2303,71 @@ function switchTab(tab){
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
   $('tab-'+tab).classList.add('active');
   if(tab==='today')    renderToday();
-  if(tab==='achiev')   renderAchievements();
+  if(tab==='all'){     renderAll(); setYattaSection(_yattaSection||'tasks'); }
+  if(tab==='achiev')   renderGacha();
   if(tab==='map')      renderMap();
   if(tab==='settings') renderSettings();
+}
+
+// ─── やったこと サブナビ ───────────────────────────────
+let _yattaSection='tasks';
+function setYattaSection(s){
+  _yattaSection=s;
+  ['tasks','achiev','habit','pom'].forEach(sec=>{
+    const el=document.getElementById('ys-'+sec);
+    const btn=document.getElementById('ysn-'+sec);
+    if(el)  el.style.display=sec===s?'block':'none';
+    if(btn) btn.classList.toggle('ysn-active',sec===s);
+  });
+  if(s==='achiev') renderAchievements();
+  if(s==='habit')  renderHabitLog();
+  if(s==='pom')    renderPomodoroLog();
+}
+
+function renderHabitLog(){
+  // プール概要
+  const pool=S.habitPool||[];
+  const summary=document.getElementById('habitPoolSummary');
+  if(summary){
+    if(pool.length===0) summary.innerHTML='<span style="font-size:11px;color:rgba(255,255,255,0.3);">習慣がまだありません</span>';
+    else summary.innerHTML=pool.map(h=>`<span class="habit-chip">${escH(h.text)}</span>`).join('');
+  }
+  // 稼働ログ
+  const log=(S.habitLog||[]).slice().reverse();
+  const el=document.getElementById('habitLogList');
+  if(!el) return;
+  if(log.length===0){el.innerHTML='<div class="log-empty">🎯 習慣ガチャを使うとここに記録されます</div>';return;}
+  el.innerHTML=log.slice(0,30).map(entry=>`
+    <div class="habit-log-row">
+      <div class="habit-log-date">${entry.date}</div>
+      <div class="habit-log-chips">${(entry.items||[]).map(t=>`<span class="habit-chip">${escH(t)}</span>`).join('')}</div>
+    </div>`).join('');
+}
+
+function renderPomodoroLog(){
+  const total=S.pomodoroSessions||0;
+  const el1=document.getElementById('pomTotalSessions');
+  const el2=document.getElementById('pomTotalMinutes');
+  if(el1) el1.textContent=total;
+  if(el2) el2.textContent=total*25;
+  const log=(S.pomodoroLog||[]).slice().reverse();
+  const el=document.getElementById('pomLogList');
+  if(!el) return;
+  if(log.length===0){el.innerHTML='<div class="log-empty">🍅 ポモドーロを完了するとここに記録されます</div>';return;}
+  el.innerHTML=log.slice(0,30).map(entry=>{
+    const dots=Array.from({length:entry.sessions},(_,i)=>`<div class="pom-dot" title="${25*(i+1)}分">🍅</div>`).join('');
+    return `<div class="pom-log-row">
+      <div class="pom-log-date">${entry.date}</div>
+      <div class="pom-log-dots">${dots}</div>
+      <div class="pom-log-min">${entry.sessions*25}分</div>
+    </div>`;
+  }).join('');
+}
+
+// ─── ガチャタブ ───────────────────────────────────────
+function renderGacha(){
+  renderThemeSelector();
+  renderGachaJournal();
 }
 
 function setFilter(f,btn){
@@ -2359,13 +2603,8 @@ function renderAchievements(){
 
   // Bar chart
   renderBarChart();
-  // Title collection & char journal
+  // Title collection (char journal → 冒険タブ, gacha journal → ガチャタブ)
   renderTitleCollection();
-  renderCharJournal();
-  // Gacha journal
-  renderGachaJournal();
-  // Data info
-  updateDataInfo();
 }
 
 // =====================================================
@@ -2651,8 +2890,20 @@ function renderCoinDisplay(){
 // =====================================================
 function renderMap(){
   renderCoinDisplay();
-  renderThemeSelector();
   renderBoss();
+  renderCharJournal();
+  // タブ切り替え時は常に現在地ビューにリセット
+  _mapView='current';
+  const cv=document.getElementById('mapCurrentView');
+  const av=document.getElementById('mapAllView');
+  if(cv) cv.style.display='block';
+  if(av) av.style.display='none';
+  const mb=document.getElementById('mvs-current');
+  const ab=document.getElementById('mvs-all');
+  if(mb) mb.classList.add('mvs-active');
+  if(ab) ab.classList.remove('mvs-active');
+  renderMapCurrentView(getJpStep());
+  updateJpHUD();
 
   const unlockedSet=new Set(S.unlockedTiles||['4,4']);
   const purchasedSet=new Set(S.purchasedTiles||[]);
@@ -2848,6 +3099,23 @@ function selectTheme(id,price){
   showToast(`🎨 テーマを「${MAP_THEMES[id].name}」に変更！${!owned&&price>0?` -${price}🪙`:''}`);
 }
 
+function logPomodoroSession(){
+  if(!S.pomodoroLog) S.pomodoroLog=[];
+  const today=todayStr();
+  const existing=S.pomodoroLog.find(e=>e.date===today);
+  if(existing) existing.sessions++;
+  else S.pomodoroLog.push({date:today,sessions:1});
+  if(S.pomodoroLog.length>90) S.pomodoroLog=S.pomodoroLog.slice(-90);
+}
+function logHabitUsage(items){
+  if(!S.habitLog) S.habitLog=[];
+  const today=todayStr();
+  const existing=S.habitLog.find(e=>e.date===today);
+  if(existing) existing.items=[...(existing.items||[]),...items];
+  else S.habitLog.push({date:today,items:[...items]});
+  if(S.habitLog.length>90) S.habitLog=S.habitLog.slice(-90);
+}
+
 function onPomodoroWorkComplete(){
   const currentTiles=S.unlockedTiles||['4,4'];
   const nextTile=getNextTileToUnlock(currentTiles);
@@ -2862,12 +3130,14 @@ function onPomodoroWorkComplete(){
     earnCoins(total);
     addXP(15);
     S.pomodoroSessions=(S.pomodoroSessions||0)+1;
+    logPomodoroSession();
     save();
     showGacha(rarity, nextTile);
   } else {
     earnCoins(COIN_PER_POMODORO+passive);
     addXP(15);
     S.pomodoroSessions=(S.pomodoroSessions||0)+1;
+    logPomodoroSession();
     save();
     const msg=passive>0?`+${COIN_PER_POMODORO}🪙（パッシブ+${passive}🪙）`:`+${COIN_PER_POMODORO}🪙`;
     showToast(`⏱ ポモドーロ完了！${msg} +15 XP`);
@@ -3023,6 +3293,7 @@ function habitGacha(){
       S.tasks.unshift({id:Date.now().toString()+Math.random(),title:h.text,memo:'🎯 習慣ガチャより',
         priority:'medium',category:'生活',due:todayStr(),repeat:'none',subtasks:[],status:'open',createdAt:todayStr()});
     });
+    logHabitUsage(shuffled.map(h=>h.text));
     save();
     setBubble('add');
     renderHabitPool();
@@ -3577,65 +3848,65 @@ function getJpImgPath(step){
 
 // [id, name, region, x%, y%, emoji, [era1, era2, era3]]
 const JP_PREFS=[
-['hokkaido','北海道','hokkaido',70,12,'🐻',['農業と水産業が基幹産業として発展。200海里設定（1977）でソ連との北洋漁業が縮小し、農業の多角化が進んだ。','バブル景気で観光ブームが到来。G8洞爺湖サミット（2008）が開催され、国際的知名度が向上。','北海道新幹線が2016年に開業。農産品輸出の拡大と、北方領土問題の長期化が同時進行する。']],
-['aomori','青森','tohoku',67,21,'🍎',['青函トンネル建設が本格化。リンゴ産地として全国トップの生産量を誇る。','青函トンネル（1988）開通・青函連絡船廃止。本州と北海道を結ぶ交通の要衝に。','東北新幹線が新青森まで延伸（2010）。六ヶ所村の核燃料サイクル施設問題が政治課題に。']],
-['akita','秋田','tohoku',62,26,'🌾',['秋田杉・農業・石油採掘が経済を支える。秋田音頭・なまはげ文化が全国に広まる。','少子高齢化・過疎化が全国最速水準で進行。秋田新幹線（こまち）が1997年に開業。','人口減少が最も深刻な県の一つ。洋上風力発電の拠点として再生可能エネルギーに注目。']],
-['iwate','岩手','tohoku',70,26,'🗻',['農業・林業が主産業。三陸海岸の漁業が盛んで、南部鉄器などの伝統工芸が継承される。','宮沢賢治の故郷として観光開発が進む。遠野の民話文化が国際的に注目される。','2011年東日本大震災で壊滅的被害。沿岸部の復興事業が長期にわたって続く。']],
-['yamagata','山形','tohoku',63,32,'🍒',['果物王国・農業県として発展。山形新幹線（つばさ）の整備計画が始まる。','山形新幹線（1992）開業。さくらんぼ・米（つや姫）が全国ブランドに成長。','観光と農業の連携で「食の山形」ブランドを確立。豪雪との闘いが続く。']],
-['miyagi','宮城','tohoku',70,33,'🏯',['仙台市が東北の中心都市として発展。農業・水産業が基幹産業。','仙台が政令指定都市（1989）に。「杜の都」として経済・文化の東北拠点が確立。','東日本大震災で甚大な被害。南三陸・女川・石巻を津波が直撃。復興の象徴となる。']],
-['fukushima','福島','tohoku',66,38,'🍑',['会津・中通り・浜通りと3つの地域が共存。農業と工業が均衡よく発展。','東北自動車道・磐越道など交通インフラが整備。桃・りんご・コメが全国ブランドに。','2011年、福島第一原発事故。避難者最大約16万人。廃炉作業と風評被害との闘いが現在も続く。']],
-['niigata','新潟','chubu',58,36,'🍚',['コシヒカリの産地として全国に名を馳せる。日本海側最大の都市・新潟が発展。','越後湯沢スキーリゾートがバブル期に急成長。石油化学工業も発展。','2004年新潟県中越地震（M6.8）、2007年中越沖地震。北陸新幹線延伸で再発展。']],
-['tochigi','栃木','kanto',66,43,'🍓',['日光・那須の観光地として発展。農業（イチゴ）と工業が経済を支える。','東北新幹線延伸で首都圏のベッドタウン化が進む。宇都宮線の高速化も実現。','イチゴ（とちおとめ・とちあいか）生産量で全国首位。自動車関連工場の集積が進む。']],
-['ibaraki','茨城','kanto',71,44,'🔬',['農業産出額全国トップクラス。日立製作所など大手工場が立地し工業も盛ん。','つくば科学万博（1985）開催。つくば研究学園都市が形成される。','東京圏のベッドタウン化が進む一方、農業・研究機関が共存する「科学農業県」として発展。']],
-['gunma','群馬','kanto',60,44,'♨️',['繊維・機械産業が発展。温泉（草津・伊香保）観光が盛んで「温泉天国」と呼ばれる。','関越自動車道の全線開通で首都圏とのアクセスが向上。自動車部品産業が集積。','アウトドア観光が発展。外国人労働者受け入れが全国トップクラスに。']],
-['saitama','埼玉','kanto',64,48,'🏟',['首都圏のベッドタウンとして人口が急増。高度経済成長を下から支える役割。','大宮・浦和・与野の合併で「さいたま市」が2001年に政令指定都市へ。','大宮駅周辺の再開発が加速。「ダサい」から「住みやすい」への都市イメージ転換に成功。']],
-['chiba','千葉','kanto',71,49,'✈️',['東京湾岸の工業地帯が発展。成田空港が1978年に開港（多くの反対運動を乗り越えて）。','幕張メッセが1989年開業。ディズニーランド（1983）の開園で観光・商業が大きく発展。','東日本大震災で液状化被害。成田空港の機能強化と千葉港周辺の再開発が続く。']],
-['tokyo','東京','kanto',66,49,'🗼',['高度経済成長で世界有数の大都市圏に。1964年東京五輪の遺産が都市インフラを支える。','バブル景気で地価が世界最高水準に。バブル崩壊後、経済の「失われた時代」の中心に。','2020年東京五輪（コロナ禍で無観客）。少子化・都心回帰・外国人増加が続く。']],
-['kanagawa','神奈川','kanto',65,52,'⚓',['横浜・川崎の重工業が発展。横浜港が国際貿易の要衝として機能。','横浜みなとみらい21の開発が本格化。横浜市が全国最大の市に成長。','観光都市・国際都市として発展。外国人居住者が多い「国際横浜」が定着。']],
-['toyama','富山','chubu',51,39,'🦀',['北陸の工業県として発展。富山湾の新鮮な魚介類が名産。薬売り（置き薬）文化も継承。','北陸自動車道の全線開通で企業誘致が進む。ガラス工芸が新産業として注目される。','北陸新幹線が2015年に金沢まで延伸開業。2024年1月、能登半島地震で大きな被害。']],
-['ishikawa','石川','chubu',49,41,'🏺',['伝統工芸（加賀友禅・九谷焼）と観光が発展。金沢が「小京都」として全国に知られる。','金沢21世紀美術館など文化施設が整備。工芸・観光の融合が独自の発展モデルに。','北陸新幹線金沢開業（2015）で観光客急増。2024年1月、能登半島地震が壊滅的被害を与える。']],
-['fukui','福井','chubu',48,44,'🦕',['原子力発電所が集中（若狭湾エリア）。眼鏡フレーム・繊維産業が基幹産業。','原発の安全問題が長年の政治課題に。恐竜博物館が全国的に有名に。','北陸新幹線が2024年に福井まで延伸開業。原発の再稼働問題と観光振興が同時課題。']],
-['nagano','長野','chubu',58,43,'⛷',['農業・観光・精密機械産業が均衡して発展。国内有数のスキーリゾート県。','1998年冬季長野五輪開催。善光寺参りなどの伝統観光とスキー観光が共存。','移住・田舎暮らしのメッカとして注目。リニア中央新幹線のルート問題で静岡県と対立。']],
-['yamanashi','山梨','chubu',62,48,'🍇',['フルーツ王国（ぶどう・桃）の産地として発展。富士山が観光資源に。','富士急ハイランドなどの観光施設が充実。リニアモーターカーの実験線が整備される。','富士山が2013年に世界文化遺産に登録。外国人観光客急増でオーバーツーリズム問題が浮上。']],
-['shizuoka','静岡','chubu',61,53,'🍵',['富士山・伊豆の観光資源と、静岡茶・みかんの農業。浜松の楽器産業も発展。','浜松のヤマハ・スズキなど製造業が発展。静岡空港建設が進む。','リニア中央新幹線の南アルプストンネル問題で静岡県が工事を長期にわたり不許可。']],
-['gifu','岐阜','chubu',53,47,'🦺',['中部の内陸県として発展。白川郷・合掌造り集落が独特の文化を守る。','白川郷が1995年に世界文化遺産に登録。自動車部品・航空機部品産業が発展。','豪雨・台風被害が多発。高山・白川郷への訪日外国人が急増しオーバーツーリズム問題が顕在化。']],
-['aichi','愛知','chubu',55,51,'🚗',['トヨタ自動車を中心とした自動車産業が世界的拠点に。名古屋が中部圏の中心都市として発展。','愛知万博（2005年）開催。自動車産業の輸出で工業生産額全国首位に。','トヨタが自動運転・EV戦略を本格化。外国人労働者受け入れの最先端県として多文化共生が課題。']],
-['mie','三重','kinki',54,55,'🦞',['伊勢神宮への参拝観光と漁業（真珠・志摩）が発展。「おかげ参り」が観光ブームを呼ぶ。','志摩スペイン村など大型観光施設が開業。真珠養殖・海女文化が世界的に注目される。','G7伊勢志摩サミット（2016）開催。三重の食文化・観光ブランドが国際的に発信される。']],
-['shiga','滋賀','kinki',50,51,'🚤',['琵琶湖の水資源が関西の生命線。農業・工業が発展。「近江商人」の文化が継承される。','京都のベッドタウンとして人口が増加。湖北の自然・文化観光が注目される。','琵琶湖の水質保全が国家的課題に。全国で数少ない人口増加県として発展が続く。']],
-['kyoto','京都','kinki',48,50,'🏛',['古都・世界的観光地として観光業が発展。西陣織・清水焼などの伝統工芸が継承される。','バブル期に地価が急騰。任天堂・京セラなどグローバル企業が台頭し始める。','オーバーツーリズムが深刻化。伝統的景観保全と観光業の共存が最大の課題に。']],
-['osaka','大阪','kinki',47,53,'🏢',['「天下の台所」として商業・工業の中心。1970年大阪万博の遺産が都市インフラを支える。','バブル崩壊後の「大阪の地盤沈下」が議論に。大阪維新の会が台頭し政治改革を推進（2010年〜）。','大阪・関西万博2025年開催。IRカジノを含む統合型リゾートの誘致が賛否両論の議論に。']],
-['hyogo','兵庫','kinki',42,52,'🌉',['神戸港を中心とした貿易・工業が発展。「六甲アイランド」など埋め立て開発が進む。','1995年1月17日、阪神淡路大震災（M7.3）。死者6400人超。震災復興が長期の最重要課題に。','神戸ファッション・医療産業クラスターが形成。淡路島の観光開発が近年急加速。']],
-['nara','奈良','kinki',50,55,'🦌',['古都・世界文化遺産の観光資源が豊富。農業と観光が経済を支える。','法隆寺・東大寺など世界遺産の整備が進む。奈良市のベッドタウン化が進む。','2022年7月8日、安倍晋三元首相が奈良市内で銃撃・死去。訪日外国人が過去最多を更新。']],
-['wakayama','和歌山','kinki',47,59,'⛩',['世界遺産・熊野古道と農業（梅・みかん）が経済を支える。漁業も盛ん。','熊野古道が2004年に世界遺産登録。南紀白浜の観光が発展。','人口減少が最も深刻な県の一つ。南海トラフ地震対策と移住促進が重要課題。']],
-['tottori','鳥取','chugoku',40,48,'🏖',['農業（二十世紀梨）と砂丘観光が有名。日本で最も人口の少ない県。','鳥取砂丘の保全と観光開発が議論に。山陰自動車道の整備が進む。','2016年鳥取県中部地震（M6.6）。スタバ・マクドナルド「最後の都道府県出店」で話題に。']],
-['shimane','島根','chugoku',35,48,'⛩',['出雲大社・石見銀山など歴史文化資源が豊富。農業・漁業が基幹産業。','石見銀山が2007年に世界遺産登録。竹島問題が国際問題化（2005年「竹島の日」条例）。','人口減少・過疎化が最も深刻な県の一つ。UIターン促進と地方創生の先進地として注目。']],
-['okayama','岡山','chugoku',40,52,'🍑',['農業（白桃・マスカット）と工業が発展。「晴れの国おかやま」として観光PRが進む。','瀬戸大橋が1988年に開通。本州と四国を結ぶ拠点として工業・物流が発展。','2018年西日本豪雨で倉敷市真備町が壊滅的被害。復興が進む中、再移住対策が課題に。']],
-['hiroshima','広島','chugoku',35,53,'☮️',['原爆投下（1945年）の記憶を持つ平和都市として世界的に知られる。マツダ（自動車）が発展。','マツダがグローバル企業に成長。広島カープが地域スポーツ文化の中心に。','G7広島サミット（2023）開催。核廃絶の発信地として平和外交の拠点に。']],
-['yamaguchi','山口','chugoku',28,55,'🏭',['周南コンビナートなど重化学工業が発展。安倍晋三・岸田文雄ら歴代首相を多く輩出。','本州最西端として九州・関西をつなぐ物流が発展。角島大橋など観光が注目される。','山口・宇部の工業が電機・化学で転換。「長州閥」政治の根拠地として存在感を発揮。']],
-['kagawa','香川','shikoku',42,56,'🍜',['うどん王国として食文化が発展。瀬戸内海の島々が独特の風景を作る。','瀬戸大橋（坂出〜児島）が1988年に開通。本州へのアクセスが飛躍的に向上。','瀬戸内国際芸術祭（2010年〜）が国際的なアートイベントに成長。インバウンドが急増。']],
-['tokushima','徳島','shikoku',47,57,'💃',['阿波踊りが全国的なブランドに。農業（鳴門金時・すだち）が特産。','大鳴門橋が1985年開通。四国初の本州四国連絡橋で交通革命。IT企業誘致の先駆けに。','地方創生の最先端モデルとして注目。神山町のITテレワーク移住が全国メディアで紹介。']],
-['ehime','愛媛','shikoku',37,59,'🍊',['みかん・真珠の産地として農業・水産業が発展。松山城・道後温泉が観光資源。','しまなみ海道の整備が進む。今治タオルが全国ブランドに成長。','しまなみ海道が自転車聖地として国際的に有名に。今治造船が国内最大の造船グループに成長。']],
-['kochi','高知','shikoku',42,62,'🎏',['農業（土佐文旦・かつお）と漁業が発展。坂本龍馬の故郷として観光が盛ん。','高知自動車道の整備が進む。よさこいソーラン祭りが全国に広まる。','南海トラフ地震の最大被災地と想定される。人口減少・高齢化対策が最重要課題に。']],
-['fukuoka','福岡','kyushu',26,57,'🏙',['九州の中心都市・博多として商業・工業が発展。福岡空港が九州の航空の要衝に。','福岡ドーム（1993年）開業。天神・博多の都市再開発が加速。アジアへの玄関口として成長。','人口増加が続く稀有な政令指定都市。韓国・中国との航路が充実しアジアのハブ都市化が進む。']],
-['oita','大分','kyushu',32,57,'♨️',['温泉大国（別府・由布院）として観光業が発展。農業・漁業も盛ん。','由布院温泉が「大人の隠れ家」として全国ブランドに。大分空港のホバークラフトが注目される。','サッカー・Jリーグ（大分トリニータ）が地域活性化に貢献。地熱発電など再生エネルギー拠点化。']],
-['saga','佐賀','kyushu',23,59,'🏺',['農業（佐賀牛・いちご・のり）と伝統工芸（有田焼・伊万里焼）が産業の柱。','有田陶磁器が世界的コレクターズアイテムに。玄海原発の稼働問題が長年の政治課題。','佐賀空港へのオスプレイ配備問題が全国的議論に。農業ブランド化と観光振興が課題。']],
-['kumamoto','熊本','kyushu',28,61,'🏯',['農業王国・農業産出額で九州トップクラス。阿蘇山の観光が発展。','TDK・ソニーなど半導体・電機工場が集積。熊本城が観光の中心に。','2016年熊本地震（M7.3）で熊本城が大きな被害。TSMC工場誘致（2024年）で半導体産業の拠点に急浮上。']],
-['nagasaki','長崎','kyushu',19,62,'⛩',['軍艦島（端島）など近代化遺産が多く観光資源豊富。造船業の衰退で新産業が必要に。','軍艦島が2015年に世界遺産登録（朝鮮人強制労働問題で韓国と対立）。ハウステンボス（1992）開業。','長崎新幹線（西九州新幹線）が2022年開業。諫早湾干拓問題が長期化。']],
-['miyazaki','宮崎','kyushu',32,65,'🌊',['農業（ピーマン・きゅうり）と観光（シーガイア）が発展。プロ野球キャンプ地として有名。','シーガイア（1994年）開業するも経営行き詰まり破綻。口蹄疫問題（2010年）で畜産業が深刻打撃。','2023年7月、「南海トラフ地震臨時情報（巨大地震注意）」を初発令。全国に衝撃。']],
-['kagoshima','鹿児島','kyushu',26,68,'🚀',['種子島宇宙センター（1969年完成）が日本の宇宙開発の拠点に。農業・黒毛和牛が有名。','屋久島が1993年に世界自然遺産登録。九州新幹線（2004年部分開業）で交通が改善。','川内原発の再稼働（2015年）が全国の原発再稼働第1号として注目。JAXA商業衛星打ち上げが増加。']],
-['okinawa','沖縄','okinawa',15,82,'🌺',['1972年5月15日、本土復帰。27年ぶりに返還されるが広大な米軍基地が残留。沖縄海洋博覧会（1975年）開催。','1995年米兵による少女暴行事件を契機に10万人集会。「普天間基地の県外移設」を要求する運動が激化。','普天間基地の辺野古移設が国と沖縄県の対立のまま工事継続中。観光客数はコロナ前水準に回復しつつある。']],
+['hokkaido','北海道','hokkaido',60,13,'🐻',['農業と水産業が基幹産業として発展。200海里設定（1977）でソ連との北洋漁業が縮小し、農業の多角化が進んだ。','バブル景気で観光ブームが到来。G8洞爺湖サミット（2008）が開催され、国際的知名度が向上。','北海道新幹線が2016年に開業。農産品輸出の拡大と、北方領土問題の長期化が同時進行する。']],
+['aomori','青森','tohoku',54,25,'🍎',['青函トンネル建設が本格化。リンゴ産地として全国トップの生産量を誇る。','青函トンネル（1988）開通・青函連絡船廃止。本州と北海道を結ぶ交通の要衝に。','東北新幹線が新青森まで延伸（2010）。六ヶ所村の核燃料サイクル施設問題が政治課題に。']],
+['akita','秋田','tohoku',52,29,'🌾',['秋田杉・農業・石油採掘が経済を支える。秋田音頭・なまはげ文化が全国に広まる。','少子高齢化・過疎化が全国最速水準で進行。秋田新幹線（こまち）が1997年に開業。','人口減少が最も深刻な県の一つ。洋上風力発電の拠点として再生可能エネルギーに注目。']],
+['iwate','岩手','tohoku',55,30,'🗻',['農業・林業が主産業。三陸海岸の漁業が盛んで、南部鉄器などの伝統工芸が継承される。','宮沢賢治の故郷として観光開発が進む。遠野の民話文化が国際的に注目される。','2011年東日本大震災で壊滅的被害。沿岸部の復興事業が長期にわたって続く。']],
+['yamagata','山形','tohoku',53,33,'🍒',['果物王国・農業県として発展。山形新幹線（つばさ）の整備計画が始まる。','山形新幹線（1992）開業。さくらんぼ・米（つや姫）が全国ブランドに成長。','観光と農業の連携で「食の山形」ブランドを確立。豪雪との闘いが続く。']],
+['miyagi','宮城','tohoku',54,34,'🏯',['仙台市が東北の中心都市として発展。農業・水産業が基幹産業。','仙台が政令指定都市（1989）に。「杜の都」として経済・文化の東北拠点が確立。','東日本大震災で甚大な被害。南三陸・女川・石巻を津波が直撃。復興の象徴となる。']],
+['fukushima','福島','tohoku',52,38,'🍑',['会津・中通り・浜通りと3つの地域が共存。農業と工業が均衡よく発展。','東北自動車道・磐越道など交通インフラが整備。桃・りんご・コメが全国ブランドに。','2011年、福島第一原発事故。避難者最大約16万人。廃炉作業と風評被害との闘いが現在も続く。']],
+['niigata','新潟','chubu',49,38,'🍚',['コシヒカリの産地として全国に名を馳せる。日本海側最大の都市・新潟が発展。','越後湯沢スキーリゾートがバブル期に急成長。石油化学工業も発展。','2004年新潟県中越地震（M6.8）、2007年中越沖地震。北陸新幹線延伸で再発展。']],
+['tochigi','栃木','kanto',52,42,'🍓',['日光・那須の観光地として発展。農業（イチゴ）と工業が経済を支える。','東北新幹線延伸で首都圏のベッドタウン化が進む。宇都宮線の高速化も実現。','イチゴ（とちおとめ・とちあいか）生産量で全国首位。自動車関連工場の集積が進む。']],
+['ibaraki','茨城','kanto',53,43,'🔬',['農業産出額全国トップクラス。日立製作所など大手工場が立地し工業も盛ん。','つくば科学万博（1985）開催。つくば研究学園都市が形成される。','東京圏のベッドタウン化が進む一方、農業・研究機関が共存する「科学農業県」として発展。']],
+['gunma','群馬','kanto',49,43,'♨️',['繊維・機械産業が発展。温泉（草津・伊香保）観光が盛んで「温泉天国」と呼ばれる。','関越自動車道の全線開通で首都圏とのアクセスが向上。自動車部品産業が集積。','アウトドア観光が発展。外国人労働者受け入れが全国トップクラスに。']],
+['saitama','埼玉','kanto',51,45,'🏟',['首都圏のベッドタウンとして人口が急増。高度経済成長を下から支える役割。','大宮・浦和・与野の合併で「さいたま市」が2001年に政令指定都市へ。','大宮駅周辺の再開発が加速。「ダサい」から「住みやすい」への都市イメージ転換に成功。']],
+['chiba','千葉','kanto',53,47,'✈️',['東京湾岸の工業地帯が発展。成田空港が1978年に開港（多くの反対運動を乗り越えて）。','幕張メッセが1989年開業。ディズニーランド（1983）の開園で観光・商業が大きく発展。','東日本大震災で液状化被害。成田空港の機能強化と千葉港周辺の再開発が続く。']],
+['tokyo','東京','kanto',51,46,'🗼',['高度経済成長で世界有数の大都市圏に。1964年東京五輪の遺産が都市インフラを支える。','バブル景気で地価が世界最高水準に。バブル崩壊後、経済の「失われた時代」の中心に。','2020年東京五輪（コロナ禍で無観客）。少子化・都心回帰・外国人増加が続く。']],
+['kanagawa','神奈川','kanto',50,47,'⚓',['横浜・川崎の重工業が発展。横浜港が国際貿易の要衝として機能。','横浜みなとみらい21の開発が本格化。横浜市が全国最大の市に成長。','観光都市・国際都市として発展。外国人居住者が多い「国際横浜」が定着。']],
+['toyama','富山','chubu',44,42,'🦀',['北陸の工業県として発展。富山湾の新鮮な魚介類が名産。薬売り（置き薬）文化も継承。','北陸自動車道の全線開通で企業誘致が進む。ガラス工芸が新産業として注目される。','北陸新幹線が2015年に金沢まで延伸開業。2024年1月、能登半島地震で大きな被害。']],
+['ishikawa','石川','chubu',43,42,'🏺',['伝統工芸（加賀友禅・九谷焼）と観光が発展。金沢が「小京都」として全国に知られる。','金沢21世紀美術館など文化施設が整備。工芸・観光の融合が独自の発展モデルに。','北陸新幹線金沢開業（2015）で観光客急増。2024年1月、能登半島地震が壊滅的被害を与える。']],
+['fukui','福井','chubu',42,44,'🦕',['原子力発電所が集中（若狭湾エリア）。眼鏡フレーム・繊維産業が基幹産業。','原発の安全問題が長年の政治課題に。恐竜博物館が全国的に有名に。','北陸新幹線が2024年に福井まで延伸開業。原発の再稼働問題と観光振興が同時課題。']],
+['nagano','長野','chubu',47,44,'⛷',['農業・観光・精密機械産業が均衡して発展。国内有数のスキーリゾート県。','1998年冬季長野五輪開催。善光寺参りなどの伝統観光とスキー観光が共存。','移住・田舎暮らしのメッカとして注目。リニア中央新幹線のルート問題で静岡県と対立。']],
+['yamanashi','山梨','chubu',48,46,'🍇',['フルーツ王国（ぶどう・桃）の産地として発展。富士山が観光資源に。','富士急ハイランドなどの観光施設が充実。リニアモーターカーの実験線が整備される。','富士山が2013年に世界文化遺産に登録。外国人観光客急増でオーバーツーリズム問題が浮上。']],
+['shizuoka','静岡','chubu',48,49,'🍵',['富士山・伊豆の観光資源と、静岡茶・みかんの農業。浜松の楽器産業も発展。','浜松のヤマハ・スズキなど製造業が発展。静岡空港建設が進む。','リニア中央新幹線の南アルプストンネル問題で静岡県が工事を長期にわたり不許可。']],
+['gifu','岐阜','chubu',43,46,'🦺',['中部の内陸県として発展。白川郷・合掌造り集落が独特の文化を守る。','白川郷が1995年に世界文化遺産に登録。自動車部品・航空機部品産業が発展。','豪雨・台風被害が多発。高山・白川郷への訪日外国人が急増しオーバーツーリズム問題が顕在化。']],
+['aichi','愛知','chubu',44,48,'🚗',['トヨタ自動車を中心とした自動車産業が世界的拠点に。名古屋が中部圏の中心都市として発展。','愛知万博（2005年）開催。自動車産業の輸出で工業生産額全国首位に。','トヨタが自動運転・EV戦略を本格化。外国人労働者受け入れの最先端県として多文化共生が課題。']],
+['mie','三重','kinki',42,50,'🦞',['伊勢神宮への参拝観光と漁業（真珠・志摩）が発展。「おかげ参り」が観光ブームを呼ぶ。','志摩スペイン村など大型観光施設が開業。真珠養殖・海女文化が世界的に注目される。','G7伊勢志摩サミット（2016）開催。三重の食文化・観光ブランドが国際的に発信される。']],
+['shiga','滋賀','kinki',41,49,'🚤',['琵琶湖の水資源が関西の生命線。農業・工業が発展。「近江商人」の文化が継承される。','京都のベッドタウンとして人口が増加。湖北の自然・文化観光が注目される。','琵琶湖の水質保全が国家的課題に。全国で数少ない人口増加県として発展が続く。']],
+['kyoto','京都','kinki',40,49,'🏛',['古都・世界的観光地として観光業が発展。西陣織・清水焼などの伝統工芸が継承される。','バブル期に地価が急騰。任天堂・京セラなどグローバル企業が台頭し始める。','オーバーツーリズムが深刻化。伝統的景観保全と観光業の共存が最大の課題に。']],
+['osaka','大阪','kinki',40,50,'🏢',['「天下の台所」として商業・工業の中心。1970年大阪万博の遺産が都市インフラを支える。','バブル崩壊後の「大阪の地盤沈下」が議論に。大阪維新の会が台頭し政治改革を推進（2010年〜）。','大阪・関西万博2025年開催。IRカジノを含む統合型リゾートの誘致が賛否両論の議論に。']],
+['hyogo','兵庫','kinki',38,50,'🌉',['神戸港を中心とした貿易・工業が発展。「六甲アイランド」など埋め立て開発が進む。','1995年1月17日、阪神淡路大震災（M7.3）。死者6400人超。震災復興が長期の最重要課題に。','神戸ファッション・医療産業クラスターが形成。淡路島の観光開発が近年急加速。']],
+['nara','奈良','kinki',40,51,'🦌',['古都・世界文化遺産の観光資源が豊富。農業と観光が経済を支える。','法隆寺・東大寺など世界遺産の整備が進む。奈良市のベッドタウン化が進む。','2022年7月8日、安倍晋三元首相が奈良市内で銃撃・死去。訪日外国人が過去最多を更新。']],
+['wakayama','和歌山','kinki',39,53,'⛩',['世界遺産・熊野古道と農業（梅・みかん）が経済を支える。漁業も盛ん。','熊野古道が2004年に世界遺産登録。南紀白浜の観光が発展。','人口減少が最も深刻な県の一つ。南海トラフ地震対策と移住促進が重要課題。']],
+['tottori','鳥取','chugoku',36,47,'🏖',['農業（二十世紀梨）と砂丘観光が有名。日本で最も人口の少ない県。','鳥取砂丘の保全と観光開発が議論に。山陰自動車道の整備が進む。','2016年鳥取県中部地震（M6.6）。スタバ・マクドナルド「最後の都道府県出店」で話題に。']],
+['shimane','島根','chugoku',33,47,'⛩',['出雲大社・石見銀山など歴史文化資源が豊富。農業・漁業が基幹産業。','石見銀山が2007年に世界遺産登録。竹島問題が国際問題化（2005年「竹島の日」条例）。','人口減少・過疎化が最も深刻な県の一つ。UIターン促進と地方創生の先進地として注目。']],
+['okayama','岡山','chugoku',35,50,'🍑',['農業（白桃・マスカット）と工業が発展。「晴れの国おかやま」として観光PRが進む。','瀬戸大橋が1988年に開通。本州と四国を結ぶ拠点として工業・物流が発展。','2018年西日本豪雨で倉敷市真備町が壊滅的被害。復興が進む中、再移住対策が課題に。']],
+['hiroshima','広島','chugoku',31,52,'☮️',['原爆投下（1945年）の記憶を持つ平和都市として世界的に知られる。マツダ（自動車）が発展。','マツダがグローバル企業に成長。広島カープが地域スポーツ文化の中心に。','G7広島サミット（2023）開催。核廃絶の発信地として平和外交の拠点に。']],
+['yamaguchi','山口','chugoku',29,52,'🏭',['周南コンビナートなど重化学工業が発展。安倍晋三・岸田文雄ら歴代首相を多く輩出。','本州最西端として九州・関西をつなぐ物流が発展。角島大橋など観光が注目される。','山口・宇部の工業が電機・化学で転換。「長州閥」政治の根拠地として存在感を発揮。']],
+['kagawa','香川','shikoku',36,52,'🍜',['うどん王国として食文化が発展。瀬戸内海の島々が独特の風景を作る。','瀬戸大橋（坂出〜児島）が1988年に開通。本州へのアクセスが飛躍的に向上。','瀬戸内国際芸術祭（2010年〜）が国際的なアートイベントに成長。インバウンドが急増。']],
+['tokushima','徳島','shikoku',37,54,'💃',['阿波踊りが全国的なブランドに。農業（鳴門金時・すだち）が特産。','大鳴門橋が1985年開通。四国初の本州四国連絡橋で交通革命。IT企業誘致の先駆けに。','地方創生の最先端モデルとして注目。神山町のITテレワーク移住が全国メディアで紹介。']],
+['ehime','愛媛','shikoku',32,54,'🍊',['みかん・真珠の産地として農業・水産業が発展。松山城・道後温泉が観光資源。','しまなみ海道の整備が進む。今治タオルが全国ブランドに成長。','しまなみ海道が自転車聖地として国際的に有名に。今治造船が国内最大の造船グループに成長。']],
+['kochi','高知','shikoku',34,55,'🎏',['農業（土佐文旦・かつお）と漁業が発展。坂本龍馬の故郷として観光が盛ん。','高知自動車道の整備が進む。よさこいソーラン祭りが全国に広まる。','南海トラフ地震の最大被災地と想定される。人口減少・高齢化対策が最重要課題に。']],
+['fukuoka','福岡','kyushu',26,55,'🏙',['九州の中心都市・博多として商業・工業が発展。福岡空港が九州の航空の要衝に。','福岡ドーム（1993年）開業。天神・博多の都市再開発が加速。アジアへの玄関口として成長。','人口増加が続く稀有な政令指定都市。韓国・中国との航路が充実しアジアのハブ都市化が進む。']],
+['oita','大分','kyushu',29,57,'♨️',['温泉大国（別府・由布院）として観光業が発展。農業・漁業も盛ん。','由布院温泉が「大人の隠れ家」として全国ブランドに。大分空港のホバークラフトが注目される。','サッカー・Jリーグ（大分トリニータ）が地域活性化に貢献。地熱発電など再生エネルギー拠点化。']],
+['saga','佐賀','kyushu',25,56,'🏺',['農業（佐賀牛・いちご・のり）と伝統工芸（有田焼・伊万里焼）が産業の柱。','有田陶磁器が世界的コレクターズアイテムに。玄海原発の稼働問題が長年の政治課題。','佐賀空港へのオスプレイ配備問題が全国的議論に。農業ブランド化と観光振興が課題。']],
+['kumamoto','熊本','kyushu',26,58,'🏯',['農業王国・農業産出額で九州トップクラス。阿蘇山の観光が発展。','TDK・ソニーなど半導体・電機工場が集積。熊本城が観光の中心に。','2016年熊本地震（M7.3）で熊本城が大きな被害。TSMC工場誘致（2024年）で半導体産業の拠点に急浮上。']],
+['nagasaki','長崎','kyushu',24,57,'⛩',['軍艦島（端島）など近代化遺産が多く観光資源豊富。造船業の衰退で新産業が必要に。','軍艦島が2015年に世界遺産登録（朝鮮人強制労働問題で韓国と対立）。ハウステンボス（1992）開業。','長崎新幹線（西九州新幹線）が2022年開業。諫早湾干拓問題が長期化。']],
+['miyazaki','宮崎','kyushu',28,62,'🌊',['農業（ピーマン・きゅうり）と観光（シーガイア）が発展。プロ野球キャンプ地として有名。','シーガイア（1994年）開業するも経営行き詰まり破綻。口蹄疫問題（2010年）で畜産業が深刻打撃。','2023年7月、「南海トラフ地震臨時情報（巨大地震注意）」を初発令。全国に衝撃。']],
+['kagoshima','鹿児島','kyushu',26,63,'🚀',['種子島宇宙センター（1969年完成）が日本の宇宙開発の拠点に。農業・黒毛和牛が有名。','屋久島が1993年に世界自然遺産登録。九州新幹線（2004年部分開業）で交通が改善。','川内原発の再稼働（2015年）が全国の原発再稼働第1号として注目。JAXA商業衛星打ち上げが増加。']],
+['okinawa','沖縄','okinawa',18,85,'🌺',['1972年5月15日、本土復帰。27年ぶりに返還されるが広大な米軍基地が残留。沖縄海洋博覧会（1975年）開催。','1995年米兵による少女暴行事件を契機に10万人集会。「普天間基地の県外移設」を要求する運動が激化。','普天間基地の辺野古移設が国と沖縄県の対立のまま工事継続中。観光客数はコロナ前水準に回復しつつある。']],
 ];
 
 const JP_TERRS=[
-['etorofu','択捉島','hoppo',82,7,'🏔',['面積約3183㎢、北方四島最大の島。1945年ソ連が占領。元島民約4万人の帰還を求める声が続く。','ソ連崩壊後、東京宣言（1993年）で四島返還の枠組みが確認されるが具体的な進展はなし。','2022年ロシアのウクライナ侵攻後、北方領土交渉は完全停止。元島民の高齢化が進む。']],
-['kunashiri','国後島','hoppo',78,12,'🏔',['面積約1489㎢の島。ロシア軍の軍事施設が整備されている。「ビザなし交流」で訪問できる制度があった。','「ビザなし交流事業」（1992年〜）で日本人と旧島民が相互訪問。元島民の故郷への想いが確認される。','2022年のウクライナ侵攻後、ロシアはビザなし交流を一方的に停止。ロシアの軍事化が加速。']],
-['shikotan','色丹島','hoppo',80,15,'🏔',['日ソ共同宣言（1956年）では平和条約締結後に日本へ返還することが記されている2島のうちの1つ。','「2島先行返還」案が日本側から提起されるも、ロシアは4島問題として一括処理を主張。','プーチン政権下でロシアは2島返還案にも応じない姿勢を強化。ウクライナ侵攻後は交渉自体が凍結。']],
-['habomai','歯舞群島','hoppo',75,17,'🏔',['北海道根室市の眼前に広がる島々。漁業資源が豊富で、元島民が最も返還を切望する島群。','根室市の「北方領土の日」（2月7日）返還要求集会が毎年開催。政府・議員が参加する国民運動に定着。','ロシア側は歯舞を「千島」の一部として領有を主張。日本との法的解釈の違いが解決を複雑にする。']],
-['takeshima','竹島','takeshima',26,43,'🪨',['島根県隠岐郡に属する小島。1952年「李承晩ライン」設定後、韓国が1954年以降実効支配を継続。','1996年日韓双方がEEZを設定し摩擦激化。2005年島根県「竹島の日」条例制定で韓国が激しく抗議。','2012年8月、韓国の李明博大統領が竹島に上陸し天皇への謝罪要求発言で日韓関係が戦後最悪に。']],
-['uotsuri','魚釣島','senkaku',10,82,'⛰',['1895年に日本が閣議決定で領土に編入。1971年のUNESCAP石油埋蔵報告後、中国・台湾が領有権を主張し始める。','2004年中国人活動家7名が上陸し逮捕・強制送還。2010年中国漁船衝突事件が領土問題を国際的焦点に。','2012年9月、日本政府が尖閣を国有化。中国公船・海警局船の領海侵犯が常態化し年間最多記録を更新。']],
-['kitako','北小島','senkaku',13,84,'⛰',['無人島。1896年、古賀辰四郎氏がアホウドリ採取・漁業のために開拓し、日本の実効支配が始まった歴史を持つ。','1992年、中国が「領海及び接続水域法」で北小島を自国領土と明記。日本は強く抗議。','中国公船が北小島周辺の領海に定期的に侵入。日本の海上保安庁が24時間監視を継続。']],
-['minamiko','南小島','senkaku',9,85,'⛰',['北小島とともに古賀氏の開拓拠点として使われた歴史を持つ。日本政府が1932年に国有地に。','1996年、日本の右翼団体が魚釣島に灯台を建設。南小島周辺でも領有権示威活動が活発化。','2012年以降、中国海警船の周回・接続水域侵入が慢性化。日本の「何もしない実効支配」が続く。']],
-['kuba','久場島','senkaku',7,80,'⛰',['4島の中で最も西に位置する島。米軍の訓練水域に指定されており、日米地位協定の問題も絡む複雑な位置づけ。','米軍の使用継続と日本の主権主張の両立が外交的課題に。中国はこの点を批判する。','中国が久場島周辺での軍事訓練に懸念を示す。日・中・米の三つ巴の複雑な権益関係が続く。']],
+['etorofu','択捉島','hoppo',75,8,'🏔',['面積約3183㎢、北方四島最大の島。1945年ソ連が占領。元島民約4万人の帰還を求める声が続く。','ソ連崩壊後、東京宣言（1993年）で四島返還の枠組みが確認されるが具体的な進展はなし。','2022年ロシアのウクライナ侵攻後、北方領土交渉は完全停止。元島民の高齢化が進む。']],
+['kunashiri','国後島','hoppo',68,11,'🏔',['面積約1489㎢の島。ロシア軍の軍事施設が整備されている。「ビザなし交流」で訪問できる制度があった。','「ビザなし交流事業」（1992年〜）で日本人と旧島民が相互訪問。元島民の故郷への想いが確認される。','2022年のウクライナ侵攻後、ロシアはビザなし交流を一方的に停止。ロシアの軍事化が加速。']],
+['shikotan','色丹島','hoppo',71,12,'🏔',['日ソ共同宣言（1956年）では平和条約締結後に日本へ返還することが記されている2島のうちの1つ。','「2島先行返還」案が日本側から提起されるも、ロシアは4島問題として一括処理を主張。','プーチン政権下でロシアは2島返還案にも応じない姿勢を強化。ウクライナ侵攻後は交渉自体が凍結。']],
+['habomai','歯舞群島','hoppo',68,13,'🏔',['北海道根室市の眼前に広がる島々。漁業資源が豊富で、元島民が最も返還を切望する島群。','根室市の「北方領土の日」（2月7日）返還要求集会が毎年開催。政府・議員が参加する国民運動に定着。','ロシア側は歯舞を「千島」の一部として領有を主張。日本との法的解釈の違いが解決を複雑にする。']],
+['takeshima','竹島','takeshima',28,39,'🪨',['島根県隠岐郡に属する小島。1952年「李承晩ライン」設定後、韓国が1954年以降実効支配を継続。','1996年日韓双方がEEZを設定し摩擦激化。2005年島根県「竹島の日」条例制定で韓国が激しく抗議。','2012年8月、韓国の李明博大統領が竹島に上陸し天皇への謝罪要求発言で日韓関係が戦後最悪に。']],
+['uotsuri','魚釣島','senkaku',7,87,'⛰',['1895年に日本が閣議決定で領土に編入。1971年のUNESCAP石油埋蔵報告後、中国・台湾が領有権を主張し始める。','2004年中国人活動家7名が上陸し逮捕・強制送還。2010年中国漁船衝突事件が領土問題を国際的焦点に。','2012年9月、日本政府が尖閣を国有化。中国公船・海警局船の領海侵犯が常態化し年間最多記録を更新。']],
+['kitako','北小島','senkaku',8,87,'⛰',['無人島。1896年、古賀辰四郎氏がアホウドリ採取・漁業のために開拓し、日本の実効支配が始まった歴史を持つ。','1992年、中国が「領海及び接続水域法」で北小島を自国領土と明記。日本は強く抗議。','中国公船が北小島周辺の領海に定期的に侵入。日本の海上保安庁が24時間監視を継続。']],
+['minamiko','南小島','senkaku',8,88,'⛰',['北小島とともに古賀氏の開拓拠点として使われた歴史を持つ。日本政府が1932年に国有地に。','1996年、日本の右翼団体が魚釣島に灯台を建設。南小島周辺でも領有権示威活動が活発化。','2012年以降、中国海警船の周回・接続水域侵入が慢性化。日本の「何もしない実効支配」が続く。']],
+['kuba','久場島','senkaku',9,87,'⛰',['4島の中で最も西に位置する島。米軍の訓練水域に指定されており、日米地位協定の問題も絡む複雑な位置づけ。','米軍の使用継続と日本の主権主張の両立が外交的課題に。中国はこの点を批判する。','中国が久場島周辺での軍事訓練に懸念を示す。日・中・米の三つ巴の複雑な権益関係が続く。']],
 ];
 
 // Lookup map
@@ -3656,6 +3927,80 @@ function jpRegLabel(r){
   return{hokkaido:'北海道',tohoku:'東北',kanto:'関東',chubu:'中部',kinki:'近畿',
   chugoku:'中国',shikoku:'四国',kyushu:'九州',okinawa:'沖縄',
   hoppo:'北方領土',takeshima:'竹島',senkaku:'尖閣諸島'}[r]||r;
+}
+
+// ===================== マップ表示切り替え =====================
+let _mapView='current';
+
+function setMapView(v){
+  _mapView=v;
+  const cv=document.getElementById('mapCurrentView');
+  const av=document.getElementById('mapAllView');
+  const mb=document.getElementById('mvs-current');
+  const ab=document.getElementById('mvs-all');
+  if(cv) cv.style.display=v==='current'?'block':'none';
+  if(av) av.style.display=v==='all'?'block':'none';
+  if(mb) mb.classList.toggle('mvs-active',v==='current');
+  if(ab) ab.classList.toggle('mvs-active',v==='all');
+  if(v==='all'){ buildJapanMap(); updateJpHUD(); }
+  else { renderMapCurrentView(getJpStep()); }
+}
+
+function renderMapCurrentView(step){
+  const card=document.getElementById('mapDestCard');
+  if(!card) return;
+  if(step>=JP_ORDER.length){
+    card.innerHTML=`<div style="padding:40px 20px;text-align:center;">
+      <div style="font-size:48px;margin-bottom:12px;">🎉</div>
+      <div style="font-family:'Dela Gothic One',sans-serif;font-size:18px;color:var(--gold);">全56ステージ制覇！</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:8px;">日本一周の旅、完全踏破おめでとう！</div>
+    </div>`;
+    return;
+  }
+  const id=JP_ORDER[step];
+  const s=JP_ALL[id];
+  if(!s) return;
+  const year=getJpYear(step);
+  const color=JP_RC[s.region]||'#aaa';
+  const ch=CHARS[S.activeChar];
+  const spriteImg=ch&&ch.imgs[3];
+  const imgPath=getJpImgPath(step);
+  card.innerHTML=`
+    ${spriteImg?`<img class="jpm-char-sprite" src="${escH(spriteImg)}" alt="" onerror="this.style.display='none'">`:''}
+    <img class="map-dest-banner" src="${imgPath}" alt="" onerror="this.style.display='none'">
+    <div class="map-dest-body">
+      <div class="jpm-year-badge" style="margin-bottom:10px;">📅 ${year}年 · Stage ${step+1}/56</div>
+      <div class="jpm-head">
+        <div class="jpm-flag" style="background:${jpHex(color,0.15)};border-color:${color};">${s.emoji}</div>
+        <div>
+          <div class="jpm-name">${escH(s.name)}</div>
+          <div class="jpm-meta">${s.isTerr?'⚠️ 領土問題エリア · ':''}${jpRegLabel(s.region)}</div>
+        </div>
+      </div>
+      <div class="jpm-stage-info">📍 現在の目的地。「旅行する！」で訪問を記録しよう</div>
+      <div id="mdEras"></div>
+      <button class="jpm-btn" style="background:${color};color:#fff;margin-top:14px;" onclick="visitJpStageInline()">🚆 ${escH(s.name)}に旅行する！</button>
+    </div>`;
+  const erasEl=document.getElementById('mdEras');
+  if(erasEl) erasEl.innerHTML=`<div class="jpm-era" style="border-color:${color}"><div class="jpm-era-title" style="color:${color}">${year}年代 — ${jpRegLabel(s.region)}</div><div class="jpm-era-text">${s.eras[0]||''}</div></div>`;
+}
+
+function visitJpStageInline(){
+  const step=getJpStep();
+  if(!S.jpMap) S.jpMap={step:0};
+  S.jpMap.step=step+1;
+  save();
+  const s=JP_ALL[JP_ORDER[step]];
+  const year=getJpYear(step);
+  showToast(`${s.emoji} ${year}年・${s.name} 旅行完了！🎉`);
+  updateJpHUD();
+  const card=document.getElementById('mapDestCard');
+  if(card){
+    card.classList.add('transitioning');
+    setTimeout(()=>{ card.classList.remove('transitioning'); renderMapCurrentView(S.jpMap.step); },560);
+  } else {
+    renderMapCurrentView(S.jpMap.step);
+  }
 }
 
 // ルートSVGを描画（訪問済みノードを順番に結ぶ線）
@@ -3692,7 +4037,7 @@ function buildJapanMap(){
     const s=JP_ALL[id];
     if(!s) return;
     const color=JP_RC[s.region]||'#888';
-    const state=idx<step?'jp-visited':idx===step?'jp-current':'';
+    const state=idx<step?'jp-visited':idx===step?'jp-current':'jp-fog';
     const year=getJpYear(idx);
 
     const div=document.createElement('div');
@@ -3707,16 +4052,28 @@ function buildJapanMap(){
     circ.className='jp-circle';
     if(state==='jp-visited') circ.style.background=color;
     else if(state==='jp-current'){ circ.style.background='var(--gold)'; }
-    circ.textContent=jpShort(s.name);
+
+    if(state!=='jp-fog') circ.textContent=jpShort(s.name);
 
     const lbl=document.createElement('div');
     lbl.className='jp-step-lbl';
-    lbl.textContent=state?String(year):'';
+    lbl.textContent=(state==='jp-visited'||state==='jp-current')?String(year):'';
 
     div.appendChild(circ);
     div.appendChild(lbl);
-    div.onclick=()=>openJpModal(id,idx);
-    div.title=`${year} ${s.name}`;
+
+    if(state==='jp-current'){
+      // 現在地はクリックで現在地ビューへ
+      div.onclick=()=>setMapView('current');
+      div.title=`${year} ${s.name}（現在地）`;
+    } else if(state==='jp-visited'){
+      // 訪問済みはモーダルで履歴を見る
+      div.onclick=()=>openJpModal(id,idx);
+      div.title=`${year} ${s.name}（訪問済み）`;
+    } else {
+      // 霧：タップ不可
+      div.title='';
+    }
     stage.appendChild(div);
   });
   updateJpHUD();
@@ -3795,11 +4152,14 @@ function visitJpStage(){
   if(!S.jpMap) S.jpMap={step:0};
   S.jpMap.step=step+1;
   save();
-  buildJapanMap();
   const s=JP_ALL[jpCurId];
   const year=getJpYear(step);
   showToast(`${s.emoji} ${year}年・${s.name} 旅行完了！🎉`);
   closeJpModal();
+  updateJpHUD();
+  // 現在地ビューが表示中なら更新
+  if(_mapView==='current') renderMapCurrentView(S.jpMap.step);
+  else buildJapanMap();
 }
 
 function closeJpModal(){
@@ -3810,6 +4170,255 @@ function closeJpModal(){
 function bgCloseJp(e){if(e.target===document.getElementById('jpmOverlay'))closeJpModal();}
 
 buildJapanMap();
+
+// =====================================================
+// 運動記録パネル
+// =====================================================
+let _exChart = null;
+let _exSettingsOpen = false;
+
+function openExercisePanel(){
+  document.getElementById('exPanel').classList.add('open');
+  document.body.style.overflow='hidden';
+  renderExercisePanel();
+}
+function closeExercisePanel(){
+  document.getElementById('exPanel').classList.remove('open');
+  document.body.style.overflow='';
+}
+function closeExercisePanelBg(e){
+  if(e.target===document.getElementById('exPanel')) closeExercisePanel();
+}
+
+function renderExercisePanel(){
+  if(!S.exerciseMetrics||!S.exerciseMetrics.length){
+    S.exerciseMetrics=[
+      {id:'ex1',name:'ベンチプレス',unit:'kg'},
+      {id:'ex2',name:'スクワット',unit:'kg'},
+      {id:'ex3',name:'デッドリフト',unit:'kg'},
+      {id:'ex4',name:'懸垂',unit:'回'},
+      {id:'ex5',name:'ランニング',unit:'km'},
+    ];
+  }
+  if(!S.exerciseLog) S.exerciseLog=[];
+  const metrics=S.exerciseMetrics;
+
+  // latest log values for placeholder
+  const latest=S.exerciseLog[S.exerciseLog.length-1];
+  const latestVals=latest?latest.values:{};
+
+  // goal card HTML
+  const goalHTML=`
+    <div class="ex-goal-card" id="exGoalCard">
+      <span style="font-size:20px">🎯</span>
+      <div class="ex-goal-text" id="exGoalDisplay">${escH(S.exerciseGoal||'目標を設定してみよう！')}</div>
+      <button class="ex-goal-edit" onclick="toggleExGoalEdit()">編集</button>
+    </div>
+    <div id="exGoalEditRow" style="display:none;margin-bottom:14px;">
+      <div class="ex-goal-input-row">
+        <input class="ex-goal-input" id="exGoalInput" type="text" placeholder="例: 週3回ジム、ランニング5km..." value="${escH(S.exerciseGoal||'')}">
+        <button class="ex-goal-save" onclick="saveExGoal()">保存</button>
+      </div>
+    </div>`;
+
+  // chart canvas
+  const chartHTML=`
+    <div class="ex-chart-wrap" style="height:200px;">
+      <canvas id="exRadarCanvas" style="max-width:200px;max-height:200px;"></canvas>
+    </div>`;
+
+  // input grid
+  const inputGridItems=metrics.map(m=>`
+    <div class="ex-input-item">
+      <div class="ex-input-label">${escH(m.name)}</div>
+      <input class="ex-input-field" type="number" id="exInput_${escH(m.id)}" min="0" step="0.1" placeholder="${latestVals[m.id]||'0'}">
+      <div class="ex-input-unit">${escH(m.unit)}</div>
+    </div>`).join('');
+
+  const formHTML=`
+    <div class="ex-form-title">TODAY'S RECORD</div>
+    <div class="ex-input-grid">${inputGridItems}</div>
+    <div class="ex-title-row">
+      <input class="ex-title-input" id="exTitleInput" type="text" placeholder="メモ（任意）例: 胸の日、有酸素のみ...">
+    </div>
+    <button class="ex-save-btn" onclick="saveExerciseLog()">💪 記録を保存</button>`;
+
+  // history
+  const histHTML=renderExerciseHistoryHTML();
+
+  // settings toggle
+  const settingsHTML=`
+    <button class="ex-settings-toggle" onclick="toggleExSettings()">⚙️ メトリクス設定</button>
+    <div id="exSettingsArea" style="display:none;margin-bottom:14px;">
+      <div id="exMetricRows"></div>
+      <div class="ex-add-metric-row">
+        <input class="ex-goal-input" id="exNewMetricName" type="text" placeholder="名前（例: 腕立て）" style="flex:1;">
+        <input class="ex-goal-input" id="exNewMetricUnit" type="text" placeholder="単位" style="width:56px;">
+        <button class="ex-add-btn" onclick="addExerciseMetric()">＋追加</button>
+      </div>
+    </div>`;
+
+  document.getElementById('exPanelBody').innerHTML=goalHTML+chartHTML+formHTML+histHTML+settingsHTML;
+
+  // restore settings open state
+  if(_exSettingsOpen){
+    document.getElementById('exSettingsArea').style.display='block';
+    renderMetricSettingsRows();
+  }
+
+  renderExerciseChart();
+}
+
+function toggleExGoalEdit(){
+  const row=document.getElementById('exGoalEditRow');
+  row.style.display=(row.style.display==='none')?'block':'none';
+  if(row.style.display==='block') document.getElementById('exGoalInput').focus();
+}
+function saveExGoal(){
+  S.exerciseGoal=document.getElementById('exGoalInput').value.trim();
+  save();
+  document.getElementById('exGoalDisplay').textContent=S.exerciseGoal||'目標を設定してみよう！';
+  document.getElementById('exGoalEditRow').style.display='none';
+}
+
+function saveExerciseLog(){
+  const metrics=S.exerciseMetrics||[];
+  const values={};
+  let hasAny=false;
+  metrics.forEach(m=>{
+    const v=parseFloat(document.getElementById('exInput_'+m.id)?.value||'');
+    if(!isNaN(v)&&v>0){ values[m.id]=v; hasAny=true; }
+  });
+  if(!hasAny){ showToast('⚠️ 少なくとも1つ入力してください'); return; }
+  const title=document.getElementById('exTitleInput')?.value.trim()||'';
+  const entry={id:'e'+Date.now(),date:todayStr(),values,title};
+  if(!S.exerciseLog) S.exerciseLog=[];
+  S.exerciseLog.push(entry);
+  if(S.exerciseLog.length>180) S.exerciseLog=S.exerciseLog.slice(-180);
+  save();
+  showToast('💪 運動記録を保存しました！');
+  renderExercisePanel();
+}
+
+function deleteExerciseLog(id){
+  S.exerciseLog=(S.exerciseLog||[]).filter(e=>e.id!==id);
+  save();
+  renderExercisePanel();
+}
+
+function renderExerciseHistoryHTML(){
+  const logs=(S.exerciseLog||[]).slice().reverse().slice(0,30);
+  if(!logs.length) return '<div class="log-empty">記録がまだありません</div>';
+  const metrics=S.exerciseMetrics||[];
+  const rows=logs.map(e=>{
+    const chips=metrics.filter(m=>e.values[m.id]!=null).map(m=>`<span class="ex-hist-chip">${escH(m.name)} ${e.values[m.id]}${escH(m.unit)}</span>`).join('');
+    return `<div class="ex-hist-item">
+      <div class="ex-hist-hdr">
+        <span class="ex-hist-date">${escH(e.date)}</span>
+        <span class="ex-hist-name">${escH(e.title||'')}</span>
+        <button class="ex-hist-del" onclick="deleteExerciseLog('${escH(e.id)}')" title="削除">🗑</button>
+      </div>
+      <div class="ex-hist-chips">${chips}</div>
+    </div>`;
+  }).join('');
+  return `<div class="ex-hist-title" style="margin-top:4px;">HISTORY</div>${rows}`;
+}
+
+function renderExerciseChart(){
+  const canvas=document.getElementById('exRadarCanvas');
+  if(!canvas) return;
+  const metrics=S.exerciseMetrics||[];
+  if(!metrics.length) return;
+
+  // destroy previous chart instance
+  if(_exChart){ try{ _exChart.destroy(); }catch(e){} _exChart=null; }
+
+  const logs=S.exerciseLog||[];
+  // use last 5 sessions for sparkline; compare latest vs previous
+  const recent=logs.slice(-5);
+  if(recent.length<1){ canvas.parentElement.innerHTML='<div style="color:rgba(255,255,255,0.3);font-size:11px;text-align:center;padding:20px;">記録を保存するとグラフが表示されます</div>'; return; }
+
+  // max per metric across all logs for normalization
+  const maxVals={};
+  metrics.forEach(m=>{ maxVals[m.id]=Math.max(1,...logs.map(l=>l.values[m.id]||0)); });
+
+  const datasets=recent.map((entry,i)=>{
+    const alpha=0.15+(i/recent.length)*0.55;
+    const data=metrics.map(m=>{ const v=entry.values[m.id]||0; return Math.round((v/maxVals[m.id])*100); });
+    return {
+      label:entry.date,
+      data,
+      backgroundColor:`rgba(91,200,232,${alpha*0.35})`,
+      borderColor:`rgba(91,200,232,${alpha})`,
+      borderWidth:i===recent.length-1?2:1,
+      pointBackgroundColor:'rgba(91,200,232,0.8)',
+      pointRadius:i===recent.length-1?3:1,
+    };
+  });
+
+  _exChart=new Chart(canvas,{
+    type:'radar',
+    data:{ labels:metrics.map(m=>m.name), datasets },
+    options:{
+      responsive:true,maintainAspectRatio:true,
+      animation:{duration:400},
+      scales:{r:{
+        min:0,max:100,
+        ticks:{display:false,stepSize:25},
+        grid:{color:'rgba(255,255,255,0.1)'},
+        pointLabels:{color:'rgba(255,255,255,0.55)',font:{size:9,family:"'Zen Maru Gothic',sans-serif"}},
+        angleLines:{color:'rgba(255,255,255,0.08)'},
+      }},
+      plugins:{legend:{display:false}},
+    }
+  });
+}
+
+function toggleExSettings(){
+  _exSettingsOpen=!_exSettingsOpen;
+  const area=document.getElementById('exSettingsArea');
+  if(!area) return;
+  area.style.display=_exSettingsOpen?'block':'none';
+  if(_exSettingsOpen) renderMetricSettingsRows();
+}
+
+function renderMetricSettingsRows(){
+  const el=document.getElementById('exMetricRows');
+  if(!el) return;
+  const metrics=S.exerciseMetrics||[];
+  el.innerHTML=metrics.map(m=>`
+    <div class="ex-metric-row">
+      <input class="ex-metric-name" value="${escH(m.name)}" onchange="updateMetricName('${escH(m.id)}',this.value)">
+      <input class="ex-metric-unit" value="${escH(m.unit)}" onchange="updateMetricUnit('${escH(m.id)}',this.value)">
+      <button class="ex-metric-del" onclick="removeExerciseMetric('${escH(m.id)}')">✕</button>
+    </div>`).join('');
+}
+
+function updateMetricName(id,val){
+  const m=(S.exerciseMetrics||[]).find(x=>x.id===id);
+  if(m){ m.name=val.trim()||m.name; save(); }
+}
+function updateMetricUnit(id,val){
+  const m=(S.exerciseMetrics||[]).find(x=>x.id===id);
+  if(m){ m.unit=val.trim()||m.unit; save(); }
+}
+function addExerciseMetric(){
+  const name=document.getElementById('exNewMetricName')?.value.trim();
+  const unit=document.getElementById('exNewMetricUnit')?.value.trim()||'回';
+  if(!name){ showToast('⚠️ 名前を入力してください'); return; }
+  if(!S.exerciseMetrics) S.exerciseMetrics=[];
+  S.exerciseMetrics.push({id:'ex'+Date.now(),name,unit});
+  save();
+  renderExercisePanel();
+  _exSettingsOpen=true;
+}
+function removeExerciseMetric(id){
+  S.exerciseMetrics=(S.exerciseMetrics||[]).filter(m=>m.id!==id);
+  save();
+  renderExercisePanel();
+  _exSettingsOpen=true;
+}
+
 </script>
 </body>
 </html>
