@@ -1438,12 +1438,15 @@ html.dark .tile-sheet-subtitle{color:#555;}
   </div>
 </div>
 
-<!-- 運動記録パネル -->
+<!-- Pinパネル -->
 <div class="ex-panel" id="exPanel" onclick="closeExercisePanelBg(event)">
   <div class="ex-panel-overlay"></div>
   <div class="ex-panel-sheet">
     <div class="ex-panel-hdr">
-      <span class="ex-panel-title">🏋️ 運動記録</span>
+      <div>
+        <span class="ex-panel-title">🚩 Pin</span>
+        <div style="font-size:10px;color:rgba(255,255,255,0.45);margin-top:2px;">運動・勉強・習慣…どんな目標でも記録できる</div>
+      </div>
       <button class="ex-panel-close" onclick="closeExercisePanel()">✕</button>
     </div>
     <div class="ex-panel-body" id="exPanelBody">
@@ -1659,7 +1662,7 @@ html.dark .tile-sheet-subtitle{color:#555;}
     <div class="char-actions">
       <button class="char-action-btn char-action-task" onclick="openModal()"><span class="char-action-icon">＋</span><span class="char-action-label">タスク追加</span></button>
       <button class="char-action-btn char-action-ai" onclick="toggleAiPanel()"><span class="char-action-icon">💬</span><span class="char-action-label">AI相談</span></button>
-      <button class="char-action-btn char-action-ex" onclick="openExercisePanel()"><span class="char-action-icon">🏋️</span><span class="char-action-label">運動記録</span></button>
+      <button class="char-action-btn char-action-ex" onclick="openExercisePanel()"><span class="char-action-icon">🚩</span><span class="char-action-label">Pin</span></button>
     </div>
   </div>
   <nav class="bottom-nav">
@@ -2008,7 +2011,7 @@ let S = {
     {id:'ex5',name:'ランニング',unit:'km'},
   ],
   exerciseLog:    [],
-  exerciseGoal:   '',
+  exerciseGoal:   '運動目標',
   bossState:      null,
   loginStreak:    0,
   lastLoginDate:  '',
@@ -4673,12 +4676,12 @@ function renderExercisePanel(){
   const goalHTML=`
     <div class="ex-goal-card" id="exGoalCard">
       <span style="font-size:20px">🎯</span>
-      <div class="ex-goal-text" id="exGoalDisplay">${escH(S.exerciseGoal||'目標を設定してみよう！')}</div>
+      <div class="ex-goal-text" id="exGoalDisplay">${escH(S.exerciseGoal||'どんな目標でもOK！')}</div>
       <button class="ex-goal-edit" onclick="toggleExGoalEdit()">編集</button>
     </div>
     <div id="exGoalEditRow" style="display:none;margin-bottom:14px;">
       <div class="ex-goal-input-row">
-        <input class="ex-goal-input" id="exGoalInput" type="text" placeholder="例: 週3回ジム、ランニング5km..." value="${escH(S.exerciseGoal||'')}">
+        <input class="ex-goal-input" id="exGoalInput" type="text" placeholder="例: 週3回ジム / 毎日英単語10個 / 読書30分..." value="${escH(S.exerciseGoal||'')}">
         <button class="ex-goal-save" onclick="saveExGoal()">保存</button>
       </div>
     </div>`;
@@ -4698,19 +4701,19 @@ function renderExercisePanel(){
     </div>`).join('');
 
   const formHTML=`
-    <div class="ex-form-title">TODAY'S RECORD</div>
+    <div class="ex-form-title">TODAY'S PIN</div>
     <div class="ex-input-grid">${inputGridItems}</div>
     <div class="ex-title-row">
-      <input class="ex-title-input" id="exTitleInput" type="text" placeholder="メモ（任意）例: 胸の日、有酸素のみ...">
+      <input class="ex-title-input" id="exTitleInput" type="text" placeholder="メモ（任意）例: 今日の感想、コンディションなど...">
     </div>
-    <button class="ex-save-btn" onclick="saveExerciseLog()">💪 記録を保存</button>`;
+    <button class="ex-save-btn" onclick="saveExerciseLog()">🚩 Pinを保存</button>`;
 
   // history
   const histHTML=renderExerciseHistoryHTML();
 
   // settings toggle
   const settingsHTML=`
-    <button class="ex-settings-toggle" onclick="toggleExSettings()">⚙️ メトリクス設定</button>
+    <button class="ex-settings-toggle" onclick="toggleExSettings()">⚙️ 項目設定</button>
     <div id="exSettingsArea" style="display:none;margin-bottom:14px;">
       <div id="exMetricRows"></div>
       <div class="ex-add-metric-row">
@@ -4739,7 +4742,7 @@ function toggleExGoalEdit(){
 function saveExGoal(){
   S.exerciseGoal=document.getElementById('exGoalInput').value.trim();
   save();
-  document.getElementById('exGoalDisplay').textContent=S.exerciseGoal||'目標を設定してみよう！';
+  document.getElementById('exGoalDisplay').textContent=S.exerciseGoal||'どんな目標でもOK！';
   document.getElementById('exGoalEditRow').style.display='none';
 }
 
@@ -4758,7 +4761,7 @@ function saveExerciseLog(){
   S.exerciseLog.push(entry);
   if(S.exerciseLog.length>180) S.exerciseLog=S.exerciseLog.slice(-180);
   save();
-  showToast('💪 運動記録を保存しました！');
+  showToast('🚩 Pinを保存しました！');
   renderExercisePanel();
 }
 
