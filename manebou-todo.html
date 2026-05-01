@@ -916,14 +916,9 @@ html.dark .tile-sheet-subtitle{color:#555;}
 @keyframes mapDestFlash{0%,100%{opacity:1}40%,60%{opacity:0}}
 .map-dest-card.transitioning{animation:mapDestFlash 0.55s ease;}
 /* ルートSVG */
-.jp-route-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;overflow:visible;}
+.jp-route-svg{display:none;}
 .jp-land-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;}
-.jp-land-svg polygon,.jp-land-svg ellipse{
-  fill:rgba(70,130,220,0.14);
-  stroke:rgba(120,180,255,0.7);
-  stroke-width:0.8;
-  stroke-linejoin:round;
-}
+.jp-land-svg polygon,.jp-land-svg ellipse{fill:rgba(8,20,60,0.35);stroke:none;}
 @keyframes jpBlink{0%,100%{opacity:1}50%{opacity:.4}}
 .map-zoom-bar{position:absolute;bottom:10px;right:10px;z-index:30;display:flex;flex-direction:column;gap:5px;pointer-events:all;}
 .map-zoom-btn{width:32px;height:32px;border-radius:10px;background:rgba(5,6,26,0.75);border:1.5px solid rgba(255,255,255,0.22);color:rgba(255,255,255,0.85);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:900;line-height:1;backdrop-filter:blur(6px);transition:background 0.15s;}
@@ -970,8 +965,8 @@ html.dark .tile-sheet-subtitle{color:#555;}
 .jp-pref-fog{fill:rgba(255,255,255,0.01);stroke:rgba(255,255,255,0.07);stroke-width:0.35;pointer-events:none;}
 @keyframes prefGlow{0%,100%{stroke:rgba(245,200,66,0.7);filter:drop-shadow(0 0 2px rgba(245,200,66,0.4))}50%{stroke:rgba(245,200,66,1);filter:drop-shadow(0 0 7px rgba(245,200,66,0.9))}}
 /* ========== マップ上キャラピン ========== */
-.jp-char-pin{position:absolute;width:20px;height:20px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.75);transform:translate(-50%,-50%);cursor:pointer;z-index:10;box-shadow:0 1px 5px rgba(0,0,0,0.6);transition:transform 0.15s;object-fit:cover;background:#1a1a2e;}
-.jp-char-pin:hover{transform:translate(-50%,-50%) scale(1.35);z-index:20;}
+.jp-char-pin{position:absolute;width:16px;height:16px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.8);transform:translate(-50%,-50%);cursor:pointer;box-shadow:0 1px 6px rgba(0,0,0,0.7);transition:transform 0.15s,z-index 0s;object-fit:cover;background:#1a1a2e;}
+.jp-char-pin:hover{transform:translate(-50%,-50%) scale(1.8);z-index:200!important;border-color:var(--gold);box-shadow:0 2px 10px rgba(245,200,66,0.5);}
 /* ========== タイル進捗 ========== */
 .jp-tile-grid{display:flex;flex-wrap:wrap;gap:3px;margin:10px 0 4px;}
 .jp-tile{width:22px;height:22px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:13px;border:1.5px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.04);}
@@ -1208,7 +1203,7 @@ html.dark .tile-sheet-subtitle{color:#555;}
       </div>
       <div class="title-coll-card">
         <div class="title-coll-hdr">
-          <span class="title-coll-title-txt">🏅 称号コレクション</span>
+          <span class="title-coll-title-txt">🏅 バッジコレクション</span>
           <span class="title-coll-count" id="titleUnlockedCount">0 / 0</span>
         </div>
         <div class="title-grid" id="titleGrid"></div>
@@ -1847,7 +1842,7 @@ function checkAndNotifyNewTitles(){
   if(fresh.length===0) return;
   fresh.forEach((t,i)=>{
     S.knownTitleIds.push(t.id);
-    setTimeout(()=>showToast(`🏅 称号解放「${t.name}」！`),600+i*900);
+    setTimeout(()=>showToast(`🏅 バッジ解放「${t.name}」！`),600+i*900);
   });
   save();
 }
@@ -2808,7 +2803,7 @@ function renderCharJournal(){
     const equippedId=charTitles[name];
     const equippedTitle=equippedId?TITLES.find(t=>t.id===equippedId):null;
     const chips=unlockedIds.length===0
-      ?`<span class="char-no-titles">まだ称号がありません</span>`
+      ?`<span class="char-no-titles">まだバッジがありません</span>`
       :unlockedIds.map(id=>{
           const t=TITLES.find(tt=>tt.id===id);
           const isEquipped=equippedId===id;
@@ -2830,7 +2825,7 @@ function equipTitle(charName, titleId){
   if(S.charTitles[charName]===titleId){
     delete S.charTitles[charName];
     save(); renderCharJournal();
-    showToast(`${charName} の称号を外した`);
+    showToast(`${charName} のバッジを外した`);
   } else {
     S.charTitles[charName]=titleId;
     const t=TITLES.find(tt=>tt.id===titleId);
@@ -4295,76 +4290,76 @@ const JP_TERRS=[
 ['kuba','久場島','senkaku',9,87,'⛰',['4島の中で最も西に位置する島。米軍の訓練水域に指定されており、日米地位協定の問題も絡む複雑な位置づけ。','米軍の使用継続と日本の主権主張の両立が外交的課題に。中国はこの点を批判する。','中国が久場島周辺での軍事訓練に懸念を示す。日・中・米の三つ巴の複雑な権益関係が続く。']],
 ];
 
-// 都道府県・領土 形状ポリゴン（% 座標空間 0-100）
+// 都道府県・領土 形状ポリゴン（% 座標空間 0-100）精度向上版
 const JP_SHAPES={
   // ── 九州 ──
-  nagasaki:"21,53 25,52 26,56 26,62 23,65 20,63 19,57",
-  saga:    "22,53 26,53 27,58 24,59 22,57",
-  kagoshima:"23,61 27,61 30,63 31,67 28,70 23,68 21,65",
-  kumamoto:"23,57 28,56 31,59 30,64 27,65 23,63",
-  miyazaki:"28,58 32,57 33,64 30,68 27,65",
-  oita:    "27,53 31,52 33,56 31,62 28,61 26,58",
-  fukuoka: "22,52 30,51 31,55 27,57 22,56",
+  nagasaki: "20,52 25,51 26,55 27,60 24,65 21,64 19,59 20,55",
+  saga:     "22,52 26,52 27,56 25,58 22,57",
+  kagoshima:"22,61 27,61 30,64 31,68 28,71 24,70 21,66",
+  kumamoto: "23,57 28,56 31,59 31,64 27,65 22,63",
+  miyazaki: "28,58 32,57 34,63 31,68 27,65",
+  oita:     "27,53 32,52 34,56 32,62 28,61 26,58",
+  fukuoka:  "22,52 30,51 31,54 28,57 22,56",
   // ── 四国 ──
-  kochi:   "29,54 38,53 39,59 31,61 28,57",
-  ehime:   "28,51 33,50 34,56 30,58 28,55",
+  kochi:    "28,55 38,54 39,60 32,62 28,58",
+  ehime:    "28,51 33,50 34,56 31,58 28,55",
   tokushima:"35,51 39,50 40,57 36,58 34,55",
-  kagawa:  "33,50 38,49 39,53 33,53",
+  kagawa:   "33,50 38,49 39,53 33,53",
   // ── 中国 ──
-  yamaguchi:"24,48 30,47 31,53 27,56 23,53",
+  yamaguchi:"24,48 30,47 31,52 28,56 23,53",
   hiroshima:"28,47 33,47 34,53 28,54",
-  shimane: "27,43 34,42 35,48 28,49",
-  okayama: "33,46 38,45 39,52 33,52",
-  tottori: "33,43 39,42 40,47 33,48",
+  shimane:  "27,42 34,41 35,48 28,49",
+  okayama:  "33,46 38,45 40,52 33,52",
+  tottori:  "33,43 39,42 40,47 33,47",
   // ── 近畿 ──
-  hyogo:   "33,44 40,44 41,52 38,53 33,52",
-  wakayama:"37,51 41,50 42,57 38,59 36,56",
-  osaka:   "37,48 41,48 41,53 37,53",
-  kyoto:   "37,43 41,42 43,50 40,52 37,51",
-  nara:    "38,49 42,49 43,55 38,55",
-  mie:     "40,46 44,46 45,55 42,57 40,53",
-  shiga:   "39,44 43,44 44,52 39,52",
+  hyogo:    "33,44 40,44 41,49 40,52 38,53 33,52",
+  wakayama: "37,52 41,51 42,58 38,60 36,57",
+  osaka:    "38,49 41,49 41,53 38,53",
+  kyoto:    "37,42 41,41 43,48 41,49 38,49 37,48",
+  nara:     "40,49 43,49 44,56 40,56 38,53 40,53",
+  mie:      "41,46 44,46 46,55 43,58 41,55",
+  shiga:    "40,44 43,44 44,50 41,51 40,49",
   // ── 中部 ──
-  fukui:   "39,40 42,39 43,46 39,47",
-  ishikawa:"40,36 43,35 45,39 44,44 40,44",
-  aichi:   "41,45 46,45 47,52 41,52",
-  gifu:    "40,39 46,38 47,47 41,48",
-  toyama:  "42,37 47,36 47,43 42,43",
-  shizuoka:"43,46 53,45 55,51 52,54 43,53",
+  fukui:    "38,40 42,39 43,46 38,47",
+  ishikawa: "40,36 43,34 45,39 44,44 40,44",
+  aichi:    "41,45 46,45 47,52 41,52",
+  gifu:     "40,39 46,38 47,47 41,48",
+  toyama:   "42,37 47,36 47,43 42,43",
+  shizuoka: "43,46 53,45 55,51 52,54 44,53",
   yamanashi:"46,43 51,43 51,49 46,49",
-  nagano:  "43,39 50,39 52,46 50,50 43,49",
-  niigata: "44,33 52,32 53,38 50,42 44,41",
+  nagano:   "43,39 50,38 52,46 50,50 43,49",
+  niigata:  "44,33 52,32 53,39 49,42 44,41",
   // ── 関東 ──
-  kanagawa:"48,46 53,45 54,51 48,51",
-  chiba:   "51,43 57,42 58,49 54,53 50,50 50,46",
-  tokyo:   "49,44 53,44 53,48 49,48",
-  saitama: "48,42 54,42 54,47 48,47",
-  gunma:   "46,39 51,38 52,44 46,45",
-  tochigi: "49,38 55,37 56,43 49,44",
-  ibaraki: "51,38 57,37 58,46 51,47",
+  kanagawa: "48,46 53,45 54,49 52,52 50,53 48,51",
+  chiba:    "51,43 57,42 58,48 56,52 53,54 50,51 50,46",
+  tokyo:    "49,44 53,44 53,48 49,48",
+  saitama:  "48,42 54,42 54,47 48,47",
+  gunma:    "46,39 51,38 52,44 46,45",
+  tochigi:  "49,38 55,37 56,43 49,44",
+  ibaraki:  "51,38 57,37 58,46 51,47",
   // ── 東北 ──
   fukushima:"48,35 57,34 58,41 48,41",
-  miyagi:  "51,31 59,30 60,37 51,38",
-  yamagata:"48,29 53,28 55,34 53,39 48,38",
-  iwate:   "52,25 61,24 62,34 55,36 51,33",
-  akita:   "48,24 53,23 54,30 53,37 48,37",
-  aomori:  "49,20 60,19 61,27 55,29 49,27",
-  // ── 北海道 ──
-  hokkaido:"49,20 58,7 67,8 69,18 63,22 50,21",
-  // ── 沖縄 ──
-  okinawa: "14,83 24,82 25,87 14,87",
+  miyagi:   "51,31 59,30 60,37 51,38",
+  yamagata: "48,29 53,28 55,34 53,39 48,38",
+  iwate:    "52,25 61,24 62,34 55,36 51,33",
+  akita:    "48,24 53,23 54,30 53,37 48,37",
+  aomori:   "49,20 60,19 62,26 55,29 49,27",
+  // ── 北海道（より正確な輪郭）──
+  hokkaido: "51,23 52,20 55,8 62,7 67,10 68,17 65,22 58,24 51,23",
+  // ── 沖縄（細長い島の連なり）──
+  okinawa:  "14,84 19,82 22,84 21,87 16,87",
   // ── 北方領土 ──
-  etorofu: "72,6 79,6 79,10 72,10",
+  etorofu:  "72,6 79,6 79,10 72,10",
   kunashiri:"65,9 72,9 72,13 65,13",
-  shikotan:"69,10 74,10 74,14 69,14",
-  habomai: "65,11 71,11 71,15 65,15",
+  shikotan: "69,10 74,10 74,14 69,14",
+  habomai:  "65,12 70,12 70,15 65,15",
   // ── 竹島 ──
   takeshima:"26,37 30,37 30,41 26,41",
-  // ── 尖閣 ──
-  uotsuri: "5,85 9,85 9,89 5,89",
-  kitako:  "6,86 10,86 10,89 6,89",
-  minamiko:"6,87 10,87 10,91 6,91",
-  kuba:    "7,86 12,86 12,89 7,89",
+  // ── 尖閣（まとめて表示）──
+  uotsuri:  "4,84 10,84 10,90 4,90",
+  kitako:   "5,85 9,85 9,89 5,89",
+  minamiko: "5,86 9,86 9,90 5,90",
+  kuba:     "6,85 11,85 11,89 6,89",
 };
 
 // 各ステージ必要ポモドーロ数（★合計、CSV受信後に上書き）
@@ -4697,16 +4692,17 @@ function buildJapanMap(){
   if(!stage) return;
   initMapPanZoom();
   stage.querySelectorAll('.jp-node,.jp-char-pin').forEach(el=>el.remove());
+  // 旧ルートSVGを削除（形状マップでは不要）
+  stage.querySelector('.jp-route-svg')?.remove();
   if(!S.jpMap) S.jpMap={step:0,progress:0};
   const step=getJpStep();
-
-  // ルートライン（細め、背景役）
-  buildRouteSvg(stage,step);
+  const progress=S.jpMap.progress||0;
 
   // 県形状SVGレイヤー
-  buildPrefShapesSvg(stage,step);
+  buildPrefShapesSvg(stage,step,progress);
 
   // 完了済み県にキャラピン（おーる局長）を配置
+  // 密集エリア対策：後のステージを上に重なるようzIndex設定
   JP_ORDER.forEach((id,idx)=>{
     if(idx>=step) return;
     const s=JP_ALL[id];
@@ -4716,6 +4712,7 @@ function buildJapanMap(){
     img.src=`../../../画像/マネぼう/imgキャラ/おーる局長/All (${n}).png`;
     img.style.left=s.x+'%';
     img.style.top=s.y+'%';
+    img.style.zIndex=idx+10;
     img.title=`${getJpYear(idx)}年 ${s.name}（制覇済み）`;
     img.onclick=()=>openJpModal(id,idx);
     stage.appendChild(img);
@@ -4724,7 +4721,7 @@ function buildJapanMap(){
   updateJpHUD();
 }
 
-function buildPrefShapesSvg(stage,step){
+function buildPrefShapesSvg(stage,step,progress){
   let svg=stage.querySelector('.jp-pref-shapes-svg');
   if(!svg){
     svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
@@ -4732,29 +4729,48 @@ function buildPrefShapesSvg(stage,step){
     svg.setAttribute('viewBox','0 0 100 100');
     svg.setAttribute('preserveAspectRatio','none');
     svg.setAttribute('xmlns','http://www.w3.org/2000/svg');
-    // 陸地SVGの直後に挿入
     const land=stage.querySelector('.jp-land-svg');
     if(land) land.after(svg); else stage.prepend(svg);
   }
   svg.innerHTML='';
 
-  JP_ORDER.forEach((id,idx)=>{
-    const s=JP_ALL[id];
-    const pts=JP_SHAPES[id];
-    if(!pts) return;
-    const color=JP_RC[s.region]||'#888';
-    const state=idx<step?'visited':idx===step?'current':'fog';
+  // 描画順：霧→訪問済み→現在地（前面に来るよう）
+  const ordered=[...JP_ORDER.map((id,idx)=>({id,idx}))];
+  const layers=['fog','visited','current'];
+  layers.forEach(layer=>{
+    ordered.forEach(({id,idx})=>{
+      const s=JP_ALL[id];
+      const pts=JP_SHAPES[id];
+      if(!pts) return;
+      const color=JP_RC[s.region]||'#888';
+      const state=idx<step?'visited':idx===step?'current':'fog';
+      if(state!==layer) return;
 
-    const poly=document.createElementNS('http://www.w3.org/2000/svg','polygon');
-    poly.setAttribute('points',pts);
-    poly.setAttribute('class',`jp-pref-shape jp-pref-${state}`);
-    poly.style.setProperty('--jrc',color);
-    if(state==='visited') poly.style.fill=jpHex(color,0.35);
-    if(state!=='fog'){
-      poly.style.cursor='pointer';
-      poly.addEventListener('click',()=>openJpModal(id,idx));
-    }
-    svg.appendChild(poly);
+      const poly=document.createElementNS('http://www.w3.org/2000/svg','polygon');
+      poly.setAttribute('points',pts);
+      poly.setAttribute('class',`jp-pref-shape jp-pref-${state}`);
+      // ツールチップ
+      const ttl=document.createElementNS('http://www.w3.org/2000/svg','title');
+      ttl.textContent=state==='fog'?'???':`${getJpYear(idx)}年 ${s.name}`;
+      poly.appendChild(ttl);
+
+      if(state==='visited'){
+        poly.style.fill=jpHex(color,0.38);
+        poly.style.cursor='pointer';
+        // タッチターゲットを広くする（stroke幅広め）
+        poly.setAttribute('stroke-width','1.5');
+        poly.addEventListener('click',()=>openJpModal(id,idx));
+      } else if(state==='current'){
+        // 進捗に応じてフィル濃度が上がる
+        const pct=(step<JP_ORDER.length&&progress>0)?Math.min(progress/getJpTilesNeeded(idx),1):0;
+        poly.style.fill=jpHex(color,0.08+pct*0.35);
+        poly.style.cursor='pointer';
+        poly.addEventListener('click',()=>openJpModal(id,idx));
+      } else {
+        poly.style.pointerEvents='none';
+      }
+      svg.appendChild(poly);
+    });
   });
 }
 
