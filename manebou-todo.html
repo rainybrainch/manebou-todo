@@ -1175,9 +1175,9 @@ html.dark .jp-stat{background:rgba(255,255,255,0.03);border-color:rgba(255,255,2
   </div>
   <div class="pom-section-label">セット数</div>
   <div class="pom-presets" id="pomSetPresets">
-    <button class="pom-preset sel" onclick="setPomSets(0,this)">∞</button>
+    <button class="pom-preset" onclick="setPomSets(0,this)">∞</button>
     <button class="pom-preset" onclick="setPomSets(2,this)">2</button>
-    <button class="pom-preset" onclick="setPomSets(3,this)">3</button>
+    <button class="pom-preset sel" onclick="setPomSets(3,this)">3</button>
     <button class="pom-preset" onclick="setPomSets(4,this)">4</button>
     <button class="pom-preset" onclick="setPomSets(5,this)">5</button>
   </div>
@@ -3026,7 +3026,7 @@ function renderBarChart(){
 // =====================================================
 // POMODORO (work / break cycle)
 // =====================================================
-let pomState={phase:'work',secondsLeft:25*60,active:false,interval:null,sessions:0,workMinutes:25,breakMinutes:5,targetSets:0,endTime:null};
+let pomState={phase:'work',secondsLeft:25*60,active:false,interval:null,sessions:0,workMinutes:25,breakMinutes:5,targetSets:3,endTime:null};
 
 function openPomPanel(){ $('pomPanel').classList.add('open'); }
 function closePomPanel(){ $('pomPanel').classList.remove('open'); }
@@ -3099,7 +3099,7 @@ function setBreakDuration(minutes,btn){
 
 function updatePomDisplay(){
   const isWork=pomState.phase==='work';
-  const total=isWork?pomState.workMinutes*60:pomState.breakMinutes*60;
+  const total=pomState.phase==='final-break'?60:isWork?pomState.workMinutes*60:pomState.breakMinutes*60;
   const m=Math.floor(pomState.secondsLeft/60);
   const s=pomState.secondsLeft%60;
   $('pomTime').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
@@ -3128,18 +3128,18 @@ function pomDone(){
   if(pomState.phase==='work'){
     pomState.sessions++;
     renderPomSessions();
-    // セット数上限チェック
+    onPomodoroWorkComplete();
+    // 全セット完了 → 1分締め休憩
     if(pomState.targetSets>0 && pomState.sessions>=pomState.targetSets){
-      pomState.phase='work';
-      pomState.secondsLeft=pomState.workMinutes*60;
-      pomState.endTime=null;
-      if(badge){badge.textContent='完了';badge.className='pom-phase-badge';}
-      $('pomLabel').textContent=`🎉 ${pomState.targetSets}セット完了！`;
-      $('pomFill').style.stroke='var(--gold)';
-      onPomodoroWorkComplete();
+      pomState.phase='final-break';
+      pomState.secondsLeft=60;
+      if(badge){badge.textContent='締め休憩';badge.className='pom-phase-badge break-phase';}
+      $('pomLabel').textContent=`🎉 ${pomState.targetSets}セット完了！1分休憩☕`;
+      $('pomFill').style.stroke='var(--sky)';
       updatePomDisplay();
+      startPomodoro();
+      showToast(`🎉 ${pomState.targetSets}セット達成！1分休んでリセットします`);
       save(); savePomState();
-      showToast(`🎉 ${pomState.targetSets}セット達成！お疲れ様！`);
       return;
     }
     pomState.phase='break';
@@ -3147,9 +3147,21 @@ function pomDone(){
     if(badge){badge.textContent='休憩';badge.className='pom-phase-badge break-phase';}
     $('pomLabel').textContent='休憩タイム！☕';
     $('pomFill').style.stroke='var(--sky)';
-    onPomodoroWorkComplete();
     updatePomDisplay();
     startPomodoro();
+  } else if(pomState.phase==='final-break'){
+    // 1分締め休憩終了 → 最初にリセット
+    pomState.sessions=0;
+    pomState.phase='work';
+    pomState.secondsLeft=pomState.workMinutes*60;
+    pomState.endTime=null;
+    if(badge){badge.textContent='集中';badge.className='pom-phase-badge';}
+    $('pomLabel').textContent='準備中';
+    $('pomFill').style.stroke='var(--gold)';
+    updatePomDisplay();
+    renderPomSessions();
+    showToast('✅ お疲れ様！ポモドーロを最初に戻しました');
+    save(); savePomState();
   } else {
     pomState.phase='work';
     pomState.secondsLeft=pomState.workMinutes*60;
