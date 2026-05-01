@@ -1,5 +1,8 @@
-__pycache__/
-テスト１/
-*.py
-*.db
+﻿__pycache__/
 *.pyc
+*.pyo
+テスト１/
+*.ini
+*.log
+.DS_Store
+Thumbs.db

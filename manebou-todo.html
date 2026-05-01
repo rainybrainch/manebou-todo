@@ -15,6 +15,16 @@
   --green:#4CAF7D; --purple:#9B6DD6; --dark:#1A1A2E;
   --white:#FFFFFF; --cream:#FFFDF5;
 }
+/* ── APP THEMES ── */
+html[data-theme="cyberpunk"]{--gold:#a78bfa;--gold-dark:#7c5cdc;}
+html[data-theme="cyberpunk"] nav{background:rgba(8,8,20,0.97);}
+html[data-theme="cyberpunk"] body{background-image:radial-gradient(ellipse at 10% 20%,rgba(167,139,250,0.12) 0%,transparent 60%),radial-gradient(ellipse at 90% 80%,rgba(167,139,250,0.07) 0%,transparent 55%);}
+html.dark[data-theme="cyberpunk"] body{background:#07071a;}
+html[data-theme="fantasy"]{--gold:#e879f9;--gold-dark:#be3ff0;}
+html[data-theme="fantasy"] nav{background:rgba(18,8,26,0.97);}
+html[data-theme="fantasy"] body{background-image:radial-gradient(ellipse at 10% 20%,rgba(232,121,249,0.12) 0%,transparent 60%),radial-gradient(ellipse at 90% 80%,rgba(240,171,252,0.07) 0%,transparent 55%);}
+html.dark[data-theme="fantasy"] body{background:#0e0618;}
+
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{font-family:'Zen Maru Gothic',sans-serif;background:var(--cream);color:var(--dark);min-height:100vh;padding-bottom:calc(180px + env(safe-area-inset-bottom, 0px));overflow-x:clip;background-image:radial-gradient(ellipse at 10% 20%,rgba(91,200,232,0.07) 0%,transparent 60%),radial-gradient(ellipse at 90% 80%,rgba(245,200,66,0.06) 0%,transparent 55%);background-attachment:fixed;}
@@ -23,7 +33,7 @@ body{font-family:'Zen Maru Gothic',sans-serif;background:var(--cream);color:var(
 .fade-in.visible{opacity:1;transform:translateY(0);}
 
 /* ====== NAV ====== */
-nav{position:sticky;top:0;z-index:200;background:rgba(26,26,46,0.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:3px solid var(--gold);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:8px;}
+nav{position:sticky;top:0;z-index:200;background:rgba(26,26,46,0.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:3px solid var(--gold);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:8px;overflow:hidden;min-width:0;}
 .nav-left{display:flex;align-items:center;gap:9px;}
 .nav-logo{height:30px;border-radius:7px;}
 .nav-title{font-family:'Dela Gothic One',sans-serif;font-size:16px;color:var(--gold);text-shadow:2px 2px 0 var(--gold-dark);white-space:nowrap;}
@@ -405,6 +415,30 @@ nav{position:sticky;top:0;z-index:200;background:rgba(26,26,46,0.96);backdrop-fi
 /* ====== TOAST ====== */
 .toast{position:fixed;top:60px;left:50%;transform:translateX(-50%) translateY(-200px);z-index:9999;background:var(--dark);color:white;border:3px solid var(--gold);border-radius:14px;padding:10px 18px;font-size:13px;font-weight:700;box-shadow:4px 4px 0 var(--gold-dark);white-space:nowrap;transition:transform 0.4s cubic-bezier(0.17,0.89,0.32,1.1);pointer-events:none;}
 .toast.show{transform:translateX(-50%) translateY(0);}
+/* ====== やったこと 新レイアウト A/B ====== */
+.yd-layout-toggle{display:flex;gap:6px;margin-bottom:14px;}
+.yd-layout-btn{flex:1;padding:8px 10px;border-radius:10px;border:1.5px solid rgba(255,255,255,0.1);background:transparent;color:rgba(255,255,255,0.4);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:all 0.2s;-webkit-tap-highlight-color:transparent;}
+.yd-layout-btn.yd-layout-active{background:rgba(245,200,66,0.15);border-color:rgba(245,200,66,0.4);color:var(--gold);}
+/* 案A: グリッド */
+.yd-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px;}
+.yd-card{background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:16px;padding:16px 14px;cursor:pointer;text-align:left;transition:all 0.18s cubic-bezier(0.34,1.56,0.64,1);display:flex;align-items:center;gap:12px;font-family:inherit;-webkit-tap-highlight-color:transparent;}
+.yd-card:hover{background:rgba(255,255,255,0.08);border-color:rgba(245,200,66,0.3);}
+.yd-card:active{transform:scale(0.94);}
+.yd-card-icon{font-size:30px;flex-shrink:0;}
+.yd-card-title{font-size:9px;color:rgba(255,255,255,0.4);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:3px;}
+.yd-card-stat{font-family:'Dela Gothic One',sans-serif;font-size:22px;color:var(--gold);line-height:1.1;}
+.yd-card-sub{font-size:10px;color:rgba(255,255,255,0.3);margin-top:3px;}
+.yd-back-btn{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.05);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;color:rgba(255,255,255,0.6);font-size:12px;font-weight:700;padding:9px 14px;cursor:pointer;margin-bottom:14px;font-family:inherit;transition:all 0.15s;-webkit-tap-highlight-color:transparent;}
+.yd-back-btn:hover{background:rgba(255,255,255,0.09);color:#fff;}
+/* 案B: スライダー */
+.yd-slider-nav{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.yd-snav-btn{background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);font-size:22px;width:38px;height:38px;border-radius:10px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.15s;font-family:inherit;-webkit-tap-highlight-color:transparent;}
+.yd-snav-btn:hover{background:rgba(255,255,255,0.12);color:#fff;}
+.yd-snav-btn:active{transform:scale(0.9);}
+.yd-dots{display:flex;gap:7px;flex:1;justify-content:center;align-items:center;}
+.yd-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.2);transition:all 0.22s cubic-bezier(0.34,1.56,0.64,1);cursor:pointer;}
+.yd-dot.active{background:var(--gold);width:22px;border-radius:4px;}
+.yd-slide-label{text-align:center;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);letter-spacing:1px;margin-bottom:12px;}
 
 /* ====== YATTA SUB-NAV ====== */
 .yatta-sub-nav{display:flex;gap:4px;margin-bottom:14px;padding:4px;background:rgba(255,255,255,0.05);border-radius:15px;border:1.5px solid rgba(255,255,255,0.08);overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
@@ -453,7 +487,7 @@ nav{position:sticky;top:0;z-index:200;background:rgba(26,26,46,0.96);backdrop-fi
 .badge-card.locked{opacity:0.38;filter:grayscale(1);}
 .badge-emoji{font-size:30px;display:block;margin-bottom:5px;}
 .badge-name{font-size:10px;font-weight:700;margin-bottom:3px;line-height:1.3;}
-.badge-desc{font-size:9px;color:#888;line-height:1.4;}
+.badge-desc{font-size:9px;color:#555;line-height:1.4;}
 
 /* ====== HEATMAP ====== */
 .heatmap-title{font-family:'Dela Gothic One',sans-serif;font-size:13px;color:#888;letter-spacing:3px;margin:16px 0 10px;}
@@ -535,7 +569,7 @@ nav{position:sticky;top:0;z-index:200;background:rgba(26,26,46,0.96);backdrop-fi
 .bci.bci-locked{opacity:0.18;filter:grayscale(1);border-color:rgba(255,255,255,0.1);background:rgba(255,255,255,0.03);}
 .bci-emoji{font-size:28px;display:block;margin-bottom:6px;line-height:1;}
 .bci-name{font-size:9px;font-weight:700;color:#fff;line-height:1.35;word-break:break-all;}
-.bci-desc{font-size:7px;color:rgba(255,255,255,0.35);margin-top:4px;line-height:1.5;}
+.bci-desc{font-size:8px;color:rgba(255,255,255,0.65);margin-top:4px;line-height:1.5;}
 .bci-new{position:absolute;top:-5px;right:-5px;background:var(--gold);color:var(--dark);font-size:7px;font-weight:700;border-radius:20px;padding:2px 5px;white-space:nowrap;}
 /* adventure gacha / costume cards */
 .adv-gacha-card{background:var(--dark);border:3px solid var(--gold);border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:4px 4px 0 var(--gold-dark);}
@@ -628,6 +662,8 @@ nav{position:sticky;top:0;z-index:200;background:rgba(26,26,46,0.96);backdrop-fi
 .coin-rate-num{font-family:'Dela Gothic One',sans-serif;font-size:16px;color:var(--green);line-height:1;}
 .coin-rate-label{font-size:9px;color:rgba(76,175,125,0.6);letter-spacing:2px;font-weight:700;margin-top:2px;}
 .nav-coin{font-family:'Dela Gothic One',sans-serif;font-size:11px;color:var(--gold);white-space:nowrap;}
+.nav-stat{display:flex;flex-direction:column;align-items:center;gap:1px;}
+.nav-stat-label{font-size:8px;color:rgba(255,255,255,0.38);font-weight:700;letter-spacing:0.4px;white-space:nowrap;}
 
 /* ====== MAP STATS ====== */
 .map-stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;}
@@ -978,12 +1014,21 @@ html.dark .tile-sheet-subtitle{color:#555;}
 .jp-map-stage{
   position:absolute;inset:0;
   width:100%;height:100%;padding-bottom:0;
-  background:
-    radial-gradient(ellipse at 70% 20%,rgba(74,158,255,0.11) 0%,transparent 50%),
-    radial-gradient(ellipse at 15% 80%,rgba(162,155,254,0.1) 0%,transparent 50%),
-    linear-gradient(175deg,#05061a 0%,#080a20 100%);
+  background:url('images/map.jpg') center/cover no-repeat;
   border:none;border-radius:0;overflow:visible;
 }
+/* 霧エフェクト：未踏エリアを暗く */
+.jp-fog-overlay{position:absolute;inset:0;background:rgba(2,4,20,0.48);pointer-events:none;z-index:2;}
+.jp-land-svg{display:none;}
+/* ピンドット */
+.jp-pin-dot{position:absolute;border-radius:50%;transform:translate(-50%,-50%);z-index:6;transition:transform .15s;}
+.jp-pin-visited{width:13px;height:13px;background:var(--jrc,#4a8f6e);border:1.5px solid rgba(255,255,255,.75);box-shadow:0 0 6px var(--jrc),0 1px 4px rgba(0,0,0,.6);cursor:pointer;pointer-events:all;}
+.jp-pin-visited:hover{transform:translate(-50%,-50%) scale(1.5);z-index:20;}
+.jp-pin-current{width:20px;height:20px;background:var(--gold);border:2.5px solid #fff;box-shadow:0 0 0 5px rgba(245,200,66,.22),0 0 18px rgba(245,200,66,.9);animation:jpPulse 1.6s ease-in-out infinite;cursor:pointer;pointer-events:all;z-index:15;}
+.jp-pin-fog{width:7px;height:7px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);pointer-events:none;}
+.jp-pin-ripple{position:absolute;inset:-5px;border-radius:50%;border:2px solid var(--gold);animation:jpRipple 1.8s ease-out infinite;}
+/* マップルートライン */
+.jp-route-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:4;overflow:visible;}
 .jp-sea{position:absolute;font-size:8px;color:rgba(255,255,255,0.14);font-weight:700;letter-spacing:1.5px;pointer-events:none;transform:translate(-50%,-50%);}
 /* 統計バーをマップ直上に */
 .jp-stats-row{
@@ -1034,12 +1079,18 @@ html.dark .tile-sheet-subtitle{color:#555;}
 .jp-node.jp-fog:hover{transform:translate(-50%,-50%);}
 .jp-node.jp-fog .jp-circle{width:12px;height:12px;background:rgba(255,255,255,0.03);border:1.5px solid rgba(255,255,255,0.09);filter:blur(0.5px);}
 .jp-node.jp-fog .jp-step-lbl{display:none;}
-/* マップ表示切り替えスイッチャー */
-.map-view-switcher{position:relative;display:flex;gap:0;margin-bottom:14px;background:rgba(255,255,255,0.05);border-radius:14px;padding:4px;}
-.mvs-indicator{position:absolute;top:4px;bottom:4px;left:4px;width:calc(50% - 6px);background:linear-gradient(135deg,rgba(245,200,66,0.2),rgba(245,200,66,0.08));border:1.5px solid rgba(245,200,66,0.5);border-radius:10px;transition:left 0.38s cubic-bezier(0.4,0,0.2,1),box-shadow 0.3s;pointer-events:none;box-shadow:0 0 12px rgba(245,200,66,0.18);}
-.mvs-indicator.on-all{left:calc(50% + 2px);}
-.mvs-btn{flex:1;padding:11px 0;border-radius:10px;border:none;font-size:13px;font-weight:700;cursor:pointer;background:transparent;color:rgba(255,255,255,0.38);transition:color 0.28s;font-family:inherit;-webkit-tap-highlight-color:transparent;min-height:44px;position:relative;z-index:1;}
-.mvs-btn.mvs-active{color:var(--gold);}
+/* 全体地図ボタン */
+.jp-mapfull-btn{display:block;width:100%;padding:13px 0;margin-bottom:14px;border-radius:14px;border:1.5px solid rgba(245,200,66,0.35);background:rgba(245,200,66,0.08);color:var(--gold);font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;letter-spacing:.04em;transition:background 0.18s,border-color 0.18s;-webkit-tap-highlight-color:transparent;}
+.jp-mapfull-btn:active{background:rgba(245,200,66,0.18);}
+/* 全体地図モーダル */
+.jp-mapfull-overlay{display:none;position:fixed;inset:0;z-index:3000;background:rgba(2,4,20,0.82);backdrop-filter:blur(6px);align-items:flex-end;justify-content:center;}
+.jp-mapfull-overlay.open{display:flex;}
+.jp-mapfull-modal{position:relative;width:100%;max-width:520px;height:92dvh;max-height:92dvh;background:#05071a;border-radius:20px 20px 0 0;border:1.5px solid rgba(255,255,255,0.1);display:flex;flex-direction:column;overflow:hidden;}
+.jp-mapfull-header{display:flex;align-items:center;gap:12px;padding:14px 16px 10px;background:rgba(5,7,25,0.9);border-bottom:1px solid rgba(255,255,255,0.08);flex-shrink:0;}
+.jp-mapfull-title{font-family:'Dela Gothic One',sans-serif;font-size:15px;color:var(--gold);flex:0 0 auto;margin-right:4px;}
+.jp-mapfull-close{margin-left:auto;width:32px;height:32px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.7);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.jp-mapfull-body{flex:1;position:relative;overflow:hidden;}
+.jp-mapfull-body .jp-map-stage{position:absolute;inset:0;width:100%;height:100%;border-radius:0;border:none;}
 /* インライン現在地カード */
 .map-dest-card{background:#0d0f22;border-radius:20px;border:2px solid rgba(245,200,66,0.2);overflow:hidden;position:relative;margin-bottom:14px;}
 .map-dest-banner{width:100%;height:150px;object-fit:cover;display:block;}
@@ -1144,10 +1195,96 @@ html.dark .tile-sheet-subtitle{color:#555;}
 .jp-field-loc{position:absolute;top:0;left:0;right:0;z-index:5;display:flex;flex-direction:column;align-items:center;padding-top:10px;pointer-events:none;text-align:center;}
 .jp-field-loc-reg{font-size:9px;font-weight:900;letter-spacing:3px;color:rgba(255,255,255,.45);margin-bottom:2px;}
 .jp-field-loc-name{font-family:'Dela Gothic One',sans-serif;font-size:20px;color:#fff;text-shadow:0 2px 18px rgba(0,0,0,1),0 0 40px rgba(255,255,255,.15);}
-.jp-field-pref-svg{position:absolute;right:10px;top:6px;width:80px;height:68px;z-index:2;pointer-events:none;opacity:.18;overflow:visible;}
+.jp-field-pref-svg{position:absolute;right:10px;top:6px;width:80px;height:68px;z-index:1;pointer-events:none;opacity:.18;overflow:visible;}
 .jp-s-spotlight{position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);width:100px;height:90px;background:radial-gradient(ellipse at 50% 90%,rgba(245,200,66,.4) 0%,transparent 70%);pointer-events:none;z-index:1;}
 .jp-s-node.s-current{padding-top:120px;}
 .jp-s-node.s-current .jp-s-charimg{filter:drop-shadow(0 4px 16px rgba(0,0,0,.9)) drop-shadow(0 0 20px rgba(245,200,66,.4));}
+/* ══ 現在地マップビュー（地図ズームスタイル） ══ */
+.jp-cv-view{width:100%;height:240px;position:relative;overflow:hidden;border-radius:16px 16px 0 0;background:#020824;flex-shrink:0;}
+.jp-cv-map{position:absolute;inset:0;background-repeat:no-repeat;}
+.jp-cv-fog{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(2,4,20,.2) 0%,transparent 35%,transparent 65%,rgba(2,4,20,.55) 100%);}
+.jp-cv-svg{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;overflow:visible;}
+.jp-cv-dot{position:absolute;width:12px;height:12px;border-radius:50%;transform:translate(-50%,-50%);background:var(--jrc,#4a8f6e);border:1.5px solid rgba(255,255,255,.7);box-shadow:0 0 8px var(--jrc);z-index:3;cursor:pointer;pointer-events:all;transition:transform .15s;}
+.jp-cv-dot:hover{transform:translate(-50%,-50%) scale(1.5);}
+.jp-cv-pin{position:absolute;left:50%;top:50%;width:18px;height:18px;border-radius:50%;transform:translate(-50%,-50%);z-index:5;}
+.jp-cv-current{background:var(--gold);border:2.5px solid #fff;box-shadow:0 0 0 5px rgba(245,200,66,.2),0 0 22px rgba(245,200,66,.9);animation:jpPulse 1.6s ease-in-out infinite;}
+.jp-cv-ripple{position:absolute;inset:-5px;border-radius:50%;border:2px solid var(--gold);animation:jpRipple 1.8s ease-out infinite;}
+.jp-cv-char{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);width:105px;height:auto;z-index:6;object-fit:contain;filter:drop-shadow(0 4px 16px rgba(0,0,0,.9)) drop-shadow(0 0 20px rgba(245,200,66,.4));animation:jpmFloat 2.5s ease-in-out infinite;pointer-events:none;}
+
+/* ====== CHAR SETTINGS POPUP ====== */
+.char-popup-overlay{position:fixed;inset:0;z-index:700;background:rgba(0,0,0,0.65);display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s;}
+.char-popup-overlay.open{opacity:1;pointer-events:all;}
+.char-popup-sheet{background:var(--dark);border-radius:24px 24px 0 0;border:3px solid rgba(255,255,255,0.1);border-bottom:none;padding:0 0 calc(16px + env(safe-area-inset-bottom,0px));width:100%;max-width:560px;transform:translateY(100%);transition:transform 0.35s cubic-bezier(0.17,0.89,0.32,1.1);}
+.char-popup-overlay.open .char-popup-sheet{transform:translateY(0);}
+.char-popup-handle{width:44px;height:5px;background:rgba(255,255,255,0.18);border-radius:999px;margin:14px auto 0;}
+.char-popup-head{display:flex;align-items:center;gap:14px;padding:16px 20px 16px;border-bottom:2px solid rgba(255,255,255,0.07);}
+.char-popup-img{width:72px;height:auto;object-fit:contain;flex-shrink:0;}
+.char-popup-meta{flex:1;min-width:0;}
+.char-popup-name{font-family:'Dela Gothic One',sans-serif;font-size:20px;color:#fff;margin-bottom:5px;}
+.char-popup-role{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;border:1.5px solid;display:inline-block;letter-spacing:0.5px;}
+.char-popup-equipped{font-size:11px;color:rgba(255,255,255,0.5);margin-top:8px;font-weight:700;}
+.char-popup-section{padding:14px 20px 0;}
+.char-popup-section-title{font-family:'Dela Gothic One',sans-serif;font-size:10px;color:rgba(255,255,255,0.4);letter-spacing:2px;margin-bottom:10px;}
+.char-popup-chips{display:flex;flex-wrap:wrap;gap:6px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,0.07);min-height:36px;}
+.char-popup-btns{display:flex;gap:8px;padding:14px 20px 0;}
+.char-popup-select-btn{flex:1;padding:13px;background:var(--gold);color:var(--dark);border:none;border-radius:12px;font-family:'Dela Gothic One',sans-serif;font-size:14px;cursor:pointer;transition:all 0.2s;box-shadow:3px 3px 0 var(--gold-dark);}
+.char-popup-select-btn.is-active{background:var(--green);box-shadow:3px 3px 0 rgba(30,100,60,0.5);color:#fff;}
+.char-popup-close-btn{padding:13px 18px;background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.12);border-radius:12px;color:rgba(255,255,255,0.45);font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;}
+.char-popup-close-btn:hover{background:rgba(255,255,255,0.1);color:#fff;}
+
+/* ══ RESPONSIVE (全サイズ対応) ══ */
+
+/* ─ 小型・標準スマホ ≤480px ─ */
+@media(max-width:480px){
+  /* nav: coin/streak/dateを非表示にして収める */
+  nav{padding:8px 14px;}
+  #navCoinWrap,#navStreakWrap,.nav-date{display:none;}
+  .nav-right{gap:5px;}
+  .lv-badge{font-size:10px;padding:3px 8px;}
+  /* コンテンツ余白 */
+  .main{padding:12px 11px;}
+  /* キャラクターバーボタン */
+  .char-action-btn{height:46px;padding:0 10px;}
+  .char-action-icon{font-size:16px;}
+  .char-action-label{font-size:9px;}
+}
+
+/* ─ 超小型スマホ ≤360px ─ */
+@media(max-width:360px){
+  nav{padding:8px 10px;}
+  .nav-title{font-size:12px;}
+  .nav-sub{display:none;}
+  .lv-badge{font-size:9px;padding:2px 6px;}
+  .main{padding:10px 8px;}
+  .stat-card{padding:10px 4px;}
+  .stat-num{font-size:17px;}
+  .stat-label{font-size:8px;}
+  .char-action-btn{padding:0 7px;height:44px;}
+  .ysn-btn{padding:7px 9px;font-size:11px;}
+  .today-hero{padding:12px;}
+  .ring-wrap{width:82px;height:82px;}
+  .ring-pct{font-size:17px;}
+}
+
+/* ─ タブレット ≥600px ─ */
+@media(min-width:600px){
+  .main{padding:16px 20px;}
+  .stats-row{gap:12px;}
+  .stat-card{padding:16px 10px;}
+  .stat-num{font-size:26px;}
+}
+
+/* ─ PC ≥1024px ─ */
+@media(min-width:1024px){
+  .main{max-width:880px;padding:20px 32px;}
+  .xp-bar-inner,.bubble-inner{max-width:880px;}
+  .stats-row{gap:14px;}
+  .stat-card{padding:18px 12px;}
+  .stat-num{font-size:28px;}
+  .task-title{font-size:15px;}
+  .today-hero{padding:20px;}
+  .today-greeting{font-size:18px;}
+}
 </style>
 </head>
 <body>
@@ -1162,14 +1299,22 @@ html.dark .tile-sheet-subtitle{color:#555;}
     </div>
   </div>
   <div class="nav-right">
-    <div class="lv-badge" id="lvBadge">Lv.1</div>
-    <div class="nav-coin" id="navCoin">🪙0</div>
-    <div class="nav-streak" id="navStreak">🔥0</div>
+    <div class="nav-stat">
+      <div class="lv-badge" id="lvBadge">Lv.1</div>
+      <span class="nav-stat-label">レベル</span>
+    </div>
+    <div class="nav-stat" id="navCoinWrap">
+      <div class="nav-coin" id="navCoin">🪙0</div>
+      <span class="nav-stat-label">コイン</span>
+    </div>
+    <div class="nav-stat" id="navStreakWrap">
+      <div class="nav-streak" id="navStreak">🔥0</div>
+      <span class="nav-stat-label">連続日数</span>
+    </div>
     <div class="nav-date" id="navDate"></div>
     <img id="navUserAvatar" class="nav-user-avatar" src="" alt="" onclick="openNavPopup()" title="アカウント">
     <span id="navLoginLink" class="nav-login-link" onclick="openNavPopup()">ログイン</span>
     <span id="navUserName" class="nav-login-link" onclick="openNavPopup()" style="display:none;border-color:rgba(76,175,125,0.5);color:var(--green)"></span>
-    <button class="dark-toggle" id="darkToggle" onclick="toggleDark()" title="ダークモード切替">🌙</button>
   </div>
 </nav>
 
@@ -1291,12 +1436,58 @@ html.dark .tile-sheet-subtitle{color:#555;}
 <!-- TAB: やったこと -->
 <div class="tab-panel" id="tab-all">
   <div class="main">
-    <!-- サブナビ -->
-    <div class="yatta-sub-nav">
-      <button class="ysn-btn ysn-active" id="ysn-tasks" onclick="setYattaSection('tasks')">📋 タスク</button>
-      <button class="ysn-btn" id="ysn-habit" onclick="setYattaSection('habit')">🎯 習慣</button>
-      <button class="ysn-btn" id="ysn-pin" onclick="setYattaSection('pin')">🚩 Pin</button>
-      <button class="ysn-btn" id="ysn-pom" onclick="setYattaSection('pom')">🍅 ポモ</button>
+    <!-- レイアウト切替 -->
+    <div class="yd-layout-toggle">
+      <button class="yd-layout-btn yd-layout-active" id="ydBtnA" onclick="setYDLayout('A')">⊞ グリッド</button>
+      <button class="yd-layout-btn" id="ydBtnB" onclick="setYDLayout('B')">◀▶ スライド</button>
+    </div>
+    <!-- 案A: 2×2 グリッド -->
+    <div id="ydGridWrap">
+      <div class="yd-grid">
+        <button class="yd-card" onclick="openYDSection('tasks')">
+          <span class="yd-card-icon">📋</span>
+          <div>
+            <div class="yd-card-title">TASKS</div>
+            <div class="yd-card-stat" id="ydStat-tasks">0</div>
+            <div class="yd-card-sub" id="ydSub-tasks">完了タスク</div>
+          </div>
+        </button>
+        <button class="yd-card" onclick="openYDSection('habit')">
+          <span class="yd-card-icon">🎯</span>
+          <div>
+            <div class="yd-card-title">習慣</div>
+            <div class="yd-card-stat" id="ydStat-habit">0</div>
+            <div class="yd-card-sub" id="ydSub-habit">今日のガチャ</div>
+          </div>
+        </button>
+        <button class="yd-card" onclick="openYDSection('pin')">
+          <span class="yd-card-icon">🚩</span>
+          <div>
+            <div class="yd-card-title">PIN</div>
+            <div class="yd-card-stat" id="ydStat-pin">0</div>
+            <div class="yd-card-sub" id="ydSub-pin">総記録数</div>
+          </div>
+        </button>
+        <button class="yd-card" onclick="openYDSection('pom')">
+          <span class="yd-card-icon">🍅</span>
+          <div>
+            <div class="yd-card-title">ポモ</div>
+            <div class="yd-card-stat" id="ydStat-pom">0</div>
+            <div class="yd-card-sub" id="ydSub-pom">総セッション数</div>
+          </div>
+        </button>
+      </div>
+    </div>
+    <!-- 案A: 詳細に戻るボタン -->
+    <button class="yd-back-btn" id="ydBackBtn" style="display:none" onclick="closeYDSection()">← 一覧に戻る</button>
+    <!-- 案B: スライダーナビ -->
+    <div id="ydSliderWrap" style="display:none">
+      <div class="yd-slider-nav">
+        <button class="yd-snav-btn" onclick="slideYD(-1)">‹</button>
+        <div class="yd-dots" id="ydDots"></div>
+        <button class="yd-snav-btn" onclick="slideYD(1)">›</button>
+      </div>
+      <div class="yd-slide-label" id="ydSlideLabel">📋 タスク</div>
     </div>
 
     <!-- ── タスク ── -->
@@ -1496,56 +1687,13 @@ html.dark .tile-sheet-subtitle{color:#555;}
       </div>
     </div>
 
-    <!-- マップ表示切り替え -->
-    <div class="map-view-switcher">
-      <div class="mvs-indicator" id="mvsIndicator"></div>
-      <button class="mvs-btn mvs-active" id="mvs-current" onclick="setMapView('current')">📍 現在地</button>
-      <button class="mvs-btn" id="mvs-all" onclick="setMapView('all')">🗾 全体を見る</button>
-    </div>
-
-    <!-- 現在地ビュー（デフォルト） -->
+    <!-- 現在地ビュー（マップ） -->
     <div id="mapCurrentView">
       <div class="map-dest-card" id="mapDestCard">
         <!-- renderMapCurrentView() で描画 -->
       </div>
     </div>
-
-    <!-- 全体マップビュー -->
-    <div id="mapAllView" style="display:none">
-      <!-- JAPAN MAP STATS -->
-      <div class="jp-stats-row">
-        <div class="jp-stat"><div class="jp-stat-num" id="jpStatFull" style="color:var(--gold)">0</div><div class="jp-stat-lbl">訪問済み</div></div>
-        <div class="jp-stat"><div class="jp-stat-num" id="jpStatPart" style="color:var(--sky)">1970</div><div class="jp-stat-lbl">現在の年</div></div>
-        <div class="jp-stat"><div class="jp-stat-num" id="jpStatLeft" style="color:var(--purple)">56</div><div class="jp-stat-lbl">残り旅程</div></div>
-      </div>
-      <!-- JAPAN MAP 3D -->
-      <div class="jp-map-outer">
-        <div class="jp-map-tilt">
-          <div class="jp-map-stage" id="jpMapStage">
-            <svg class="jp-land-svg" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-              <polygon points="52,22 56,20 60,18 65,15 66,11 62,8 58,5 56,7 54,11 54,17 52,22"/>
-              <polygon points="52,24 54,24 57,30 55,35 54,42 52,48 48,51 40,54 38,52 30,52 25,52 25,51 29,51 31,46 35,46 39,44 44,40 49,36 52,30 52,24"/>
-              <polygon points="29,52 39,52 40,55 36,59 29,57 27,54 29,52"/>
-              <polygon points="23,54 30,54 31,57 28,63 26,66 21,63 20,57 23,54"/>
-              <ellipse cx="18" cy="85" rx="4" ry="1.5"/>
-              <ellipse cx="47" cy="36" rx="1.5" ry="0.8"/>
-              <ellipse cx="38" cy="52" rx="1" ry="2"/>
-              <ellipse cx="22" cy="50" rx="1" ry="2"/>
-            </svg>
-            <div class="jp-sea" style="left:10%;top:42%">日本海</div>
-            <div class="jp-sea" style="left:65%;top:55%">太平洋</div>
-            <div class="jp-sea" style="left:8%;top:78%">東シナ海</div>
-          </div>
-        </div>
-        <!-- ズームコントロール -->
-        <div class="map-zoom-bar">
-          <button class="map-zoom-btn" onclick="adjustMapScale(1.35)" title="ズームイン">＋</button>
-          <button class="map-zoom-btn" id="mapResetBtn" onclick="resetMapView()" title="リセット">⌂</button>
-          <button class="map-zoom-btn" id="mapCenterBtn" onclick="centerOnCurrentNode()" title="現在地へ">📍</button>
-          <button class="map-zoom-btn" onclick="adjustMapScale(0.74)" title="ズームアウト">－</button>
-        </div>
-      </div>
-    </div>
+    <button class="jp-mapfull-btn" onclick="openJpMapFull()">🗾 全体地図を見る</button>
 
     <!-- 旧タイルシステム（JS互換のため非表示で保持） -->
     <div style="display:none">
@@ -1586,6 +1734,31 @@ html.dark .tile-sheet-subtitle{color:#555;}
     </div>
 
     <div id="charJournalList" style="display:none"></div>
+  </div>
+</div>
+
+<!-- 全体地図モーダル -->
+<div id="jpMapFullModal" class="jp-mapfull-overlay" onclick="handleJpMapFullOverlayClick(event)">
+  <div class="jp-mapfull-modal">
+    <div class="jp-mapfull-header">
+      <div class="jp-mapfull-title">🗾 日本一周マップ</div>
+      <div class="jp-stats-row" style="gap:16px;margin:0;">
+        <div class="jp-stat"><div class="jp-stat-num" id="jpStatFull" style="color:var(--gold)">0</div><div class="jp-stat-lbl">訪問済み</div></div>
+        <div class="jp-stat"><div class="jp-stat-num" id="jpStatPart" style="color:var(--sky)">1970</div><div class="jp-stat-lbl">現在の年</div></div>
+        <div class="jp-stat"><div class="jp-stat-num" id="jpStatLeft" style="color:var(--purple)">56</div><div class="jp-stat-lbl">残り旅程</div></div>
+      </div>
+      <button class="jp-mapfull-close" onclick="closeJpMapFull()">✕</button>
+    </div>
+    <div class="jp-mapfull-body">
+      <div class="jp-map-stage" id="jpMapStage">
+        <svg class="jp-land-svg" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"></svg>
+      </div>
+      <div class="map-zoom-bar" style="position:absolute;right:12px;bottom:12px;z-index:20;">
+        <button class="map-zoom-btn" onclick="adjustMapScale(1.35)" title="ズームイン">＋</button>
+        <button class="map-zoom-btn" onclick="centerOnCurrentNode()" title="現在地へ">📍</button>
+        <button class="map-zoom-btn" onclick="adjustMapScale(0.74)" title="ズームアウト">－</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1930,6 +2103,29 @@ html.dark .tile-sheet-subtitle{color:#555;}
       <div class="settings-info-row"><span>アプリ名</span><span>マネぼうTODO</span></div>
       <div class="settings-info-row"><span>バージョン</span><span>ver 2.0</span></div>
       <div class="settings-info-row"><span>開発</span><span>RAINY BRAIN</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- Char Settings Popup -->
+<div class="char-popup-overlay" id="charPopupOverlay" onclick="closeCharPopup(event)">
+  <div class="char-popup-sheet" id="charPopupSheet">
+    <div class="char-popup-handle"></div>
+    <div class="char-popup-head">
+      <img class="char-popup-img" id="cpopImg" src="" alt="">
+      <div class="char-popup-meta">
+        <div class="char-popup-name" id="cpopName"></div>
+        <span class="char-popup-role" id="cpopRole"></span>
+        <div class="char-popup-equipped" id="cpopEquipped"></div>
+      </div>
+    </div>
+    <div class="char-popup-section">
+      <div class="char-popup-section-title">🏅 称号を装備</div>
+      <div class="char-popup-chips" id="cpopTitleChips"></div>
+    </div>
+    <div class="char-popup-btns">
+      <button class="char-popup-select-btn" id="cpopSelectBtn" onclick="selectCharFromPopup()"></button>
+      <button class="char-popup-close-btn" onclick="closeCharPopup()">✕ 閉じる</button>
     </div>
   </div>
 </div>
@@ -2437,8 +2633,8 @@ function renderCharSelector(){
     const avatarSrc=costumeImg||c.imgs[idx];
     const act=name===S.activeChar?'active':'';
     const badge=costumeImg?'<span class="char-costume-badge">🎽</span>':'';
-    return `<button class="char-btn ${act}" onclick="selectChar('${escH(name)}')" title="${escH(c.role)}" style="position:relative">
-      <img class="char-avatar" src="${avatarSrc}" alt="${escH(name)}" onerror="this.style.background='#ccc'">
+    return `<button class="char-btn ${act}" onclick="openCharPopup('${escH(name)}')" title="${escH(c.role)}" style="position:relative">
+      <img class="char-avatar" src="${avatarSrc}" alt="${escH(name)}" onerror="this.src='${escH(c.imgs[0])}';this.onerror=null;">
       ${badge}
       <span class="char-name">${escH(name)}</span>
     </button>`;
@@ -2700,27 +2896,130 @@ function switchTab(tab){
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
   $('tab-'+tab).classList.add('active');
   if(tab==='today')    renderToday();
-  if(tab==='all'){     renderAll(); setYattaSection(_yattaSection||'tasks'); }
+  if(tab==='all'){     renderAll(); initYDLayout(); }
   if(tab==='achiev')   renderCollection();
   if(tab==='map'){ renderMap(); renderAdvGacha(); renderAdvCostume(); }
   if(tab==='settings') renderSettings();
 }
 
-// ─── やったこと サブナビ ───────────────────────────────
-let _yattaSection='tasks';
-function setYattaSection(s){
-  _yattaSection=s;
-  ['tasks','achiev','habit','pin','pom'].forEach(sec=>{
-    const el=document.getElementById('ys-'+sec);
-    const btn=document.getElementById('ysn-'+sec);
-    if(el)  el.style.display=sec===s?'block':'none';
-    if(btn) btn.classList.toggle('ysn-active',sec===s);
-  });
-  if(s==='achiev') renderAchievements();
-  if(s==='habit')  renderHabitLog();
-  if(s==='pin')    renderPinSection();
-  if(s==='pom')    renderPomodoroLog();
+// ─── やったこと 新レイアウト (A/B) ───────────────────────
+const YD_SECS=[
+  {id:'tasks',label:'📋 タスク'},
+  {id:'habit',label:'🎯 習慣'},
+  {id:'pin',  label:'🚩 Pin'},
+  {id:'pom',  label:'🍅 ポモ'},
+];
+let _ydLayout=localStorage.getItem('ydLayout')||'A';
+let _ydSlideIdx=0;
+let _ydTouchX=null;
+
+function initYDLayout(){
+  const isA=_ydLayout==='A';
+  document.getElementById('ydBtnA').classList.toggle('yd-layout-active',isA);
+  document.getElementById('ydBtnB').classList.toggle('yd-layout-active',!isA);
+  if(isA){ _showYDGrid(); }
+  else   { document.getElementById('ydGridWrap').style.display='none'; document.getElementById('ydSliderWrap').style.display=''; showYDSlide(_ydSlideIdx); }
 }
+function setYDLayout(type){
+  _ydLayout=type;
+  localStorage.setItem('ydLayout',type);
+  document.getElementById('ydBtnA').classList.toggle('yd-layout-active',type==='A');
+  document.getElementById('ydBtnB').classList.toggle('yd-layout-active',type==='B');
+  if(type==='A'){
+    document.getElementById('ydSliderWrap').style.display='none';
+    _showYDGrid();
+  } else {
+    document.getElementById('ydGridWrap').style.display='none';
+    document.getElementById('ydBackBtn').style.display='none';
+    document.getElementById('ydSliderWrap').style.display='';
+    _hideAllYDSecs();
+    showYDSlide(_ydSlideIdx);
+  }
+}
+function _hideAllYDSecs(){
+  ['tasks','achiev','habit','pin','pom'].forEach(id=>{ const el=document.getElementById('ys-'+id); if(el) el.style.display='none'; });
+}
+function _showYDGrid(){
+  document.getElementById('ydGridWrap').style.display='';
+  document.getElementById('ydBackBtn').style.display='none';
+  _hideAllYDSecs();
+  updateYDGrid();
+}
+function updateYDGrid(){
+  const done=S.tasks.filter(t=>t.status==='done').length;
+  const e1=document.getElementById('ydStat-tasks'),e2=document.getElementById('ydSub-tasks');
+  if(e1) e1.textContent=done;
+  if(e2) e2.textContent='完了 / '+S.tasks.length+'件';
+
+  const today=new Date().toISOString().split('T')[0];
+  const th=(S.habitLog||[]).find(e=>e.date===today);
+  const hc=th?(th.items||[]).length:0;
+  const e3=document.getElementById('ydStat-habit'),e4=document.getElementById('ydSub-habit');
+  if(e3) e3.textContent=hc;
+  if(e4) e4.textContent='今日 / 習慣'+(S.habitPool||[]).length+'件';
+
+  const allLogs=(S.pins||[]).flatMap(p=>p.log||[]);
+  const weekAgo=new Date(Date.now()-6*86400000).toISOString().split('T')[0];
+  const e5=document.getElementById('ydStat-pin'),e6=document.getElementById('ydSub-pin');
+  if(e5) e5.textContent=allLogs.length;
+  if(e6) e6.textContent='今週'+allLogs.filter(e=>e.date>=weekAgo).length+'件';
+
+  const pom=S.pomodoroSessions||0;
+  const e7=document.getElementById('ydStat-pom'),e8=document.getElementById('ydSub-pom');
+  if(e7) e7.textContent=pom;
+  if(e8) e8.textContent=pom*25+'分集中';
+}
+function openYDSection(sec){
+  document.getElementById('ydGridWrap').style.display='none';
+  document.getElementById('ydBackBtn').style.display='';
+  _hideAllYDSecs();
+  const el=document.getElementById('ys-'+sec);
+  if(el) el.style.display='block';
+  if(sec==='habit') renderHabitLog();
+  if(sec==='pin')   renderPinSection();
+  if(sec==='pom')   renderPomodoroLog();
+  if(sec==='achiev') renderAchievements();
+}
+function closeYDSection(){ _showYDGrid(); }
+
+function renderYDDots(){
+  const el=document.getElementById('ydDots');
+  if(!el) return;
+  el.innerHTML=YD_SECS.map((s,i)=>
+    `<div class="yd-dot${i===_ydSlideIdx?' active':''}" onclick="showYDSlide(${i})" title="${s.label}"></div>`
+  ).join('');
+}
+function showYDSlide(idx){
+  _ydSlideIdx=Math.max(0,Math.min(YD_SECS.length-1,idx));
+  const sec=YD_SECS[_ydSlideIdx];
+  _hideAllYDSecs();
+  const el=document.getElementById('ys-'+sec.id);
+  if(el) el.style.display='block';
+  const lbl=document.getElementById('ydSlideLabel');
+  if(lbl) lbl.textContent=sec.label;
+  renderYDDots();
+  if(sec.id==='habit') renderHabitLog();
+  if(sec.id==='pin')   renderPinSection();
+  if(sec.id==='pom')   renderPomodoroLog();
+}
+function slideYD(dir){ showYDSlide(_ydSlideIdx+dir); }
+
+// スワイプ（案B）
+document.addEventListener('DOMContentLoaded',()=>{
+  const t=document.getElementById('tab-all');
+  if(!t) return;
+  t.addEventListener('touchstart',e=>{ if(_ydLayout==='B') _ydTouchX=e.touches[0].clientX; },{passive:true});
+  t.addEventListener('touchend',e=>{
+    if(_ydLayout!=='B'||_ydTouchX===null) return;
+    const dx=e.changedTouches[0].clientX-_ydTouchX;
+    if(Math.abs(dx)>50) slideYD(dx<0?1:-1);
+    _ydTouchX=null;
+  },{passive:true});
+});
+
+// ─── 旧サブナビ（互換用・使用しない）──────────────────
+let _yattaSection='tasks';
+function setYattaSection(s){ _yattaSection=s; }
 
 function renderPinSection(){
   migratePinsData();
@@ -3119,6 +3418,73 @@ function equipTitle(charName, titleId){
     save(); renderCharJournal();
     showToast(`${charName} に「${t?t.name:''}」を装備！`);
   }
+}
+
+// =====================================================
+// CHAR SETTINGS POPUP
+// =====================================================
+let _cpopChar=null;
+function openCharPopup(name){
+  if(!CHARS[name]) return;
+  _cpopChar=name;
+  const c=CHARS[name];
+  const costumeImg=getCharDisplayImg(name);
+  const journeyImg=getCharJourneyImg(name,1);
+  const avatarSrc=costumeImg||journeyImg||c.imgs[0];
+  $('cpopImg').src=avatarSrc;
+  $('cpopImg').onerror=function(){this.src=c.imgs[0];this.onerror=null;};
+  $('cpopName').textContent=name;
+  const roleEl=$('cpopRole');
+  roleEl.textContent=c.role||'';
+  roleEl.style.borderColor=c.color||'#fff';
+  roleEl.style.color=c.color||'#fff';
+  const equippedId=(S.charTitles||{})[name];
+  const equippedTitle=equippedId?TITLES.find(t=>t.id===equippedId):null;
+  $('cpopEquipped').textContent=equippedTitle?`装備中: ${equippedTitle.emoji} ${equippedTitle.name}`:'称号なし';
+  // Title chips: only unlocked titles
+  const unlockedIds=new Set(S.unlockedTitles||[]);
+  const chips=TITLES.filter(t=>unlockedIds.has(t.id)).map(t=>{
+    const isEq=equippedId===t.id;
+    return `<span class="title-chip${isEq?' equipped':''}" onclick="equipTitleFromPopup('${escH(t.id)}')">${t.emoji} ${t.name}</span>`;
+  }).join('');
+  $('cpopTitleChips').innerHTML=chips||'<span style="color:rgba(255,255,255,0.3);font-size:11px;">称号をまだ持っていません</span>';
+  // Select button state
+  const isActive=name===S.activeChar;
+  const btn=$('cpopSelectBtn');
+  btn.textContent=isActive?'✓ 選択中':'このコーチを選ぶ';
+  btn.classList.toggle('is-active',isActive);
+  $('charPopupOverlay').classList.add('open');
+}
+function closeCharPopup(e){
+  if(e&&e.target!==$('charPopupOverlay')) return;
+  $('charPopupOverlay').classList.remove('open');
+  _cpopChar=null;
+}
+function selectCharFromPopup(){
+  if(!_cpopChar) return;
+  selectChar(_cpopChar);
+  const btn=$('cpopSelectBtn');
+  btn.textContent='✓ 選択中';
+  btn.classList.add('is-active');
+}
+function equipTitleFromPopup(titleId){
+  if(!_cpopChar) return;
+  equipTitle(_cpopChar,titleId);
+  // Refresh popup chips
+  const equippedId=(S.charTitles||{})[_cpopChar];
+  const equippedTitle=equippedId?TITLES.find(t=>t.id===equippedId):null;
+  $('cpopEquipped').textContent=equippedTitle?`装備中: ${equippedTitle.emoji} ${equippedTitle.name}`:'称号なし';
+  document.querySelectorAll('#cpopTitleChips .title-chip').forEach(el=>{
+    const id=el.onclick?el.getAttribute('onclick'):null;
+    el.classList.toggle('equipped',id&&id.includes(`'${titleId}'`)&&equippedId===titleId);
+  });
+  // Re-render chips cleanly
+  const unlockedIds=new Set(S.unlockedTitles||[]);
+  const chips=TITLES.filter(t=>unlockedIds.has(t.id)).map(t=>{
+    const isEq=equippedId===t.id;
+    return `<span class="title-chip${isEq?' equipped':''}" onclick="equipTitleFromPopup('${escH(t.id)}')">${t.emoji} ${t.name}</span>`;
+  }).join('');
+  $('cpopTitleChips').innerHTML=chips||'<span style="color:rgba(255,255,255,0.3);font-size:11px;">称号をまだ持っていません</span>';
 }
 
 // =====================================================
@@ -3583,18 +3949,6 @@ function renderMap(){
   renderCoinDisplay();
   renderBoss();
   renderCharJournal();
-  // タブ切り替え時は常に現在地ビューにリセット
-  _mapView='current';
-  const cv=document.getElementById('mapCurrentView');
-  const av=document.getElementById('mapAllView');
-  if(cv){ cv.style.display='block'; cv.style.opacity=''; cv.style.transform=''; }
-  if(av){ av.style.display='none'; av.style.opacity=''; av.style.transform=''; }
-  const mb=document.getElementById('mvs-current');
-  const ab=document.getElementById('mvs-all');
-  if(mb) mb.classList.add('mvs-active');
-  if(ab) ab.classList.remove('mvs-active');
-  const ind=document.getElementById('mvsIndicator');
-  if(ind) ind.className='mvs-indicator';
   renderMapCurrentView(getJpStep());
   updateJpHUD();
 
@@ -3788,6 +4142,7 @@ function selectTheme(id,price){
   if(!owned&&(S.coins||0)<price){showToast(`コインが足りません（必要: ${price}🪙 / 残高: ${S.coins||0}🪙）`);return;}
   if(!owned&&price>0){S.coins=(S.coins||0)-price;S.ownedThemes.push(id);}
   S.activeTheme=id;save();
+  applyTheme(id);
   renderMap();
   showToast(`🎨 テーマを「${MAP_THEMES[id].name}」に変更！${!owned&&price>0?` -${price}🪙`:''}`);
 }
@@ -3999,10 +4354,14 @@ function habitGacha(){
 // =====================================================
 // DARK MODE
 // =====================================================
+function applyTheme(id){
+  document.documentElement.setAttribute('data-theme', id||'meadow');
+}
+
 function toggleDark(){
   const isDark=document.documentElement.classList.toggle('dark');
   S.darkMode=isDark;save();
-  $('darkToggle').textContent=isDark?'☀️':'🌙';
+  const dt=$('darkToggle'); if(dt) dt.textContent=isDark?'☀️':'🌙';
 }
 
 // =====================================================
@@ -4500,10 +4859,16 @@ function closeAiPanelDirect(){
     const ll=document.getElementById('navLoginLink');
     const un=document.getElementById('navUserName');
     if(user){
-      if(av&&user.photoURL){ av.src=user.photoURL; av.style.display=''; }
-      else if(av) av.style.display='none';
+      if(av&&user.photoURL){
+        av.src=user.photoURL;
+        av.onerror=()=>{ av.style.display='none'; av.onerror=null; };
+        av.style.display='block';
+        if(un) un.style.display='none';
+      } else {
+        if(av) av.style.display='none';
+        if(un){ un.textContent='✅ '+(user.displayName||user.email||'ログイン中'); un.style.display=''; }
+      }
       if(ll) ll.style.display='none';
-      if(un){ un.textContent='✅ '+(user.displayName||user.email||'ログイン中'); un.style.display=''; }
       await cloudLoad();
     } else {
       if(av) av.style.display='none';
@@ -4680,7 +5045,7 @@ function init(){
   $('navDate').textContent=`${d.getMonth()+1}/${d.getDate()}（${WD[d.getDay()]}）`;
 
   // Dark mode
-  if(S.darkMode){ document.documentElement.classList.add('dark'); $('darkToggle').textContent='☀️'; }
+  if(S.darkMode){ document.documentElement.classList.add('dark'); const dt=$('darkToggle'); if(dt) dt.textContent='☀️'; }
 
   // Weekly goal default
   if(!S.weeklyGoal) S.weeklyGoal=10;
@@ -4689,6 +5054,7 @@ function init(){
   if(!S.unlockedTiles||!S.unlockedTiles.length) S.unlockedTiles=['4,4'];
   if(!S.purchasedTiles) S.purchasedTiles=[];
   if(!S.activeTheme) S.activeTheme='meadow';
+  applyTheme(S.activeTheme);
   if(!S.coins) S.coins=0;
 
   // Nav coin
@@ -4790,65 +5156,65 @@ function getJpImgPath(step){
 
 // [id, name, region, x%, y%, emoji, [era1, era2, era3]]
 const JP_PREFS=[
-['hokkaido','北海道','hokkaido',60,13,'🐻',['農業と水産業が基幹産業として発展。200海里設定（1977）でソ連との北洋漁業が縮小し、農業の多角化が進んだ。','バブル景気で観光ブームが到来。G8洞爺湖サミット（2008）が開催され、国際的知名度が向上。','北海道新幹線が2016年に開業。農産品輸出の拡大と、北方領土問題の長期化が同時進行する。']],
-['aomori','青森','tohoku',54,25,'🍎',['青函トンネル建設が本格化。リンゴ産地として全国トップの生産量を誇る。','青函トンネル（1988）開通・青函連絡船廃止。本州と北海道を結ぶ交通の要衝に。','東北新幹線が新青森まで延伸（2010）。六ヶ所村の核燃料サイクル施設問題が政治課題に。']],
-['akita','秋田','tohoku',52,29,'🌾',['秋田杉・農業・石油採掘が経済を支える。秋田音頭・なまはげ文化が全国に広まる。','少子高齢化・過疎化が全国最速水準で進行。秋田新幹線（こまち）が1997年に開業。','人口減少が最も深刻な県の一つ。洋上風力発電の拠点として再生可能エネルギーに注目。']],
-['iwate','岩手','tohoku',55,30,'🗻',['農業・林業が主産業。三陸海岸の漁業が盛んで、南部鉄器などの伝統工芸が継承される。','宮沢賢治の故郷として観光開発が進む。遠野の民話文化が国際的に注目される。','2011年東日本大震災で壊滅的被害。沿岸部の復興事業が長期にわたって続く。']],
-['yamagata','山形','tohoku',53,33,'🍒',['果物王国・農業県として発展。山形新幹線（つばさ）の整備計画が始まる。','山形新幹線（1992）開業。さくらんぼ・米（つや姫）が全国ブランドに成長。','観光と農業の連携で「食の山形」ブランドを確立。豪雪との闘いが続く。']],
-['miyagi','宮城','tohoku',54,34,'🏯',['仙台市が東北の中心都市として発展。農業・水産業が基幹産業。','仙台が政令指定都市（1989）に。「杜の都」として経済・文化の東北拠点が確立。','東日本大震災で甚大な被害。南三陸・女川・石巻を津波が直撃。復興の象徴となる。']],
-['fukushima','福島','tohoku',52,38,'🍑',['会津・中通り・浜通りと3つの地域が共存。農業と工業が均衡よく発展。','東北自動車道・磐越道など交通インフラが整備。桃・りんご・コメが全国ブランドに。','2011年、福島第一原発事故。避難者最大約16万人。廃炉作業と風評被害との闘いが現在も続く。']],
-['niigata','新潟','chubu',49,38,'🍚',['コシヒカリの産地として全国に名を馳せる。日本海側最大の都市・新潟が発展。','越後湯沢スキーリゾートがバブル期に急成長。石油化学工業も発展。','2004年新潟県中越地震（M6.8）、2007年中越沖地震。北陸新幹線延伸で再発展。']],
-['tochigi','栃木','kanto',52,42,'🍓',['日光・那須の観光地として発展。農業（イチゴ）と工業が経済を支える。','東北新幹線延伸で首都圏のベッドタウン化が進む。宇都宮線の高速化も実現。','イチゴ（とちおとめ・とちあいか）生産量で全国首位。自動車関連工場の集積が進む。']],
-['ibaraki','茨城','kanto',53,43,'🔬',['農業産出額全国トップクラス。日立製作所など大手工場が立地し工業も盛ん。','つくば科学万博（1985）開催。つくば研究学園都市が形成される。','東京圏のベッドタウン化が進む一方、農業・研究機関が共存する「科学農業県」として発展。']],
-['gunma','群馬','kanto',49,43,'♨️',['繊維・機械産業が発展。温泉（草津・伊香保）観光が盛んで「温泉天国」と呼ばれる。','関越自動車道の全線開通で首都圏とのアクセスが向上。自動車部品産業が集積。','アウトドア観光が発展。外国人労働者受け入れが全国トップクラスに。']],
-['saitama','埼玉','kanto',51,45,'🏟',['首都圏のベッドタウンとして人口が急増。高度経済成長を下から支える役割。','大宮・浦和・与野の合併で「さいたま市」が2001年に政令指定都市へ。','大宮駅周辺の再開発が加速。「ダサい」から「住みやすい」への都市イメージ転換に成功。']],
-['chiba','千葉','kanto',53,47,'✈️',['東京湾岸の工業地帯が発展。成田空港が1978年に開港（多くの反対運動を乗り越えて）。','幕張メッセが1989年開業。ディズニーランド（1983）の開園で観光・商業が大きく発展。','東日本大震災で液状化被害。成田空港の機能強化と千葉港周辺の再開発が続く。']],
-['tokyo','東京','kanto',51,46,'🗼',['高度経済成長で世界有数の大都市圏に。1964年東京五輪の遺産が都市インフラを支える。','バブル景気で地価が世界最高水準に。バブル崩壊後、経済の「失われた時代」の中心に。','2020年東京五輪（コロナ禍で無観客）。少子化・都心回帰・外国人増加が続く。']],
-['kanagawa','神奈川','kanto',50,47,'⚓',['横浜・川崎の重工業が発展。横浜港が国際貿易の要衝として機能。','横浜みなとみらい21の開発が本格化。横浜市が全国最大の市に成長。','観光都市・国際都市として発展。外国人居住者が多い「国際横浜」が定着。']],
-['toyama','富山','chubu',44,42,'🦀',['北陸の工業県として発展。富山湾の新鮮な魚介類が名産。薬売り（置き薬）文化も継承。','北陸自動車道の全線開通で企業誘致が進む。ガラス工芸が新産業として注目される。','北陸新幹線が2015年に金沢まで延伸開業。2024年1月、能登半島地震で大きな被害。']],
-['ishikawa','石川','chubu',43,42,'🏺',['伝統工芸（加賀友禅・九谷焼）と観光が発展。金沢が「小京都」として全国に知られる。','金沢21世紀美術館など文化施設が整備。工芸・観光の融合が独自の発展モデルに。','北陸新幹線金沢開業（2015）で観光客急増。2024年1月、能登半島地震が壊滅的被害を与える。']],
-['fukui','福井','chubu',42,44,'🦕',['原子力発電所が集中（若狭湾エリア）。眼鏡フレーム・繊維産業が基幹産業。','原発の安全問題が長年の政治課題に。恐竜博物館が全国的に有名に。','北陸新幹線が2024年に福井まで延伸開業。原発の再稼働問題と観光振興が同時課題。']],
-['nagano','長野','chubu',47,44,'⛷',['農業・観光・精密機械産業が均衡して発展。国内有数のスキーリゾート県。','1998年冬季長野五輪開催。善光寺参りなどの伝統観光とスキー観光が共存。','移住・田舎暮らしのメッカとして注目。リニア中央新幹線のルート問題で静岡県と対立。']],
-['yamanashi','山梨','chubu',48,46,'🍇',['フルーツ王国（ぶどう・桃）の産地として発展。富士山が観光資源に。','富士急ハイランドなどの観光施設が充実。リニアモーターカーの実験線が整備される。','富士山が2013年に世界文化遺産に登録。外国人観光客急増でオーバーツーリズム問題が浮上。']],
-['shizuoka','静岡','chubu',48,49,'🍵',['富士山・伊豆の観光資源と、静岡茶・みかんの農業。浜松の楽器産業も発展。','浜松のヤマハ・スズキなど製造業が発展。静岡空港建設が進む。','リニア中央新幹線の南アルプストンネル問題で静岡県が工事を長期にわたり不許可。']],
-['gifu','岐阜','chubu',43,46,'🦺',['中部の内陸県として発展。白川郷・合掌造り集落が独特の文化を守る。','白川郷が1995年に世界文化遺産に登録。自動車部品・航空機部品産業が発展。','豪雨・台風被害が多発。高山・白川郷への訪日外国人が急増しオーバーツーリズム問題が顕在化。']],
-['aichi','愛知','chubu',44,48,'🚗',['トヨタ自動車を中心とした自動車産業が世界的拠点に。名古屋が中部圏の中心都市として発展。','愛知万博（2005年）開催。自動車産業の輸出で工業生産額全国首位に。','トヨタが自動運転・EV戦略を本格化。外国人労働者受け入れの最先端県として多文化共生が課題。']],
-['mie','三重','kinki',42,50,'🦞',['伊勢神宮への参拝観光と漁業（真珠・志摩）が発展。「おかげ参り」が観光ブームを呼ぶ。','志摩スペイン村など大型観光施設が開業。真珠養殖・海女文化が世界的に注目される。','G7伊勢志摩サミット（2016）開催。三重の食文化・観光ブランドが国際的に発信される。']],
-['shiga','滋賀','kinki',41,49,'🚤',['琵琶湖の水資源が関西の生命線。農業・工業が発展。「近江商人」の文化が継承される。','京都のベッドタウンとして人口が増加。湖北の自然・文化観光が注目される。','琵琶湖の水質保全が国家的課題に。全国で数少ない人口増加県として発展が続く。']],
-['kyoto','京都','kinki',40,49,'🏛',['古都・世界的観光地として観光業が発展。西陣織・清水焼などの伝統工芸が継承される。','バブル期に地価が急騰。任天堂・京セラなどグローバル企業が台頭し始める。','オーバーツーリズムが深刻化。伝統的景観保全と観光業の共存が最大の課題に。']],
-['osaka','大阪','kinki',40,50,'🏢',['「天下の台所」として商業・工業の中心。1970年大阪万博の遺産が都市インフラを支える。','バブル崩壊後の「大阪の地盤沈下」が議論に。大阪維新の会が台頭し政治改革を推進（2010年〜）。','大阪・関西万博2025年開催。IRカジノを含む統合型リゾートの誘致が賛否両論の議論に。']],
-['hyogo','兵庫','kinki',38,50,'🌉',['神戸港を中心とした貿易・工業が発展。「六甲アイランド」など埋め立て開発が進む。','1995年1月17日、阪神淡路大震災（M7.3）。死者6400人超。震災復興が長期の最重要課題に。','神戸ファッション・医療産業クラスターが形成。淡路島の観光開発が近年急加速。']],
-['nara','奈良','kinki',40,51,'🦌',['古都・世界文化遺産の観光資源が豊富。農業と観光が経済を支える。','法隆寺・東大寺など世界遺産の整備が進む。奈良市のベッドタウン化が進む。','2022年7月8日、安倍晋三元首相が奈良市内で銃撃・死去。訪日外国人が過去最多を更新。']],
-['wakayama','和歌山','kinki',39,53,'⛩',['世界遺産・熊野古道と農業（梅・みかん）が経済を支える。漁業も盛ん。','熊野古道が2004年に世界遺産登録。南紀白浜の観光が発展。','人口減少が最も深刻な県の一つ。南海トラフ地震対策と移住促進が重要課題。']],
-['tottori','鳥取','chugoku',36,47,'🏖',['農業（二十世紀梨）と砂丘観光が有名。日本で最も人口の少ない県。','鳥取砂丘の保全と観光開発が議論に。山陰自動車道の整備が進む。','2016年鳥取県中部地震（M6.6）。スタバ・マクドナルド「最後の都道府県出店」で話題に。']],
-['shimane','島根','chugoku',33,47,'⛩',['出雲大社・石見銀山など歴史文化資源が豊富。農業・漁業が基幹産業。','石見銀山が2007年に世界遺産登録。竹島問題が国際問題化（2005年「竹島の日」条例）。','人口減少・過疎化が最も深刻な県の一つ。UIターン促進と地方創生の先進地として注目。']],
-['okayama','岡山','chugoku',35,50,'🍑',['農業（白桃・マスカット）と工業が発展。「晴れの国おかやま」として観光PRが進む。','瀬戸大橋が1988年に開通。本州と四国を結ぶ拠点として工業・物流が発展。','2018年西日本豪雨で倉敷市真備町が壊滅的被害。復興が進む中、再移住対策が課題に。']],
-['hiroshima','広島','chugoku',31,52,'☮️',['原爆投下（1945年）の記憶を持つ平和都市として世界的に知られる。マツダ（自動車）が発展。','マツダがグローバル企業に成長。広島カープが地域スポーツ文化の中心に。','G7広島サミット（2023）開催。核廃絶の発信地として平和外交の拠点に。']],
-['yamaguchi','山口','chugoku',29,52,'🏭',['周南コンビナートなど重化学工業が発展。安倍晋三・岸田文雄ら歴代首相を多く輩出。','本州最西端として九州・関西をつなぐ物流が発展。角島大橋など観光が注目される。','山口・宇部の工業が電機・化学で転換。「長州閥」政治の根拠地として存在感を発揮。']],
-['kagawa','香川','shikoku',36,52,'🍜',['うどん王国として食文化が発展。瀬戸内海の島々が独特の風景を作る。','瀬戸大橋（坂出〜児島）が1988年に開通。本州へのアクセスが飛躍的に向上。','瀬戸内国際芸術祭（2010年〜）が国際的なアートイベントに成長。インバウンドが急増。']],
-['tokushima','徳島','shikoku',37,54,'💃',['阿波踊りが全国的なブランドに。農業（鳴門金時・すだち）が特産。','大鳴門橋が1985年開通。四国初の本州四国連絡橋で交通革命。IT企業誘致の先駆けに。','地方創生の最先端モデルとして注目。神山町のITテレワーク移住が全国メディアで紹介。']],
-['ehime','愛媛','shikoku',32,54,'🍊',['みかん・真珠の産地として農業・水産業が発展。松山城・道後温泉が観光資源。','しまなみ海道の整備が進む。今治タオルが全国ブランドに成長。','しまなみ海道が自転車聖地として国際的に有名に。今治造船が国内最大の造船グループに成長。']],
-['kochi','高知','shikoku',34,55,'🎏',['農業（土佐文旦・かつお）と漁業が発展。坂本龍馬の故郷として観光が盛ん。','高知自動車道の整備が進む。よさこいソーラン祭りが全国に広まる。','南海トラフ地震の最大被災地と想定される。人口減少・高齢化対策が最重要課題に。']],
-['fukuoka','福岡','kyushu',26,55,'🏙',['九州の中心都市・博多として商業・工業が発展。福岡空港が九州の航空の要衝に。','福岡ドーム（1993年）開業。天神・博多の都市再開発が加速。アジアへの玄関口として成長。','人口増加が続く稀有な政令指定都市。韓国・中国との航路が充実しアジアのハブ都市化が進む。']],
-['oita','大分','kyushu',29,57,'♨️',['温泉大国（別府・由布院）として観光業が発展。農業・漁業も盛ん。','由布院温泉が「大人の隠れ家」として全国ブランドに。大分空港のホバークラフトが注目される。','サッカー・Jリーグ（大分トリニータ）が地域活性化に貢献。地熱発電など再生エネルギー拠点化。']],
-['saga','佐賀','kyushu',25,56,'🏺',['農業（佐賀牛・いちご・のり）と伝統工芸（有田焼・伊万里焼）が産業の柱。','有田陶磁器が世界的コレクターズアイテムに。玄海原発の稼働問題が長年の政治課題。','佐賀空港へのオスプレイ配備問題が全国的議論に。農業ブランド化と観光振興が課題。']],
-['kumamoto','熊本','kyushu',26,58,'🏯',['農業王国・農業産出額で九州トップクラス。阿蘇山の観光が発展。','TDK・ソニーなど半導体・電機工場が集積。熊本城が観光の中心に。','2016年熊本地震（M7.3）で熊本城が大きな被害。TSMC工場誘致（2024年）で半導体産業の拠点に急浮上。']],
-['nagasaki','長崎','kyushu',24,57,'⛩',['軍艦島（端島）など近代化遺産が多く観光資源豊富。造船業の衰退で新産業が必要に。','軍艦島が2015年に世界遺産登録（朝鮮人強制労働問題で韓国と対立）。ハウステンボス（1992）開業。','長崎新幹線（西九州新幹線）が2022年開業。諫早湾干拓問題が長期化。']],
-['miyazaki','宮崎','kyushu',28,62,'🌊',['農業（ピーマン・きゅうり）と観光（シーガイア）が発展。プロ野球キャンプ地として有名。','シーガイア（1994年）開業するも経営行き詰まり破綻。口蹄疫問題（2010年）で畜産業が深刻打撃。','2023年7月、「南海トラフ地震臨時情報（巨大地震注意）」を初発令。全国に衝撃。']],
-['kagoshima','鹿児島','kyushu',26,63,'🚀',['種子島宇宙センター（1969年完成）が日本の宇宙開発の拠点に。農業・黒毛和牛が有名。','屋久島が1993年に世界自然遺産登録。九州新幹線（2004年部分開業）で交通が改善。','川内原発の再稼働（2015年）が全国の原発再稼働第1号として注目。JAXA商業衛星打ち上げが増加。']],
-['okinawa','沖縄','okinawa',18,85,'🌺',['1972年5月15日、本土復帰。27年ぶりに返還されるが広大な米軍基地が残留。沖縄海洋博覧会（1975年）開催。','1995年米兵による少女暴行事件を契機に10万人集会。「普天間基地の県外移設」を要求する運動が激化。','普天間基地の辺野古移設が国と沖縄県の対立のまま工事継続中。観光客数はコロナ前水準に回復しつつある。']],
+['hokkaido','北海道','hokkaido',71,18,'🐻',['農業と水産業が基幹産業として発展。200海里設定（1977）でソ連との北洋漁業が縮小し、農業の多角化が進んだ。','バブル景気で観光ブームが到来。G8洞爺湖サミット（2008）が開催され、国際的知名度が向上。','北海道新幹線が2016年に開業。農産品輸出の拡大と、北方領土問題の長期化が同時進行する。']],
+['aomori','青森','tohoku',63,28,'🍎',['青函トンネル建設が本格化。リンゴ産地として全国トップの生産量を誇る。','青函トンネル（1988）開通・青函連絡船廃止。本州と北海道を結ぶ交通の要衝に。','東北新幹線が新青森まで延伸（2010）。六ヶ所村の核燃料サイクル施設問題が政治課題に。']],
+['akita','秋田','tohoku',61,35,'🌾',['秋田杉・農業・石油採掘が経済を支える。秋田音頭・なまはげ文化が全国に広まる。','少子高齢化・過疎化が全国最速水準で進行。秋田新幹線（こまち）が1997年に開業。','人口減少が最も深刻な県の一つ。洋上風力発電の拠点として再生可能エネルギーに注目。']],
+['iwate','岩手','tohoku',67,37,'🗻',['農業・林業が主産業。三陸海岸の漁業が盛んで、南部鉄器などの伝統工芸が継承される。','宮沢賢治の故郷として観光開発が進む。遠野の民話文化が国際的に注目される。','2011年東日本大震災で壊滅的被害。沿岸部の復興事業が長期にわたって続く。']],
+['yamagata','山形','tohoku',61,42,'🍒',['果物王国・農業県として発展。山形新幹線（つばさ）の整備計画が始まる。','山形新幹線（1992）開業。さくらんぼ・米（つや姫）が全国ブランドに成長。','観光と農業の連携で「食の山形」ブランドを確立。豪雪との闘いが続く。']],
+['miyagi','宮城','tohoku',65,43,'🏯',['仙台市が東北の中心都市として発展。農業・水産業が基幹産業。','仙台が政令指定都市（1989）に。「杜の都」として経済・文化の東北拠点が確立。','東日本大震災で甚大な被害。南三陸・女川・石巻を津波が直撃。復興の象徴となる。']],
+['fukushima','福島','tohoku',62,49,'🍑',['会津・中通り・浜通りと3つの地域が共存。農業と工業が均衡よく発展。','東北自動車道・磐越道など交通インフラが整備。桃・りんご・コメが全国ブランドに。','2011年、福島第一原発事故。避難者最大約16万人。廃炉作業と風評被害との闘いが現在も続く。']],
+['niigata','新潟','chubu',54,50,'🍚',['コシヒカリの産地として全国に名を馳せる。日本海側最大の都市・新潟が発展。','越後湯沢スキーリゾートがバブル期に急成長。石油化学工業も発展。','2004年新潟県中越地震（M6.8）、2007年中越沖地震。北陸新幹線延伸で再発展。']],
+['tochigi','栃木','kanto',60,53,'🍓',['日光・那須の観光地として発展。農業（イチゴ）と工業が経済を支える。','東北新幹線延伸で首都圏のベッドタウン化が進む。宇都宮線の高速化も実現。','イチゴ（とちおとめ・とちあいか）生産量で全国首位。自動車関連工場の集積が進む。']],
+['ibaraki','茨城','kanto',64,57,'🔬',['農業産出額全国トップクラス。日立製作所など大手工場が立地し工業も盛ん。','つくば科学万博（1985）開催。つくば研究学園都市が形成される。','東京圏のベッドタウン化が進む一方、農業・研究機関が共存する「科学農業県」として発展。']],
+['gunma','群馬','kanto',57,55,'♨️',['繊維・機械産業が発展。温泉（草津・伊香保）観光が盛んで「温泉天国」と呼ばれる。','関越自動車道の全線開通で首都圏とのアクセスが向上。自動車部品産業が集積。','アウトドア観光が発展。外国人労働者受け入れが全国トップクラスに。']],
+['saitama','埼玉','kanto',59,60,'🏟',['首都圏のベッドタウンとして人口が急増。高度経済成長を下から支える役割。','大宮・浦和・与野の合併で「さいたま市」が2001年に政令指定都市へ。','大宮駅周辺の再開発が加速。「ダサい」から「住みやすい」への都市イメージ転換に成功。']],
+['chiba','千葉','kanto',63,63,'✈️',['東京湾岸の工業地帯が発展。成田空港が1978年に開港（多くの反対運動を乗り越えて）。','幕張メッセが1989年開業。ディズニーランド（1983）の開園で観光・商業が大きく発展。','東日本大震災で液状化被害。成田空港の機能強化と千葉港周辺の再開発が続く。']],
+['tokyo','東京','kanto',60,63,'🗼',['高度経済成長で世界有数の大都市圏に。1964年東京五輪の遺産が都市インフラを支える。','バブル景気で地価が世界最高水準に。バブル崩壊後、経済の「失われた時代」の中心に。','2020年東京五輪（コロナ禍で無観客）。少子化・都心回帰・外国人増加が続く。']],
+['kanagawa','神奈川','kanto',59,66,'⚓',['横浜・川崎の重工業が発展。横浜港が国際貿易の要衝として機能。','横浜みなとみらい21の開発が本格化。横浜市が全国最大の市に成長。','観光都市・国際都市として発展。外国人居住者が多い「国際横浜」が定着。']],
+['toyama','富山','chubu',49,56,'🦀',['北陸の工業県として発展。富山湾の新鮮な魚介類が名産。薬売り（置き薬）文化も継承。','北陸自動車道の全線開通で企業誘致が進む。ガラス工芸が新産業として注目される。','北陸新幹線が2015年に金沢まで延伸開業。2024年1月、能登半島地震で大きな被害。']],
+['ishikawa','石川','chubu',46,54,'🏺',['伝統工芸（加賀友禅・九谷焼）と観光が発展。金沢が「小京都」として全国に知られる。','金沢21世紀美術館など文化施設が整備。工芸・観光の融合が独自の発展モデルに。','北陸新幹線金沢開業（2015）で観光客急増。2024年1月、能登半島地震が壊滅的被害を与える。']],
+['fukui','福井','chubu',44,59,'🦕',['原子力発電所が集中（若狭湾エリア）。眼鏡フレーム・繊維産業が基幹産業。','原発の安全問題が長年の政治課題に。恐竜博物館が全国的に有名に。','北陸新幹線が2024年に福井まで延伸開業。原発の再稼働問題と観光振興が同時課題。']],
+['nagano','長野','chubu',53,58,'⛷',['農業・観光・精密機械産業が均衡して発展。国内有数のスキーリゾート県。','1998年冬季長野五輪開催。善光寺参りなどの伝統観光とスキー観光が共存。','移住・田舎暮らしのメッカとして注目。リニア中央新幹線のルート問題で静岡県と対立。']],
+['yamanashi','山梨','chubu',56,62,'🍇',['フルーツ王国（ぶどう・桃）の産地として発展。富士山が観光資源に。','富士急ハイランドなどの観光施設が充実。リニアモーターカーの実験線が整備される。','富士山が2013年に世界文化遺産に登録。外国人観光客急増でオーバーツーリズム問題が浮上。']],
+['shizuoka','静岡','chubu',55,67,'🍵',['富士山・伊豆の観光資源と、静岡茶・みかんの農業。浜松の楽器産業も発展。','浜松のヤマハ・スズキなど製造業が発展。静岡空港建設が進む。','リニア中央新幹線の南アルプストンネル問題で静岡県が工事を長期にわたり不許可。']],
+['gifu','岐阜','chubu',49,62,'🦺',['中部の内陸県として発展。白川郷・合掌造り集落が独特の文化を守る。','白川郷が1995年に世界文化遺産に登録。自動車部品・航空機部品産業が発展。','豪雨・台風被害が多発。高山・白川郷への訪日外国人が急増しオーバーツーリズム問題が顕在化。']],
+['aichi','愛知','chubu',51,67,'🚗',['トヨタ自動車を中心とした自動車産業が世界的拠点に。名古屋が中部圏の中心都市として発展。','愛知万博（2005年）開催。自動車産業の輸出で工業生産額全国首位に。','トヨタが自動運転・EV戦略を本格化。外国人労働者受け入れの最先端県として多文化共生が課題。']],
+['mie','三重','kinki',48,70,'🦞',['伊勢神宮への参拝観光と漁業（真珠・志摩）が発展。「おかげ参り」が観光ブームを呼ぶ。','志摩スペイン村など大型観光施設が開業。真珠養殖・海女文化が世界的に注目される。','G7伊勢志摩サミット（2016）開催。三重の食文化・観光ブランドが国際的に発信される。']],
+['shiga','滋賀','kinki',46,64,'🚤',['琵琶湖の水資源が関西の生命線。農業・工業が発展。「近江商人」の文化が継承される。','京都のベッドタウンとして人口が増加。湖北の自然・文化観光が注目される。','琵琶湖の水質保全が国家的課題に。全国で数少ない人口増加県として発展が続く。']],
+['kyoto','京都','kinki',44,65,'🏛',['古都・世界的観光地として観光業が発展。西陣織・清水焼などの伝統工芸が継承される。','バブル期に地価が急騰。任天堂・京セラなどグローバル企業が台頭し始める。','オーバーツーリズムが深刻化。伝統的景観保全と観光業の共存が最大の課題に。']],
+['osaka','大阪','kinki',43,68,'🏢',['「天下の台所」として商業・工業の中心。1970年大阪万博の遺産が都市インフラを支える。','バブル崩壊後の「大阪の地盤沈下」が議論に。大阪維新の会が台頭し政治改革を推進（2010年〜）。','大阪・関西万博2025年開催。IRカジノを含む統合型リゾートの誘致が賛否両論の議論に。']],
+['hyogo','兵庫','kinki',40,67,'🌉',['神戸港を中心とした貿易・工業が発展。「六甲アイランド」など埋め立て開発が進む。','1995年1月17日、阪神淡路大震災（M7.3）。死者6400人超。震災復興が長期の最重要課題に。','神戸ファッション・医療産業クラスターが形成。淡路島の観光開発が近年急加速。']],
+['nara','奈良','kinki',45,71,'🦌',['古都・世界文化遺産の観光資源が豊富。農業と観光が経済を支える。','法隆寺・東大寺など世界遺産の整備が進む。奈良市のベッドタウン化が進む。','2022年7月8日、安倍晋三元首相が奈良市内で銃撃・死去。訪日外国人が過去最多を更新。']],
+['wakayama','和歌山','kinki',43,74,'⛩',['世界遺産・熊野古道と農業（梅・みかん）が経済を支える。漁業も盛ん。','熊野古道が2004年に世界遺産登録。南紀白浜の観光が発展。','人口減少が最も深刻な県の一つ。南海トラフ地震対策と移住促進が重要課題。']],
+['tottori','鳥取','chugoku',35,63,'🏖',['農業（二十世紀梨）と砂丘観光が有名。日本で最も人口の少ない県。','鳥取砂丘の保全と観光開発が議論に。山陰自動車道の整備が進む。','2016年鳥取県中部地震（M6.6）。スタバ・マクドナルド「最後の都道府県出店」で話題に。']],
+['shimane','島根','chugoku',30,64,'⛩',['出雲大社・石見銀山など歴史文化資源が豊富。農業・漁業が基幹産業。','石見銀山が2007年に世界遺産登録。竹島問題が国際問題化（2005年「竹島の日」条例）。','人口減少・過疎化が最も深刻な県の一つ。UIターン促進と地方創生の先進地として注目。']],
+['okayama','岡山','chugoku',37,69,'🍑',['農業（白桃・マスカット）と工業が発展。「晴れの国おかやま」として観光PRが進む。','瀬戸大橋が1988年に開通。本州と四国を結ぶ拠点として工業・物流が発展。','2018年西日本豪雨で倉敷市真備町が壊滅的被害。復興が進む中、再移住対策が課題に。']],
+['hiroshima','広島','chugoku',33,70,'☮️',['原爆投下（1945年）の記憶を持つ平和都市として世界的に知られる。マツダ（自動車）が発展。','マツダがグローバル企業に成長。広島カープが地域スポーツ文化の中心に。','G7広島サミット（2023）開催。核廃絶の発信地として平和外交の拠点に。']],
+['yamaguchi','山口','chugoku',27,72,'🏭',['周南コンビナートなど重化学工業が発展。安倍晋三・岸田文雄ら歴代首相を多く輩出。','本州最西端として九州・関西をつなぐ物流が発展。角島大橋など観光が注目される。','山口・宇部の工業が電機・化学で転換。「長州閥」政治の根拠地として存在感を発揮。']],
+['kagawa','香川','shikoku',38,72,'🍜',['うどん王国として食文化が発展。瀬戸内海の島々が独特の風景を作る。','瀬戸大橋（坂出〜児島）が1988年に開通。本州へのアクセスが飛躍的に向上。','瀬戸内国際芸術祭（2010年〜）が国際的なアートイベントに成長。インバウンドが急増。']],
+['tokushima','徳島','shikoku',41,75,'💃',['阿波踊りが全国的なブランドに。農業（鳴門金時・すだち）が特産。','大鳴門橋が1985年開通。四国初の本州四国連絡橋で交通革命。IT企業誘致の先駆けに。','地方創生の最先端モデルとして注目。神山町のITテレワーク移住が全国メディアで紹介。']],
+['ehime','愛媛','shikoku',34,76,'🍊',['みかん・真珠の産地として農業・水産業が発展。松山城・道後温泉が観光資源。','しまなみ海道の整備が進む。今治タオルが全国ブランドに成長。','しまなみ海道が自転車聖地として国際的に有名に。今治造船が国内最大の造船グループに成長。']],
+['kochi','高知','shikoku',38,79,'🎏',['農業（土佐文旦・かつお）と漁業が発展。坂本龍馬の故郷として観光が盛ん。','高知自動車道の整備が進む。よさこいソーラン祭りが全国に広まる。','南海トラフ地震の最大被災地と想定される。人口減少・高齢化対策が最重要課題に。']],
+['fukuoka','福岡','kyushu',23,74,'🏙',['九州の中心都市・博多として商業・工業が発展。福岡空港が九州の航空の要衝に。','福岡ドーム（1993年）開業。天神・博多の都市再開発が加速。アジアへの玄関口として成長。','人口増加が続く稀有な政令指定都市。韓国・中国との航路が充実しアジアのハブ都市化が進む。']],
+['oita','大分','kyushu',28,79,'♨️',['温泉大国（別府・由布院）として観光業が発展。農業・漁業も盛ん。','由布院温泉が「大人の隠れ家」として全国ブランドに。大分空港のホバークラフトが注目される。','サッカー・Jリーグ（大分トリニータ）が地域活性化に貢献。地熱発電など再生エネルギー拠点化。']],
+['saga','佐賀','kyushu',21,77,'🏺',['農業（佐賀牛・いちご・のり）と伝統工芸（有田焼・伊万里焼）が産業の柱。','有田陶磁器が世界的コレクターズアイテムに。玄海原発の稼働問題が長年の政治課題。','佐賀空港へのオスプレイ配備問題が全国的議論に。農業ブランド化と観光振興が課題。']],
+['kumamoto','熊本','kyushu',24,82,'🏯',['農業王国・農業産出額で九州トップクラス。阿蘇山の観光が発展。','TDK・ソニーなど半導体・電機工場が集積。熊本城が観光の中心に。','2016年熊本地震（M7.3）で熊本城が大きな被害。TSMC工場誘致（2024年）で半導体産業の拠点に急浮上。']],
+['nagasaki','長崎','kyushu',17,81,'⛩',['軍艦島（端島）など近代化遺産が多く観光資源豊富。造船業の衰退で新産業が必要に。','軍艦島が2015年に世界遺産登録（朝鮮人強制労働問題で韓国と対立）。ハウステンボス（1992）開業。','長崎新幹線（西九州新幹線）が2022年開業。諫早湾干拓問題が長期化。']],
+['miyazaki','宮崎','kyushu',28,86,'🌊',['農業（ピーマン・きゅうり）と観光（シーガイア）が発展。プロ野球キャンプ地として有名。','シーガイア（1994年）開業するも経営行き詰まり破綻。口蹄疫問題（2010年）で畜産業が深刻打撃。','2023年7月、「南海トラフ地震臨時情報（巨大地震注意）」を初発令。全国に衝撃。']],
+['kagoshima','鹿児島','kyushu',24,89,'🚀',['種子島宇宙センター（1969年完成）が日本の宇宙開発の拠点に。農業・黒毛和牛が有名。','屋久島が1993年に世界自然遺産登録。九州新幹線（2004年部分開業）で交通が改善。','川内原発の再稼働（2015年）が全国の原発再稼働第1号として注目。JAXA商業衛星打ち上げが増加。']],
+['okinawa','沖縄','okinawa',12,97,'🌺',['1972年5月15日、本土復帰。27年ぶりに返還されるが広大な米軍基地が残留。沖縄海洋博覧会（1975年）開催。','1995年米兵による少女暴行事件を契機に10万人集会。「普天間基地の県外移設」を要求する運動が激化。','普天間基地の辺野古移設が国と沖縄県の対立のまま工事継続中。観光客数はコロナ前水準に回復しつつある。']],
 ];
 
 const JP_TERRS=[
-['etorofu','択捉島','hoppo',75,8,'🏔',['面積約3183㎢、北方四島最大の島。1945年ソ連が占領。元島民約4万人の帰還を求める声が続く。','ソ連崩壊後、東京宣言（1993年）で四島返還の枠組みが確認されるが具体的な進展はなし。','2022年ロシアのウクライナ侵攻後、北方領土交渉は完全停止。元島民の高齢化が進む。']],
-['kunashiri','国後島','hoppo',68,11,'🏔',['面積約1489㎢の島。ロシア軍の軍事施設が整備されている。「ビザなし交流」で訪問できる制度があった。','「ビザなし交流事業」（1992年〜）で日本人と旧島民が相互訪問。元島民の故郷への想いが確認される。','2022年のウクライナ侵攻後、ロシアはビザなし交流を一方的に停止。ロシアの軍事化が加速。']],
-['shikotan','色丹島','hoppo',71,12,'🏔',['日ソ共同宣言（1956年）では平和条約締結後に日本へ返還することが記されている2島のうちの1つ。','「2島先行返還」案が日本側から提起されるも、ロシアは4島問題として一括処理を主張。','プーチン政権下でロシアは2島返還案にも応じない姿勢を強化。ウクライナ侵攻後は交渉自体が凍結。']],
-['habomai','歯舞群島','hoppo',68,13,'🏔',['北海道根室市の眼前に広がる島々。漁業資源が豊富で、元島民が最も返還を切望する島群。','根室市の「北方領土の日」（2月7日）返還要求集会が毎年開催。政府・議員が参加する国民運動に定着。','ロシア側は歯舞を「千島」の一部として領有を主張。日本との法的解釈の違いが解決を複雑にする。']],
-['takeshima','竹島','takeshima',28,39,'🪨',['島根県隠岐郡に属する小島。1952年「李承晩ライン」設定後、韓国が1954年以降実効支配を継続。','1996年日韓双方がEEZを設定し摩擦激化。2005年島根県「竹島の日」条例制定で韓国が激しく抗議。','2012年8月、韓国の李明博大統領が竹島に上陸し天皇への謝罪要求発言で日韓関係が戦後最悪に。']],
-['uotsuri','魚釣島','senkaku',7,87,'⛰',['1895年に日本が閣議決定で領土に編入。1971年のUNESCAP石油埋蔵報告後、中国・台湾が領有権を主張し始める。','2004年中国人活動家7名が上陸し逮捕・強制送還。2010年中国漁船衝突事件が領土問題を国際的焦点に。','2012年9月、日本政府が尖閣を国有化。中国公船・海警局船の領海侵犯が常態化し年間最多記録を更新。']],
-['kitako','北小島','senkaku',8,87,'⛰',['無人島。1896年、古賀辰四郎氏がアホウドリ採取・漁業のために開拓し、日本の実効支配が始まった歴史を持つ。','1992年、中国が「領海及び接続水域法」で北小島を自国領土と明記。日本は強く抗議。','中国公船が北小島周辺の領海に定期的に侵入。日本の海上保安庁が24時間監視を継続。']],
-['minamiko','南小島','senkaku',8,88,'⛰',['北小島とともに古賀氏の開拓拠点として使われた歴史を持つ。日本政府が1932年に国有地に。','1996年、日本の右翼団体が魚釣島に灯台を建設。南小島周辺でも領有権示威活動が活発化。','2012年以降、中国海警船の周回・接続水域侵入が慢性化。日本の「何もしない実効支配」が続く。']],
-['kuba','久場島','senkaku',9,87,'⛰',['4島の中で最も西に位置する島。米軍の訓練水域に指定されており、日米地位協定の問題も絡む複雑な位置づけ。','米軍の使用継続と日本の主権主張の両立が外交的課題に。中国はこの点を批判する。','中国が久場島周辺での軍事訓練に懸念を示す。日・中・米の三つ巴の複雑な権益関係が続く。']],
+['etorofu','択捉島','hoppo',83,12,'🏔',['面積約3183㎢、北方四島最大の島。1945年ソ連が占領。元島民約4万人の帰還を求める声が続く。','ソ連崩壊後、東京宣言（1993年）で四島返還の枠組みが確認されるが具体的な進展はなし。','2022年ロシアのウクライナ侵攻後、北方領土交渉は完全停止。元島民の高齢化が進む。']],
+['kunashiri','国後島','hoppo',82,18,'🏔',['面積約1489㎢の島。ロシア軍の軍事施設が整備されている。「ビザなし交流」で訪問できる制度があった。','「ビザなし交流事業」（1992年〜）で日本人と旧島民が相互訪問。元島民の故郷への想いが確認される。','2022年のウクライナ侵攻後、ロシアはビザなし交流を一方的に停止。ロシアの軍事化が加速。']],
+['shikotan','色丹島','hoppo',80,20,'🏔',['日ソ共同宣言（1956年）では平和条約締結後に日本へ返還することが記されている2島のうちの1つ。','「2島先行返還」案が日本側から提起されるも、ロシアは4島問題として一括処理を主張。','プーチン政権下でロシアは2島返還案にも応じない姿勢を強化。ウクライナ侵攻後は交渉自体が凍結。']],
+['habomai','歯舞群島','hoppo',78,22,'🏔',['北海道根室市の眼前に広がる島々。漁業資源が豊富で、元島民が最も返還を切望する島群。','根室市の「北方領土の日」（2月7日）返還要求集会が毎年開催。政府・議員が参加する国民運動に定着。','ロシア側は歯舞を「千島」の一部として領有を主張。日本との法的解釈の違いが解決を複雑にする。']],
+['takeshima','竹島','takeshima',22,57,'🪨',['島根県隠岐郡に属する小島。1952年「李承晩ライン」設定後、韓国が1954年以降実効支配を継続。','1996年日韓双方がEEZを設定し摩擦激化。2005年島根県「竹島の日」条例制定で韓国が激しく抗議。','2012年8月、韓国の李明博大統領が竹島に上陸し天皇への謝罪要求発言で日韓関係が戦後最悪に。']],
+['uotsuri','魚釣島','senkaku',10,97,'⛰',['1895年に日本が閣議決定で領土に編入。1971年のUNESCAP石油埋蔵報告後、中国・台湾が領有権を主張し始める。','2004年中国人活動家7名が上陸し逮捕・強制送還。2010年中国漁船衝突事件が領土問題を国際的焦点に。','2012年9月、日本政府が尖閣を国有化。中国公船・海警局船の領海侵犯が常態化し年間最多記録を更新。']],
+['kitako','北小島','senkaku',9,97,'⛰',['無人島。1896年、古賀辰四郎氏がアホウドリ採取・漁業のために開拓し、日本の実効支配が始まった歴史を持つ。','1992年、中国が「領海及び接続水域法」で北小島を自国領土と明記。日本は強く抗議。','中国公船が北小島周辺の領海に定期的に侵入。日本の海上保安庁が24時間監視を継続。']],
+['minamiko','南小島','senkaku',11,97,'⛰',['北小島とともに古賀氏の開拓拠点として使われた歴史を持つ。日本政府が1932年に国有地に。','1996年、日本の右翼団体が魚釣島に灯台を建設。南小島周辺でも領有権示威活動が活発化。','2012年以降、中国海警船の周回・接続水域侵入が慢性化。日本の「何もしない実効支配」が続く。']],
+['kuba','久場島','senkaku',8,96,'⛰',['4島の中で最も西に位置する島。米軍の訓練水域に指定されており、日米地位協定の問題も絡む複雑な位置づけ。','米軍の使用継続と日本の主権主張の両立が外交的課題に。中国はこの点を批判する。','中国が久場島周辺での軍事訓練に懸念を示す。日・中・米の三つ巴の複雑な権益関係が続く。']],
 ];
 
 // 都道府県・領土 形状ポリゴン（% 座標空間 0-100）精度向上版
@@ -4961,90 +5327,36 @@ function jpRegLabel(r){
   hoppo:'北方領土',takeshima:'竹島',senkaku:'尖閣諸島'}[r]||r;
 }
 
-// ===================== マップ表示切り替え =====================
-let _mapView='current';
-
-function setMapView(v){
-  if(_mapView===v) return;
-  _mapView=v;
-  const cv=document.getElementById('mapCurrentView');
-  const av=document.getElementById('mapAllView');
-  const mb=document.getElementById('mvs-current');
-  const ab=document.getElementById('mvs-all');
-  const ind=document.getElementById('mvsIndicator');
-
-  // スイッチャー更新
-  if(mb) mb.classList.toggle('mvs-active',v==='current');
-  if(ab) ab.classList.toggle('mvs-active',v==='all');
-  if(ind){ ind.className='mvs-indicator'+(v==='all'?' on-all':''); }
-
-  // コンテンツを事前構築
-  if(v==='all'){ buildJapanMap(); updateJpHUD(); }
-  else { renderMapCurrentView(getJpStep()); }
-
-  const outEl=v==='current'?av:cv;
-  const inEl =v==='current'?cv:av;
-
-  // アウトアニメーション
-  outEl.style.transition='opacity 0.22s ease,transform 0.22s ease';
-  outEl.style.opacity='0';
-  outEl.style.transform=v==='current'?'scale(0.97) translateY(-8px)':'scale(1.03)';
-
-  // インを準備（初期状態を即セット）
-  inEl.style.display='block';
-  inEl.style.transition='none';
-  inEl.style.opacity='0';
-  inEl.style.transform=v==='current'?'scale(1.02) translateY(12px)':'scale(0.96)';
-
-  // 次フレームでフェードイン開始
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{
-    inEl.style.transition='opacity 0.34s cubic-bezier(0.4,0,0.2,1),transform 0.34s cubic-bezier(0.4,0,0.2,1)';
-    inEl.style.opacity='1';
-    inEl.style.transform='scale(1) translateY(0)';
-  }));
-
-  // クリーンアップ
-  setTimeout(()=>{
-    outEl.style.display='none';
-    [outEl,inEl].forEach(el=>{ el.style.transition=''; el.style.opacity=''; el.style.transform=''; });
-  },360);
+// ===================== 全体地図モーダル =====================
+function openJpMapFull(){
+  const modal=document.getElementById('jpMapFullModal');
+  if(!modal) return;
+  modal.classList.add('open');
+  document.body.style.overflow='hidden';
+  buildJapanMap();
+  updateJpHUD();
 }
+function closeJpMapFull(){
+  const modal=document.getElementById('jpMapFullModal');
+  if(!modal) return;
+  modal.classList.remove('open');
+  document.body.style.overflow='';
+}
+function handleJpMapFullOverlayClick(e){
+  if(e.target===document.getElementById('jpMapFullModal')) closeJpMapFull();
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape') closeJpMapFull();
+});
 
-// ─── フィールドビュー ───────────────────────────────────
-function buildStageChainHtml(step){
-  const start=Math.max(0,step-8),end=Math.min(JP_ORDER.length-1,step+8);
-  const charName=S.selectedChar||'おーる局長';
-  let html='';
-  for(let i=start;i<=end;i++){
-    const id=JP_ORDER[i],s=JP_ALL[id];
-    const color=JP_RC[s?.region]||'#888';
-    const dist=Math.abs(i-step);
-    const sf=Math.max(0.44,1-dist*0.1);
-    const isCur=i===step;
-    const cs=Math.round(44*sf),cw=Math.round(36*Math.max(0.52,1-dist*0.07)),fs=Math.round(9*sf);
-    const is=isCur?120:Math.round(68*sf);
-    const stCls=i<step?'s-visited':isCur?'s-current':'s-fog';
-    const showChar=i<=step,n=i+1,year=getJpYear(i);
-    const csrc=getCharJourneyImg(charName,n)||`../../../画像/マネぼう/imgキャラ/おーる局長/All (${n}).png`;
-    if(i>start) html+=`<div class="jp-s-connector${i<=step?' c-visited':''}" style="width:${cw}px;"></div>`;
-    html+=`<div class="jp-s-node ${stCls}" style="--jrc:${color};" data-step="${i}" onclick="openJpModal('${escH(id)}',${i})">
-      ${showChar?`<img class="jp-s-charimg" src="${escH(csrc)}" alt="" style="width:${is}px;height:${is}px;" onerror="this.style.display='none'">`:''}
-      ${isCur?'<div class="jp-s-spotlight"></div>':''}
-      <div class="jp-s-circ" style="width:${cs}px;height:${cs}px;font-size:${fs}px;">${s?.emoji||'🗾'}</div>
-      <div class="jp-s-lbl">${year}<br>${jpShort(s?.name||'')}</div>
-    </div>`;
-  }
-  return html;
-}
-function scrollFieldToCurrentStage(step){
-  const sc=document.getElementById('jpFieldScroll');if(!sc) return;
-  const cur=sc.querySelector(`[data-step="${step}"]`);if(!cur) return;
-  sc.scrollTo({left:cur.offsetLeft-sc.clientWidth/2+cur.offsetWidth/2,behavior:'smooth'});
-}
 
 function renderMapCurrentView(step){
   const card=document.getElementById('mapDestCard');
   if(!card) return;
+  card.classList.remove('transitioning');
+  void card.offsetWidth; // reflow
+  card.classList.add('transitioning');
+  setTimeout(()=>card.classList.remove('transitioning'),560);
   if(step>=JP_ORDER.length){
     card.innerHTML=`<div style="padding:40px 20px;text-align:center;">
       <div style="font-size:48px;margin-bottom:12px;">🎉</div>
@@ -5061,21 +5373,59 @@ function renderMapCurrentView(step){
   const progress=S.jpMap?S.jpMap.progress||0:0;
   const needed=getJpTilesNeeded(step);
   const n=step+1;
-  const shape=JP_SHAPES[id]||'';
-  const svgSilhouette=shape?`<svg class="jp-field-pref-svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet"><polygon points="${shape}" fill="${color}" stroke="none"/></svg>`:'';
-  const skyTint=`background:linear-gradient(180deg,#01071a 0%,#060e35 30%,${color}22 55%,#153440 82%,#1a3830 100%)`;
+  const charName=S.activeChar||'おーる局長';
+
+  // 地図ズームパラメータ
+  const zoom=3.5;
+  const cx=s.x, cy=s.y;
+  // 現在地が中心に来るようにbackground-positionを計算（0-100にクランプ）
+  const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
+  const bgX=clamp((zoom*cx-50)/(zoom-1),0,100);
+  const bgY=clamp((zoom*cy-50)/(zoom-1),0,100);
+  // 任意の点(px,py)の視覚的位置を計算（コンテナ上の%）
+  const toVis=(px,py)=>({vx:50+(px-cx)*zoom, vy:50+(py-cy)*zoom});
+
+  // 過去5ステージ + 現在地のルートを構築
+  const routeStart=Math.max(0,step-5);
+  const routeStages=[];
+  for(let i=routeStart;i<=step;i++){
+    const rid=JP_ORDER[i],rs=JP_ALL[rid];
+    if(rs) routeStages.push({id:rid,s:rs,idx:i});
+  }
+
+  // ルートSVG
+  let routeSvg='';
+  if(routeStages.length>1){
+    const pts=routeStages.map(r=>{ const {vx,vy}=toVis(r.s.x,r.s.y); return `${vx.toFixed(1)},${vy.toFixed(1)}`; }).join(' ');
+    routeSvg=`<svg class="jp-cv-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <polyline points="${pts}" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <polyline points="${pts}" fill="none" stroke="${color}" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity=".85" stroke-dasharray="4,2"/>
+    </svg>`;
+  }
+
+  // 過去ステージのドット（視野内のみ描画）
+  const pastDots=routeStages.slice(0,-1).map(r=>{
+    const {vx,vy}=toVis(r.s.x,r.s.y);
+    if(vx<-5||vx>105||vy<-5||vy>105) return '';
+    const rc=JP_RC[r.s.region]||'#888';
+    return `<div class="jp-cv-dot" style="left:${vx.toFixed(1)}%;top:${vy.toFixed(1)}%;--jrc:${rc};"
+      onclick="openJpModal('${escH(r.id)}',${r.idx})" title="${getJpYear(r.idx)}年 ${r.s.name}"></div>`;
+  }).join('');
+
+  const charSrc=getCharJourneyImg(charName,n)||`../../../画像/マネぼう/imgキャラ/おーる局長/All (${n}).png`;
+
   card.innerHTML=`
-    <div class="jp-field-view" id="jpFieldView">
-      <div class="jp-field-sky" style="${skyTint}"></div>
-      <div class="jp-field-ground"></div>
-      <div class="jp-field-scroll" id="jpFieldScroll">
-        <div class="jp-field-chain" id="jpFieldChain">${buildStageChainHtml(step)}</div>
-      </div>
+    <div class="jp-cv-view">
+      <div class="jp-cv-map" style="background:url('images/map.jpg') ${bgX.toFixed(2)}% ${bgY.toFixed(2)}%/${zoom*100}% ${zoom*100}% no-repeat;"></div>
+      <div class="jp-cv-fog"></div>
+      ${routeSvg}
+      ${pastDots}
+      <div class="jp-cv-pin jp-cv-current"><div class="jp-cv-ripple"></div></div>
+      <img class="jp-cv-char" src="${escH(charSrc)}" alt="" onerror="this.style.display='none'">
       <div class="jp-field-loc">
-        <div class="jp-field-loc-reg">${jpRegLabel(s.region).toUpperCase()}</div>
+        <div class="jp-field-loc-reg">${jpRegLabel(s.region)}</div>
         <div class="jp-field-loc-name">${escH(s.name)}</div>
       </div>
-      ${svgSilhouette}
       <div class="jp-field-overlay">
         <div class="jp-field-badge">📍 Stage ${n}/56</div>
       </div>
@@ -5095,7 +5445,6 @@ function renderMapCurrentView(step){
     </div>`;
   const erasEl=document.getElementById('mdEras');
   if(erasEl) erasEl.innerHTML=`<div class="jpm-era" style="border-color:${color}"><div class="jpm-era-title" style="color:${color}">${year}年代 — ${jpRegLabel(s.region)}</div><div class="jpm-era-text">${s.eras[0]||''}</div></div>`;
-  setTimeout(()=>scrollFieldToCurrentStage(step),80);
 }
 
 // =====================================================
@@ -5119,18 +5468,12 @@ function advanceJpProgress(){
     save();
     checkAchievements();
     showToast(`🎉 ${s.name}（${yr}年）制覇！${nextName?'→ '+nextName+'へ！':'全県制覇おめでとう！'}`);
-    if(currentTab==='map'){
-      if(_mapView==='all') buildJapanMap();
-      else renderMapCurrentView(S.jpMap.step);
-    }
+    if(currentTab==='map') renderMapCurrentView(S.jpMap.step);
   } else {
     save();
     const p=S.jpMap.progress, needed2=needed;
     showToast(`🏠 ${s.name} ${p}/${needed2} ポモドーロ`);
-    if(currentTab==='map'){
-      if(_mapView==='all') buildJapanMap();
-      else renderMapCurrentView(step);
-    }
+    if(currentTab==='map') renderMapCurrentView(step);
   }
 }
 
@@ -5204,7 +5547,7 @@ let _mapPinchD0=0,_mapPinchS0=1,_mapPanZoomInited=false;
 function initMapPanZoom(){
   if(_mapPanZoomInited) return;
   _mapPanZoomInited=true;
-  const wrap=document.querySelector('.jp-map-tilt');
+  const wrap=document.querySelector('.jp-mapfull-body');
   if(!wrap) return;
   wrap.addEventListener('wheel',(e)=>{
     e.preventDefault();
@@ -5268,8 +5611,6 @@ function _applyMT(){
   if(!stage) return;
   stage.style.transformOrigin='0 0';
   stage.style.transform=`translate(${_mapOffX}px,${_mapOffY}px) scale(${_mapScale})`;
-  const btn=document.getElementById('mapResetBtn');
-  if(btn) btn.style.display=(_mapScale.toFixed(2)!=='1.00'||Math.abs(_mapOffX)>1||Math.abs(_mapOffY)>1)?'flex':'none';
 }
 
 function resetMapView(){ centerOnCurrentNode(true); }
@@ -5326,35 +5667,54 @@ function buildJapanMap(){
   const stage=document.getElementById('jpMapStage');
   if(!stage) return;
   initMapPanZoom();
-  stage.querySelectorAll('.jp-node,.jp-char-pin').forEach(el=>el.remove());
-  // 旧ルートSVGを削除（形状マップでは不要）
+  stage.querySelectorAll('.jp-node,.jp-char-pin,.jp-pin-dot,.jp-fog-overlay,.jp-pref-shapes-svg').forEach(el=>el.remove());
   stage.querySelector('.jp-route-svg')?.remove();
   if(!S.jpMap) S.jpMap={step:0,progress:0};
   const step=getJpStep();
-  const progress=S.jpMap.progress||0;
+  const charName=S.activeChar||'おーる局長';
 
-  // 県形状SVGレイヤー
-  buildPrefShapesSvg(stage,step,progress);
+  // 霧エフェクト（未踏エリアを暗くする全面オーバーレイ）
+  const fog=document.createElement('div');
+  fog.className='jp-fog-overlay';
+  stage.appendChild(fog);
 
-  // 完了済み県にキャラピン（おーる局長）を配置
-  // 密集エリア対策：後のステージを上に重なるようzIndex設定
+  // ルートライン（制覇済みを繋ぐ線）
+  buildRouteSvg(stage,step);
+
+  // 全県ピン配置
   JP_ORDER.forEach((id,idx)=>{
-    if(idx>=step) return;
     const s=JP_ALL[id];
+    if(!s) return;
+    const isDone=idx<step, isCur=idx===step;
+    const color=JP_RC[s.region]||'#888';
     const n=idx+1;
-    const img=document.createElement('img');
-    img.className='jp-char-pin';
-    img.src=`../../../画像/マネぼう/imgキャラ/おーる局長/All (${n}).png`;
-    img.style.left=s.x+'%';
-    img.style.top=s.y+'%';
-    img.style.zIndex=idx+10;
-    img.title=`${getJpYear(idx)}年 ${s.name}（制覇済み）`;
-    img.onclick=()=>openJpModal(id,idx);
-    stage.appendChild(img);
+
+    // ドットピン
+    const dot=document.createElement('div');
+    dot.className='jp-pin-dot '+(isDone?'jp-pin-visited':isCur?'jp-pin-current':'jp-pin-fog');
+    dot.style.cssText=`left:${s.x}%;top:${s.y}%;${(isDone||isCur)?'--jrc:'+color+';':''}`;
+    if(isCur){ const rpl=document.createElement('div'); rpl.className='jp-pin-ripple'; dot.appendChild(rpl); }
+    if(isDone||isCur){ dot.onclick=()=>openJpModal(id,idx); dot.title=`${getJpYear(idx)}年 ${s.name}`; }
+    stage.appendChild(dot);
+
+    // キャラピン（現在地のみ）
+    if(isCur){
+      const img=document.createElement('img');
+      img.className='jp-char-pin';
+      const src=getCharJourneyImg(charName,n)||`../../../画像/マネぼう/imgキャラ/おーる局長/All (${n}).png`;
+      img.src=src;
+      img.style.left=s.x+'%';
+      img.style.top=s.y+'%';
+      img.style.zIndex=100;
+      img.style.width='52px';
+      img.title=`${getJpYear(idx)}年 ${s.name}`;
+      img.onclick=()=>openJpModal(id,idx);
+      img.onerror=()=>img.style.display='none';
+      stage.appendChild(img);
+    }
   });
 
   updateJpHUD();
-  // 地方レベルのズームで現在地に自動センタリング
   setTimeout(()=>centerOnCurrentNode(true),60);
 }
 
@@ -5465,7 +5825,8 @@ function openJpModal(id,idx){
     if(!isLock){
       const charImg=document.createElement('img');
       charImg.className='jpm-hero-char'+(isCur?' is-current':'');
-      charImg.src=`../../../画像/マネぼう/imgキャラ/おーる局長/All (${stageNum}).png`;
+      const heroCharSrc=getCharJourneyImg(S.activeChar||'おーる局長',stageNum)||`../../../画像/マネぼう/imgキャラ/おーる局長/All (${stageNum}).png`;
+      charImg.src=heroCharSrc;
       charImg.alt='';
       charImg.onerror=()=>charImg.remove();
       hero.appendChild(charImg);
@@ -5525,8 +5886,7 @@ function visitJpStage(){
   const year=getJpYear(step);
   showToast(`${s.emoji} ${year}年・${s.name} 旅行完了！🎽 新衣装ゲット！`);
   updateJpHUD();
-  if(_mapView==='current') renderMapCurrentView(S.jpMap.step);
-  else buildJapanMap();
+  if(currentTab==='map') renderMapCurrentView(S.jpMap.step);
   setTimeout(()=>openJpModal(visitedId, visitedIdx), 200);
 }
 
@@ -5833,13 +6193,15 @@ function saveExerciseLog(){
   const pin=getActivePin();
   if(!pin){showToast('⚠️ Pinを選択してください');return;}
   const metrics=pin.metrics||[];
-  const values={};let hasAny=false;
+  const prevVals=(pin.log||[]).length>0?(pin.log[pin.log.length-1].values||{}):{};
+  const values={};let hasNew=false;
   metrics.forEach(m=>{
     const v=parseFloat($('exInput_'+m.id)?.value||'');
-    if(!isNaN(v)&&v>0){values[m.id]=v;hasAny=true;}
+    if(!isNaN(v)&&v>0){values[m.id]=v;hasNew=true;}
+    else if(prevVals[m.id]!=null){values[m.id]=prevVals[m.id];}
   });
   const title=$('exTitleInput')?.value.trim()||'';
-  if(!hasAny&&!title){showToast('⚠️ 値かメモを入力してください');return;}
+  if(!hasNew&&!title){showToast('⚠️ 値かメモを入力してください');return;}
   if(!pin.log) pin.log=[];
   pin.log.push({id:'e'+Date.now(),date:todayStr(),values,title});
   if(pin.log.length>180) pin.log=pin.log.slice(-180);
