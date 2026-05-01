@@ -593,6 +593,26 @@ html.dark .habit-item{background:#0D1117;border-color:#30363D;}
 html.dark .habit-input{background:#0D1117;color:#E6EDF3;border-color:#30363D;}
 html.dark .habit-title{color:#E6EDF3;}
 
+/* ====== SETTINGS TAB ====== */
+.settings-card{background:var(--white);border:3px solid var(--dark);border-radius:15px;padding:14px 16px;margin-bottom:10px;box-shadow:4px 4px 0 var(--dark);}
+.settings-row{display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.settings-label-wrap{display:flex;align-items:center;gap:10px;}
+.settings-icon{font-size:22px;flex-shrink:0;line-height:1;}
+.settings-title{font-size:13px;font-weight:700;}
+.settings-sub{font-size:10px;color:#888;font-weight:700;margin-top:2px;}
+.settings-toggle{border:2px solid var(--dark);border-radius:20px;padding:6px 16px;font-size:11px;font-weight:700;cursor:pointer;transition:all 0.2s;background:var(--dark);color:white;}
+.settings-toggle.on{background:var(--gold);border-color:var(--gold);color:var(--dark);}
+.settings-btn{background:white;border:2px solid var(--dark);border-radius:10px;padding:6px 14px;font-size:11px;font-weight:700;cursor:pointer;transition:all 0.15s;}
+.settings-btn:hover{background:rgba(0,0,0,0.05);}
+.settings-btn.danger{border-color:var(--red);color:var(--red);}
+.settings-btn.danger:hover{background:rgba(232,53,74,0.07);}
+.settings-info-row{display:flex;justify-content:space-between;font-size:12px;font-weight:700;color:#888;padding:4px 0;border-bottom:1px solid rgba(0,0,0,0.06);}
+.settings-info-row:last-child{border-bottom:none;}
+html.dark .settings-card{background:#161B22;border-color:#30363D;box-shadow:4px 4px 0 #30363D;}
+html.dark .settings-toggle{background:#30363D;border-color:#30363D;color:#E6EDF3;}
+html.dark .settings-toggle.on{background:var(--gold);border-color:var(--gold);color:var(--dark);}
+html.dark .settings-btn{background:#0D1117;color:#E6EDF3;border-color:#30363D;}
+
 /* ====== CARD TILE RARITY ====== */
 .map-cell.rarity-card{overflow:hidden;padding:0;}
 
@@ -665,30 +685,40 @@ html.dark .tile-sheet-subtitle{color:#555;}
 /* ====== OWNED THEME BADGE ====== */
 .theme-price.owned-label{color:var(--green) !important;}
 
-/* ====== JAPAN MAP (都道府県 発展マップ) ====== */
-.jp-stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
-.jp-stat{background:rgba(255,255,255,0.04);border:2px solid rgba(255,255,255,0.09);border-radius:12px;padding:8px 6px;text-align:center;}
-.jp-stat-num{font-family:'Dela Gothic One',sans-serif;font-size:20px;line-height:1;margin-bottom:2px;}
-.jp-stat-lbl{font-size:8px;color:rgba(255,255,255,0.4);font-weight:700;letter-spacing:1px;}
+/* ====== JAPAN MAP (旅行ジャーニー) ====== */
 
-/* 3D 斜め視点コンテナ */
-.jp-map-outer{perspective:800px;perspective-origin:50% -10%;margin:0 0 12px;overflow:visible;}
-.jp-map-tilt{
-  transform:rotateX(28deg) rotateZ(-2deg);
-  transform-origin:50% 0%;
-  transform-style:preserve-3d;
-  transition:transform 0.5s cubic-bezier(0.2,0,0,1);
-  border-radius:20px;
-  box-shadow:0 30px 80px rgba(0,0,0,0.8),0 0 40px rgba(245,200,66,0.07),inset 0 1px 0 rgba(255,255,255,0.06);
+/* 画面いっぱいマップ（縦画面スマホ向け） */
+.jp-map-outer{
+  position:relative;
+  width:calc(100% + 26px);
+  margin:0 -13px;
+  height:calc(100svh - 195px);
+  min-height:400px;max-height:740px;
+  overflow:hidden;
 }
-.jp-map-outer:hover .jp-map-tilt,.jp-map-outer:focus-within .jp-map-tilt{transform:rotateX(17deg) rotateZ(-1deg);}
+.jp-map-tilt{width:100%;height:100%;}
 .jp-map-stage{
-  position:relative;width:100%;padding-bottom:132%;
-  background:radial-gradient(ellipse at 65% 28%,rgba(74,158,255,0.09) 0%,transparent 55%),
-             radial-gradient(ellipse at 20% 82%,rgba(162,155,254,0.08) 0%,transparent 50%),#07081a;
-  border-radius:20px;border:2px solid rgba(245,200,66,0.22);overflow:visible;
+  position:absolute;inset:0;
+  width:100%;height:100%;padding-bottom:0;
+  background:
+    radial-gradient(ellipse at 70% 20%,rgba(74,158,255,0.11) 0%,transparent 50%),
+    radial-gradient(ellipse at 15% 80%,rgba(162,155,254,0.1) 0%,transparent 50%),
+    linear-gradient(175deg,#05061a 0%,#080a20 100%);
+  border:none;border-radius:0;overflow:hidden;
 }
-.jp-sea{position:absolute;font-size:7.5px;color:rgba(255,255,255,0.12);font-weight:700;letter-spacing:1px;pointer-events:none;transform:translate(-50%,-50%);}
+.jp-sea{position:absolute;font-size:8px;color:rgba(255,255,255,0.14);font-weight:700;letter-spacing:1.5px;pointer-events:none;transform:translate(-50%,-50%);}
+/* 統計バーをマップ直上に */
+.jp-stats-row{
+  display:flex;gap:0;
+  margin:0 -13px;
+  background:rgba(5,6,26,0.9);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1.5px solid rgba(245,200,66,0.2);
+  padding:8px 0;
+}
+.jp-stat{flex:1;text-align:center;padding:0 4px;}
+.jp-stat-num{font-family:'Dela Gothic One',sans-serif;font-size:18px;line-height:1;}
+.jp-stat-lbl{font-size:9px;color:rgba(255,255,255,.4);font-weight:700;margin-top:2px;letter-spacing:.5px;}
 
 /* ノード */
 .jp-node{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;cursor:pointer;user-select:none;z-index:5;transition:transform .2s;}
@@ -751,7 +781,6 @@ html.dark .tile-sheet-subtitle{color:#555;}
 .jpm-char-sprite{position:absolute;bottom:32px;right:8px;width:110px;height:auto;pointer-events:none;z-index:0;filter:drop-shadow(0 4px 18px rgba(0,0,0,0.5));animation:jpmFloat 3s ease-in-out infinite;}
 @keyframes jpmFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 .jpm-btn.jpm-max:hover{opacity:1;}
-html.dark .jp-stat{background:rgba(255,255,255,0.03);border-color:rgba(255,255,255,0.07);}
 </style>
 </head>
 <body>
@@ -1057,11 +1086,9 @@ html.dark .jp-stat{background:rgba(255,255,255,0.03);border-color:rgba(255,255,2
       </div>
     </div>
 
-    <!-- Map info -->
-    <div class="map-info-panel">
-      <b>🗾 タップ</b> = 都道府県・島をクリックして歴史を解放！<br>
-      <b>★1→★2→★3</b> = 3時代（1970-85 / 1986-2005 / 2006-2025）を順に発展させよ<br>
-      <b>⚡ 点滅</b> = 北方領土・竹島・尖閣（領土問題エリア）
+    <!-- Map info（最小化） -->
+    <div class="map-info-panel" style="font-size:10px;padding:6px 13px;opacity:0.5;">
+      🚆 タップで旅行 → 長崎（1970）からスタート！
     </div>
 
     <!-- 旧タイルシステム（JS互換のため非表示で保持） -->
@@ -1292,6 +1319,70 @@ html.dark .jp-stat{background:rgba(255,255,255,0.03);border-color:rgba(255,255,2
   </div>
 </div>
 
+<!-- TAB: 設定 -->
+<div class="tab-panel" id="tab-settings">
+  <div class="main">
+    <div class="section-header"><span class="slabel">アプリ設定</span></div>
+    <div class="settings-card">
+      <div class="settings-row">
+        <div class="settings-label-wrap">
+          <span class="settings-icon">🌙</span>
+          <div>
+            <div class="settings-title">ダークモード</div>
+            <div class="settings-sub">画面の背景を暗くする</div>
+          </div>
+        </div>
+        <button class="settings-toggle" id="darkModeToggle" onclick="toggleDark();renderSettings()">OFF</button>
+      </div>
+    </div>
+    <div class="settings-card">
+      <div class="settings-row">
+        <div class="settings-label-wrap">
+          <span class="settings-icon">📅</span>
+          <div>
+            <div class="settings-title">週間目標タスク数</div>
+            <div class="settings-sub" id="weeklyGoalSettingLabel">設定なし</div>
+          </div>
+        </div>
+        <button class="settings-btn" onclick="setWeeklyGoal()">変更</button>
+      </div>
+    </div>
+
+    <div class="section-header" style="margin-top:20px;"><span class="slabel">データ管理</span></div>
+    <div class="settings-card">
+      <div class="settings-row">
+        <div class="settings-label-wrap">
+          <span class="settings-icon">🗑</span>
+          <div>
+            <div class="settings-title">完了済みタスクを削除</div>
+            <div class="settings-sub">完了マーク済みのタスクをすべて削除</div>
+          </div>
+        </div>
+        <button class="settings-btn danger" onclick="clearCompleted()">削除</button>
+      </div>
+    </div>
+    <div class="settings-card">
+      <div class="settings-row">
+        <div class="settings-label-wrap">
+          <span class="settings-icon">📤</span>
+          <div>
+            <div class="settings-title">データをエクスポート</div>
+            <div class="settings-sub">全データをJSONファイルで保存</div>
+          </div>
+        </div>
+        <button class="settings-btn" onclick="exportData()">保存</button>
+      </div>
+    </div>
+
+    <div class="section-header" style="margin-top:20px;"><span class="slabel">アプリ情報</span></div>
+    <div class="settings-card">
+      <div class="settings-info-row"><span>アプリ名</span><span>マネぼうTODO</span></div>
+      <div class="settings-info-row"><span>バージョン</span><span>ver 2.0</span></div>
+      <div class="settings-info-row"><span>開発</span><span>RAINY BRAIN</span></div>
+    </div>
+  </div>
+</div>
+
 <!-- CHARACTER BAR -->
 <div class="char-bar">
   <span class="char-bar-label">COACH</span>
@@ -1301,16 +1392,19 @@ html.dark .jp-stat{background:rgba(255,255,255,0.03);border-color:rgba(255,255,2
 <!-- BOTTOM NAV -->
 <nav class="bottom-nav">
   <button class="bn-tab active" id="bnt-today" onclick="switchTab('today')">
-    <span class="bn-icon">📅</span><span class="bn-label">今日</span>
+    <span class="bn-icon">📝</span><span class="bn-label">やること</span>
   </button>
   <button class="bn-tab" id="bnt-all" onclick="switchTab('all')">
-    <span class="bn-icon">📋</span><span class="bn-label">すべて</span>
+    <span class="bn-icon">🏅</span><span class="bn-label">成果</span>
+  </button>
+  <button class="bn-tab" id="bnt-map" onclick="switchTab('map')">
+    <span class="bn-icon">🗺️</span><span class="bn-label">冒険</span>
   </button>
   <button class="bn-tab" id="bnt-achiev" onclick="switchTab('achiev')">
     <span class="bn-icon">🏆</span><span class="bn-label">実績</span>
   </button>
-  <button class="bn-tab" id="bnt-map" onclick="switchTab('map')">
-    <span class="bn-icon">🗺️</span><span class="bn-label">マップ</span>
+  <button class="bn-tab" id="bnt-settings" onclick="switchTab('settings')">
+    <span class="bn-icon">⚙️</span><span class="bn-label">設定</span>
   </button>
 </nav>
 
@@ -2026,9 +2120,10 @@ function switchTab(tab){
   if(activeBtn) activeBtn.classList.add('active');
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
   $('tab-'+tab).classList.add('active');
-  if(tab==='today')  renderToday();
-  if(tab==='achiev') renderAchievements();
-  if(tab==='map')    renderMap();
+  if(tab==='today')    renderToday();
+  if(tab==='achiev')   renderAchievements();
+  if(tab==='map')      renderMap();
+  if(tab==='settings') renderSettings();
 }
 
 function setFilter(f,btn){
@@ -2280,9 +2375,10 @@ function renderAll(){
   renderNav();
   renderStats();
   renderTaskList();
-  if(currentTab==='today')  renderToday();
-  if(currentTab==='achiev') renderAchievements();
-  if(currentTab==='all')    renderHabitPool();
+  if(currentTab==='today')    renderToday();
+  if(currentTab==='achiev')   renderAchievements();
+  if(currentTab==='all')      renderHabitPool();
+  if(currentTab==='settings') renderSettings();
 }
 
 // =====================================================
@@ -2990,6 +3086,32 @@ function clearCompleted(){
   S.tasks=S.tasks.filter(t=>t.status!=='done');
   save();autoSetBubble();renderAll();
   showToast(`🗑 ${count} 件を削除しました`);
+}
+
+// =====================================================
+// SETTINGS
+// =====================================================
+function renderSettings(){
+  const isDark=document.documentElement.classList.contains('dark');
+  const toggle=$('darkModeToggle');
+  if(toggle){
+    toggle.textContent=isDark?'ON':'OFF';
+    toggle.classList.toggle('on',isDark);
+  }
+  const wgl=$('weeklyGoalSettingLabel');
+  if(wgl) wgl.textContent=S.weeklyGoal?`${S.weeklyGoal}タスク / 週`:'設定なし';
+}
+
+function exportData(){
+  try{
+    const json=JSON.stringify(S,null,2);
+    const blob=new Blob([json],{type:'application/json'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url; a.download=`manebou-backup-${new Date().toISOString().split('T')[0]}.json`;
+    a.click(); URL.revokeObjectURL(url);
+    showToast('📤 データをエクスポートしました');
+  }catch(e){showToast('エクスポートに失敗しました');}
 }
 
 // =====================================================
