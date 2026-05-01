@@ -312,6 +312,59 @@ html.dark .ex-input-field{background:rgba(255,255,255,0.1);border-color:rgba(255
 .ex-hist-chip{font-size:9px;font-weight:700;padding:2px 7px;border-radius:8px;background:rgba(91,200,232,0.1);border:1px solid rgba(91,200,232,0.25);color:var(--sky);}
 /* settings toggle */
 .ex-settings-toggle{width:100%;padding:10px;background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;color:rgba(255,255,255,0.4);font-size:11px;font-weight:700;cursor:pointer;margin-bottom:10px;font-family:inherit;}
+/* ── Pin Help Guide ── */
+.pin-help-toggle{padding:9px 14px;background:rgba(91,200,232,0.07);border:1.5px solid rgba(91,200,232,0.2);border-radius:10px;color:var(--sky);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:all 0.2s;white-space:nowrap;-webkit-tap-highlight-color:transparent;}
+.pin-help-toggle:hover{background:rgba(91,200,232,0.15);border-color:var(--sky);}
+.pin-help-toggle.open{background:rgba(91,200,232,0.15);border-color:var(--sky);}
+@keyframes pinHelpSlideIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.pin-help-section{animation:pinHelpSlideIn 0.25s ease;margin-bottom:14px;}
+.pin-help-hero{background:linear-gradient(135deg,rgba(91,200,232,0.12),rgba(155,109,214,0.09));border:1.5px solid rgba(91,200,232,0.28);border-radius:16px;padding:16px;margin-bottom:10px;text-align:center;}
+.pin-help-hero-icon{font-size:34px;display:block;margin-bottom:6px;animation:bnIconBounce 2s ease-in-out infinite;}
+.pin-help-hero-title{font-family:'Dela Gothic One',sans-serif;font-size:14px;color:var(--sky);margin-bottom:5px;}
+.pin-help-hero-desc{font-size:10.5px;color:rgba(255,255,255,0.6);line-height:1.65;}
+.pin-help-section-hdr{font-size:9px;font-weight:700;color:rgba(255,255,255,0.35);letter-spacing:2px;margin:12px 0 6px;}
+.pin-help-steps{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;}
+.pin-help-step{display:flex;gap:10px;align-items:flex-start;background:rgba(255,255,255,0.03);border:1.5px solid rgba(255,255,255,0.07);border-radius:12px;padding:10px 12px;transition:border-color 0.2s;}
+.pin-help-step:hover{border-color:rgba(91,200,232,0.2);}
+.pin-help-step-num{width:22px;height:22px;border-radius:50%;background:var(--sky);color:var(--dark);font-size:10px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Dela Gothic One',sans-serif;margin-top:1px;}
+.pin-help-step-body{flex:1;min-width:0;}
+.pin-help-step-title{font-size:12px;font-weight:700;color:#fff;margin-bottom:2px;display:flex;align-items:center;gap:5px;}
+.pin-help-step-title .step-icon{font-size:14px;}
+.pin-help-step-desc{font-size:10px;color:rgba(255,255,255,0.5);line-height:1.55;}
+.pin-help-features{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px;}
+.pin-help-feat{background:rgba(255,255,255,0.03);border:1.5px solid rgba(255,255,255,0.07);border-radius:12px;padding:10px 8px;text-align:center;}
+.pin-help-feat-icon{font-size:20px;display:block;margin-bottom:4px;}
+.pin-help-feat-name{font-size:10px;font-weight:700;color:rgba(255,255,255,0.8);margin-bottom:2px;}
+.pin-help-feat-desc{font-size:9px;color:rgba(255,255,255,0.38);line-height:1.45;}
+.pin-help-tips{background:rgba(245,200,66,0.05);border:1.5px solid rgba(245,200,66,0.22);border-radius:14px;padding:12px 14px;margin-bottom:10px;}
+.pin-help-tips-hdr{font-size:9px;font-weight:700;color:var(--gold);letter-spacing:2px;margin-bottom:8px;}
+.pin-help-tip{display:flex;gap:8px;align-items:flex-start;margin-bottom:7px;font-size:10.5px;color:rgba(255,255,255,0.58);line-height:1.55;}
+.pin-help-tip:last-child{margin-bottom:0;}
+.pin-help-tip-icon{flex-shrink:0;font-size:13px;margin-top:1px;}
+.pin-help-examples{margin-bottom:10px;}
+.pin-help-ex-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px;}
+.pin-help-ex-chip{background:rgba(255,255,255,0.05);border:1.5px solid rgba(255,255,255,0.1);border-radius:20px;padding:4px 10px;font-size:10px;font-weight:700;color:rgba(255,255,255,0.6);white-space:nowrap;}
+.pin-help-faq{display:flex;flex-direction:column;gap:6px;margin-bottom:4px;}
+.pin-help-faq-item{background:rgba(255,255,255,0.03);border:1.5px solid rgba(255,255,255,0.07);border-radius:11px;overflow:hidden;}
+.pin-help-faq-q{padding:9px 12px;font-size:11px;font-weight:700;color:rgba(255,255,255,0.72);display:flex;gap:6px;align-items:center;}
+.pin-help-faq-a{padding:0 12px 9px 30px;font-size:10px;color:rgba(255,255,255,0.44);line-height:1.6;}
+.pin-help-checklist{background:rgba(76,175,109,0.06);border:1.5px solid rgba(76,175,109,0.22);border-radius:14px;padding:12px 14px;margin-bottom:10px;}
+.pin-help-cl-hdr{font-size:9px;font-weight:700;color:#4CAF7D;letter-spacing:2px;margin-bottom:8px;}
+.pin-help-cl-item{display:flex;gap:8px;align-items:center;margin-bottom:6px;font-size:10.5px;color:rgba(255,255,255,0.56);}
+.pin-help-cl-item:last-child{margin-bottom:0;}
+.pin-help-cl-box{width:16px;height:16px;border-radius:5px;border:1.5px solid rgba(76,175,109,0.5);background:rgba(76,175,109,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;}
+/* Rich empty state */
+.pin-empty-rich{padding:8px 4px 20px;}
+.pin-empty-rich-hero{background:linear-gradient(135deg,rgba(91,200,232,0.1),rgba(155,109,214,0.07));border:2px dashed rgba(91,200,232,0.3);border-radius:16px;padding:20px 16px;text-align:center;margin-bottom:14px;}
+.pin-empty-rich-icon{font-size:42px;display:block;margin-bottom:8px;animation:bnIconBounce 2s ease-in-out infinite;}
+.pin-empty-rich-title{font-family:'Dela Gothic One',sans-serif;font-size:16px;color:var(--sky);margin-bottom:6px;}
+.pin-empty-rich-sub{font-size:11px;color:rgba(255,255,255,0.5);line-height:1.65;margin-bottom:14px;}
+.pin-empty-start-btn{background:var(--sky);color:var(--dark);border:none;border-radius:12px;padding:11px 22px;font-size:12px;font-weight:900;cursor:pointer;font-family:inherit;transition:all 0.15s;}
+.pin-empty-start-btn:hover{background:#7dd3fc;transform:translateY(-2px);}
+.pin-empty-start-btn:active{transform:scale(0.95);}
+.pin-empty-usecases{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:14px;}
+.pin-empty-usecase{background:rgba(255,255,255,0.05);border:1.5px solid rgba(255,255,255,0.1);border-radius:20px;padding:5px 12px;font-size:11px;font-weight:700;color:rgba(255,255,255,0.55);cursor:pointer;transition:all 0.2s;}
+.pin-empty-usecase:hover{background:rgba(91,200,232,0.12);border-color:var(--sky);color:var(--sky);}
 .ex-metric-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
 .ex-metric-name{flex:1;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:12px;padding:6px 10px;font-family:inherit;}
 .ex-metric-unit{width:56px;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:12px;padding:6px 8px;font-family:inherit;text-align:center;}
@@ -7155,6 +7208,7 @@ buildJapanMap();
 // =====================================================
 let _exChart = null;
 let _exSettingsOpen = false;
+let _pinHelpOpen = false;
 let _pinChartTab = 'radar'; // 'radar'|'trend'|'bar'
 let _trendMetricId = null;
 
@@ -7283,7 +7337,21 @@ function renderActivePinContent(){
   if(!body) return;
   const pin=getActivePin();
   if(!pin){
-    body.innerHTML=`<div class="pin-empty-guide"><span class="eg-icon">🚩</span>＋ボタンで新しいPinを追加してください<br><small style="font-size:10px;opacity:0.6">運動・読書・食事など何でも記録できます</small></div>`;
+    const useCases=[['💪','筋トレ'],['📚','読書'],['🏃','ランニング'],['⚖️','体重管理'],['😴','睡眠'],['🍱','食事'],['🎸','練習'],['🧘','瞑想'],['💰','節約'],['🌊','水分摂取']];
+    body.innerHTML=`<div class="pin-empty-rich">
+      <div class="pin-empty-rich-hero">
+        <span class="pin-empty-rich-icon">🚩</span>
+        <div class="pin-empty-rich-title">Pin — 記録を続ける力</div>
+        <div class="pin-empty-rich-sub">運動・読書・食事・睡眠など<br>あらゆる目標を数値で記録・可視化できます<br>まず最初のPinを作ってみよう！</div>
+        <button class="pin-empty-start-btn" onclick="addNewPin()">＋ 最初のPinを作る</button>
+      </div>
+      <div class="pin-help-section-hdr">🌟 POPULAR USE CASES</div>
+      <div class="pin-empty-usecases">
+        ${useCases.map(([ic,nm])=>`<span class="pin-empty-usecase" onclick="addNewPin()">${ic} ${nm}</span>`).join('')}
+      </div>
+      ${buildPinHelpHTML().replace('style="display:none"','style="display:block"')}
+    </div>`;
+    _pinHelpOpen=true;
     return;
   }
   if(!pin.metrics) pin.metrics=[];
@@ -7400,9 +7468,11 @@ function renderActivePinContent(){
   // settings
   const settingsHTML=`
     <div style="display:flex;gap:6px;margin-bottom:6px;">
-      <button class="ex-settings-toggle" style="flex:1;" onclick="toggleExSettings()">⚙️ 項目設定</button>
+      <button class="pin-help-toggle" id="pinHelpToggleBtn" onclick="togglePinHelp()"${_pinHelpOpen?' class="open"':''}>？ 使い方</button>
+      <button class="ex-settings-toggle" style="flex:1;margin-bottom:0;" onclick="toggleExSettings()">⚙️ 項目設定</button>
       ${(S.pins||[]).length>1?`<button class="pin-del-btn" onclick="deletePin('${escH(pin.id)}')">🗑 削除</button>`:''}
     </div>
+    ${buildPinHelpHTML()}
     <div id="exSettingsArea" style="display:none;margin-bottom:14px;">
       <div class="pin-name-row">
         <input class="pin-icon-input" id="pinIconInput" type="text" maxlength="2" placeholder="絵文字" value="${escH(pin.icon||'📌')}" oninput="updatePinMetaDebounced()">
@@ -7575,6 +7645,145 @@ function clearPinInputs(){
 }
 // legacy alias used elsewhere
 function deleteExerciseLog(id){ deletePinLogEntry(S.activePinId,id); }
+
+// ── Pin help guide ──────────────────────────────────
+function togglePinHelp(){
+  _pinHelpOpen=!_pinHelpOpen;
+  const area=document.getElementById('pinHelpArea');
+  const btn=document.getElementById('pinHelpToggleBtn');
+  if(area) area.style.display=_pinHelpOpen?'block':'none';
+  if(btn) btn.classList.toggle('open',_pinHelpOpen);
+}
+function buildPinHelpHTML(){
+  return `<div class="pin-help-section" id="pinHelpArea" style="display:${_pinHelpOpen?'block':'none'}">
+  <div class="pin-help-hero">
+    <span class="pin-help-hero-icon">🚩</span>
+    <div class="pin-help-hero-title">Pin — 何でも記録できるトラッカー</div>
+    <div class="pin-help-hero-desc">運動・読書・睡眠・体重・食事など<br>あらゆる目標を数値で記録・可視化できます</div>
+  </div>
+  <div class="pin-help-section-hdr">📋 STEP BY STEP</div>
+  <div class="pin-help-steps">
+    <div class="pin-help-step">
+      <div class="pin-help-step-num">1</div>
+      <div class="pin-help-step-body">
+        <div class="pin-help-step-title"><span class="step-icon">＋</span>新しいPinを作る</div>
+        <div class="pin-help-step-desc">上部の「＋」ボタンをタップ。名前（例：筋トレ）を入力するとPinが作成されます。</div>
+      </div>
+    </div>
+    <div class="pin-help-step">
+      <div class="pin-help-step-num">2</div>
+      <div class="pin-help-step-body">
+        <div class="pin-help-step-title"><span class="step-icon">⚙️</span>項目を設定する</div>
+        <div class="pin-help-step-desc">下の「⚙️ 項目設定」で記録する項目を追加。例: ベンチプレス(kg)、スクワット(kg) など。単位も自由に設定できます。</div>
+      </div>
+    </div>
+    <div class="pin-help-step">
+      <div class="pin-help-step-num">3</div>
+      <div class="pin-help-step-body">
+        <div class="pin-help-step-title"><span class="step-icon">🎯</span>目標を入力する</div>
+        <div class="pin-help-step-desc">「目標を設定しよう」をタップして目標を文章で入力。例: 週3回ジム・毎日1時間読書</div>
+      </div>
+    </div>
+    <div class="pin-help-step">
+      <div class="pin-help-step-num">4</div>
+      <div class="pin-help-step-body">
+        <div class="pin-help-step-title"><span class="step-icon">📝</span>毎日記録する</div>
+        <div class="pin-help-step-desc">各項目に数値を入力して「記録」ボタンを押すだけ。メモも添付できます。1日に何度でも記録可能。</div>
+      </div>
+    </div>
+    <div class="pin-help-step">
+      <div class="pin-help-step-num">5</div>
+      <div class="pin-help-step-body">
+        <div class="pin-help-step-title"><span class="step-icon">📊</span>グラフで確認する</div>
+        <div class="pin-help-step-desc">🕷️レーダー・📈トレンド・📊週次 の3種のグラフで成長を可視化。PB（自己ベスト）も自動で計算されます。</div>
+      </div>
+    </div>
+  </div>
+  <div class="pin-help-section-hdr">✨ FEATURES</div>
+  <div class="pin-help-features">
+    <div class="pin-help-feat">
+      <span class="pin-help-feat-icon">🕷️</span>
+      <div class="pin-help-feat-name">レーダーチャート</div>
+      <div class="pin-help-feat-desc">直近5回の平均を可視化。バランスを一目で確認</div>
+    </div>
+    <div class="pin-help-feat">
+      <span class="pin-help-feat-icon">📈</span>
+      <div class="pin-help-feat-name">トレンドグラフ</div>
+      <div class="pin-help-feat-desc">項目ごとの時系列推移を確認。成長を視覚化</div>
+    </div>
+    <div class="pin-help-feat">
+      <span class="pin-help-feat-icon">📊</span>
+      <div class="pin-help-feat-name">週次バーチャート</div>
+      <div class="pin-help-feat-desc">週ごとの記録頻度を棒グラフで表示</div>
+    </div>
+    <div class="pin-help-feat">
+      <span class="pin-help-feat-icon">🏅</span>
+      <div class="pin-help-feat-name">PB（自己ベスト）</div>
+      <div class="pin-help-feat-desc">各項目の最高記録を自動追跡。更新時に🎉表示</div>
+    </div>
+    <div class="pin-help-feat">
+      <span class="pin-help-feat-icon">📋</span>
+      <div class="pin-help-feat-name">前回コピー</div>
+      <div class="pin-help-feat-desc">「前回をコピー」で直近の値を一発入力</div>
+    </div>
+    <div class="pin-help-feat">
+      <span class="pin-help-feat-icon">🗂️</span>
+      <div class="pin-help-feat-name">複数Pin管理</div>
+      <div class="pin-help-feat-desc">運動・読書・食事など複数目標を別々に管理</div>
+    </div>
+  </div>
+  <div class="pin-help-checklist">
+    <div class="pin-help-cl-hdr">✅ はじめての設定チェックリスト</div>
+    <div class="pin-help-cl-item"><div class="pin-help-cl-box">➕</div>Pinを1つ作成した</div>
+    <div class="pin-help-cl-item"><div class="pin-help-cl-box">⚙️</div>記録する項目を1つ以上追加した</div>
+    <div class="pin-help-cl-item"><div class="pin-help-cl-box">🎯</div>目標テキストを入力した</div>
+    <div class="pin-help-cl-item"><div class="pin-help-cl-box">📝</div>最初の記録を保存した</div>
+    <div class="pin-help-cl-item"><div class="pin-help-cl-box">📊</div>グラフを3種類すべて確認した</div>
+  </div>
+  <div class="pin-help-tips">
+    <div class="pin-help-tips-hdr">💡 TIPS</div>
+    <div class="pin-help-tip"><span class="pin-help-tip-icon">🔁</span>毎日記録する習慣をつけると、トレンドグラフがリッチになります</div>
+    <div class="pin-help-tip"><span class="pin-help-tip-icon">📌</span>Pin名の絵文字アイコンは⚙️設定から変更できます</div>
+    <div class="pin-help-tip"><span class="pin-help-tip-icon">↕️</span>前回との差分（↑↓）が履歴に自動表示されます</div>
+    <div class="pin-help-tip"><span class="pin-help-tip-icon">🗑️</span>ピンの削除は項目設定内の「🗑 削除」から（データも一緒に消えるので注意）</div>
+    <div class="pin-help-tip"><span class="pin-help-tip-icon">⌨️</span>メモ欄でEnterキーを押すと記録ボタンと同じ動作をします</div>
+  </div>
+  <div class="pin-help-examples">
+    <div class="pin-help-section-hdr">🌟 POPULAR USE CASES</div>
+    <div class="pin-help-ex-chips">
+      <span class="pin-help-ex-chip">💪 筋トレ</span>
+      <span class="pin-help-ex-chip">📚 読書</span>
+      <span class="pin-help-ex-chip">🏃 ランニング</span>
+      <span class="pin-help-ex-chip">⚖️ 体重管理</span>
+      <span class="pin-help-ex-chip">😴 睡眠時間</span>
+      <span class="pin-help-ex-chip">🍱 カロリー</span>
+      <span class="pin-help-ex-chip">🎸 練習時間</span>
+      <span class="pin-help-ex-chip">🧘 瞑想</span>
+      <span class="pin-help-ex-chip">💊 服薬管理</span>
+      <span class="pin-help-ex-chip">🌊 水分摂取</span>
+    </div>
+  </div>
+  <div class="pin-help-section-hdr">❓ FAQ</div>
+  <div class="pin-help-faq">
+    <div class="pin-help-faq-item">
+      <div class="pin-help-faq-q">💬 1日に何回でも記録できますか？</div>
+      <div class="pin-help-faq-a">はい！「追加記録」として何度でも記録できます。同日の記録回数は履歴に「2回目」のように表示されます。</div>
+    </div>
+    <div class="pin-help-faq-item">
+      <div class="pin-help-faq-q">💬 グラフが表示されません</div>
+      <div class="pin-help-faq-a">記録が0件の場合はグラフは表示されません。最初の記録を保存するとグラフが生成されます。</div>
+    </div>
+    <div class="pin-help-faq-item">
+      <div class="pin-help-faq-q">💬 項目を後から追加/削除できますか？</div>
+      <div class="pin-help-faq-a">できます。⚙️項目設定から追加・削除が可能です。ただし削除した項目の過去データは表示されなくなります。</div>
+    </div>
+    <div class="pin-help-faq-item">
+      <div class="pin-help-faq-q">💬 データはどこに保存されますか？</div>
+      <div class="pin-help-faq-a">このデバイスのブラウザ（localStorage）に保存されます。クラウド同期にはアカウントログインが必要です。</div>
+    </div>
+  </div>
+</div>`;
+}
 
 // ── settings ────────────────────────────────────────
 function toggleExSettings(){
