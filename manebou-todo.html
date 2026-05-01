@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>マネぼうTODO | タスク管理 ver2</title>
 <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
@@ -13,7 +13,7 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{font-family:'Zen Maru Gothic',sans-serif;background:var(--cream);color:var(--dark);min-height:100vh;padding-bottom:160px;overflow-x:hidden;background-image:radial-gradient(ellipse at 10% 20%,rgba(91,200,232,0.07) 0%,transparent 60%),radial-gradient(ellipse at 90% 80%,rgba(245,200,66,0.06) 0%,transparent 55%);background-attachment:fixed;}
+body{font-family:'Zen Maru Gothic',sans-serif;background:var(--cream);color:var(--dark);min-height:100vh;padding-bottom:calc(160px + env(safe-area-inset-bottom, 0px));overflow-x:clip;background-image:radial-gradient(ellipse at 10% 20%,rgba(91,200,232,0.07) 0%,transparent 60%),radial-gradient(ellipse at 90% 80%,rgba(245,200,66,0.06) 0%,transparent 55%);background-attachment:fixed;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 .fade-in{opacity:0;transform:translateY(18px);transition:opacity 0.55s ease,transform 0.55s ease;}
 .fade-in.visible{opacity:1;transform:translateY(0);}
@@ -37,7 +37,7 @@ nav{position:sticky;top:0;z-index:200;background:rgba(26,26,46,0.94);backdrop-fi
 .xp-pts{font-size:9px;color:var(--gold);font-weight:700;white-space:nowrap;flex-shrink:0;}
 
 /* ====== CHARACTER BAR ====== */
-.char-bar{position:fixed;bottom:66px;left:0;right:0;z-index:199;background:linear-gradient(to top,#0e1428,var(--dark));border-top:3px solid rgba(245,200,66,0.3);padding:10px 14px;display:flex;align-items:center;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.char-bar{position:fixed;bottom:calc(66px + env(safe-area-inset-bottom, 0px));left:0;right:0;z-index:199;background:linear-gradient(to top,#0e1428,var(--dark));border-top:3px solid rgba(245,200,66,0.3);padding:10px 14px;display:flex;align-items:center;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
 .char-bar-label{font-size:8px;color:rgba(255,255,255,0.35);letter-spacing:2px;flex-shrink:0;font-weight:700;}
 .char-btn{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;border:none;background:rgba(255,255,255,0.04);padding:8px 10px;flex-shrink:0;border-radius:16px;border:2px solid transparent;transition:all 0.2s;}
 .char-btn:hover{background:rgba(255,255,255,0.08);transform:translateY(-2px);}
@@ -66,7 +66,7 @@ nav{position:sticky;top:0;z-index:200;background:rgba(26,26,46,0.94);backdrop-fi
 @keyframes scrollX{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
 /* ====== BOTTOM NAV ====== */
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:250;background:rgba(26,26,46,0.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:3px solid var(--gold);display:flex;height:66px;}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:250;background:rgba(26,26,46,0.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:3px solid var(--gold);display:flex;height:calc(66px + env(safe-area-inset-bottom, 0px));padding-bottom:env(safe-area-inset-bottom, 0px);}
 .bn-tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:none;background:none;cursor:pointer;color:rgba(255,255,255,0.38);transition:color 0.2s;padding:8px 0;font-family:'Zen Maru Gothic',sans-serif;position:relative;-webkit-tap-highlight-color:transparent;}
 .bn-icon{font-size:20px;line-height:1;display:block;}
 .bn-label{font-size:9px;font-weight:700;letter-spacing:0.5px;display:block;}
@@ -763,12 +763,6 @@ html.dark .jp-stat{background:rgba(255,255,255,0.03);border-color:rgba(255,255,2
   </div>
 </div>
 
-<!-- CHARACTER BAR -->
-<div class="char-bar">
-  <span class="char-bar-label">COACH</span>
-  <div id="charSelector" style="display:flex;gap:6px;"></div>
-</div>
-
 <!-- SPEECH BUBBLE -->
 <div class="bubble-zone">
   <div class="bubble-inner">
@@ -1263,6 +1257,12 @@ html.dark .jp-stat{background:rgba(255,255,255,0.03);border-color:rgba(255,255,2
     <button class="tile-sheet-buy-btn" id="tileSheetBuyBtn" onclick="executePurchaseTile()" style="display:none"></button>
     <button class="tile-sheet-cancel" onclick="closeTileSheet()">閉じる</button>
   </div>
+</div>
+
+<!-- CHARACTER BAR -->
+<div class="char-bar">
+  <span class="char-bar-label">COACH</span>
+  <div id="charSelector" style="display:flex;gap:6px;"></div>
 </div>
 
 <!-- BOTTOM NAV -->
