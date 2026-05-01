@@ -234,7 +234,28 @@ nav{position:sticky;top:0;z-index:200;background:rgba(26,26,46,0.96);backdrop-fi
 .ex-goal-input{flex:1;background:rgba(255,255,255,0.07);border:1.5px solid rgba(91,200,232,0.3);border-radius:8px;color:#fff;font-size:12px;padding:8px 10px;font-family:inherit;}
 .ex-goal-save{background:var(--sky);border:none;border-radius:8px;color:#000;font-size:11px;font-weight:900;padding:8px 12px;cursor:pointer;}
 /* chart */
-.ex-chart-wrap{background:rgba(255,255,255,0.03);border:2px solid rgba(91,200,232,0.12);border-radius:16px;padding:14px;margin-bottom:14px;display:flex;align-items:center;justify-content:center;}
+.ex-chart-wrap{background:rgba(255,255,255,0.03);border:2px solid rgba(91,200,232,0.12);border-radius:16px;padding:12px;margin-bottom:14px;}
+.ex-chart-wrap.cwrap-radar{display:flex;align-items:center;justify-content:center;}
+.ex-chart-wrap.cwrap-bar,.ex-chart-wrap.cwrap-trend{display:block;height:170px;position:relative;}
+/* pin multi-pin system */
+.pin-tabs-row{display:flex;gap:5px;padding:8px 14px 4px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;flex-shrink:0;}
+.pin-tabs-row::-webkit-scrollbar{display:none;}
+.pin-tab-btn{flex-shrink:0;display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:20px;border:1.5px solid rgba(255,255,255,0.1);background:transparent;color:rgba(255,255,255,0.4);font-size:11px;font-weight:700;cursor:pointer;transition:all 0.2s;font-family:inherit;white-space:nowrap;}
+.pin-tab-btn.pt-active{background:rgba(91,200,232,0.12);border-color:var(--sky);color:var(--sky);box-shadow:0 0 10px rgba(91,200,232,0.2);}
+.pin-add-btn{flex-shrink:0;padding:7px 13px;border-radius:20px;border:1.5px dashed rgba(255,255,255,0.2);background:transparent;color:rgba(255,255,255,0.35);font-size:13px;cursor:pointer;transition:all 0.2s;font-family:inherit;}
+.pin-add-btn:hover{border-color:var(--sky);color:var(--sky);}
+/* chart type tabs */
+.pin-chart-tabs{display:flex;gap:4px;margin-bottom:8px;}
+.pct-btn{flex:1;padding:5px 4px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:transparent;color:rgba(255,255,255,0.38);font-size:10px;font-weight:700;cursor:pointer;transition:all 0.15s;font-family:inherit;white-space:nowrap;}
+.pct-btn.pct-active{background:rgba(91,200,232,0.14);border-color:var(--sky);color:var(--sky);}
+/* trend metric selector */
+.pin-trend-sel{width:100%;background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.12);border-radius:8px;color:rgba(255,255,255,0.7);font-size:11px;font-weight:700;padding:5px 8px;margin-bottom:6px;font-family:inherit;}
+/* pin group header (やったことタブ) */
+.pin-group-hdr{font-family:'Dela Gothic One',sans-serif;font-size:10px;color:rgba(255,255,255,0.4);letter-spacing:2px;margin:14px 0 7px;display:flex;align-items:center;gap:5px;}
+/* pin name/icon edit */
+.pin-name-row{display:flex;gap:6px;margin-bottom:10px;}
+.pin-icon-input{width:44px;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:18px;padding:4px;font-family:inherit;text-align:center;}
+.pin-del-btn{flex-shrink:0;background:rgba(255,60,60,0.08);border:1.5px solid rgba(255,80,80,0.2);border-radius:8px;color:rgba(255,100,100,0.65);font-size:11px;font-weight:700;padding:6px 10px;cursor:pointer;font-family:inherit;}
 /* input form */
 .ex-form-title{font-family:'Dela Gothic One',sans-serif;font-size:11px;color:var(--sky);letter-spacing:2px;margin-bottom:10px;}
 .ex-input-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
@@ -1041,8 +1062,19 @@ html.dark .tile-sheet-subtitle{color:#555;}
 .jpm-sheet{background:#0d0f22;width:100%;max-width:520px;border-radius:24px 24px 0 0;border:2px solid rgba(245,200,66,0.2);border-bottom:none;padding:0 0 36px;max-height:90vh;overflow-y:auto;position:relative;box-shadow:0 -8px 40px rgba(0,0,0,0.7);}
 .jpm-handle{width:36px;height:4px;background:rgba(255,255,255,0.18);border-radius:2px;margin:12px auto 0;}
 .jpm-close{position:absolute;top:12px;right:12px;background:rgba(0,0,0,0.4);border:none;color:rgba(255,255,255,.6);font-size:15px;cursor:pointer;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;z-index:2;}
-.jpm-year-banner{width:100%;height:160px;object-fit:cover;display:block;}
-.jpm-year-placeholder{width:100%;height:80px;background:linear-gradient(135deg,rgba(245,200,66,0.07),rgba(91,200,232,0.05));display:flex;align-items:center;justify-content:center;font-size:28px;}
+/* ── モーダル ヒーロー ── */
+.jpm-hero{position:relative;width:100%;height:210px;overflow:hidden;border-radius:24px 24px 0 0;display:flex;align-items:flex-end;justify-content:center;}
+.jpm-hero-bg{position:absolute;inset:0;z-index:0;}
+.jpm-hero-yr{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.18;z-index:1;}
+.jpm-hero-char{position:relative;height:175px;width:auto;z-index:3;filter:drop-shadow(0 4px 24px rgba(0,0,0,0.9));margin-bottom:-6px;transition:opacity 0.3s;}
+.jpm-hero-char.is-current{animation:jpmFloat 2.5s ease-in-out infinite;}
+.jpm-hero-lock{position:relative;z-index:3;font-size:52px;margin-bottom:28px;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.8));opacity:0.5;}
+.jpm-hero-status{position:absolute;top:12px;left:14px;z-index:4;font-size:10px;font-weight:900;padding:4px 12px;border-radius:20px;letter-spacing:.5px;}
+.jpm-hero-stnum{position:absolute;top:12px;right:44px;z-index:4;font-size:10px;font-weight:900;padding:4px 12px;border-radius:20px;background:rgba(0,0,0,0.45);color:rgba(255,255,255,0.7);backdrop-filter:blur(6px);}
+.jpm-hero-yearnum{position:absolute;bottom:16px;left:14px;z-index:4;font-family:'Dela Gothic One',sans-serif;font-size:26px;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,0.9);letter-spacing:-0.5px;line-height:1;}
+.jpm-hero-regn{position:absolute;bottom:14px;right:14px;z-index:4;font-size:9px;font-weight:900;padding:3px 9px;border-radius:20px;background:rgba(0,0,0,0.4);color:rgba(255,255,255,0.65);backdrop-filter:blur(6px);}
+.jpm-year-banner{display:none;}
+.jpm-year-placeholder{display:none;}
 .jpm-body{padding:14px 16px 0;}
 .jpm-year-badge{display:inline-flex;align-items:center;gap:6px;font-family:'Dela Gothic One',sans-serif;font-size:11px;padding:3px 11px;border-radius:20px;background:rgba(245,200,66,0.1);border:1.5px solid rgba(245,200,66,0.4);color:var(--gold);margin-bottom:10px;}
 .jpm-head{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
@@ -1692,12 +1724,13 @@ html.dark .tile-sheet-subtitle{color:#555;}
     <div class="ex-panel-hdr">
       <div>
         <span class="ex-panel-title">🚩 Pin</span>
-        <div style="font-size:10px;color:rgba(255,255,255,0.45);margin-top:2px;">運動・勉強・習慣…どんな目標でも記録できる</div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.45);margin-top:2px;">複数の目標を記録できる</div>
       </div>
       <button class="ex-panel-close" onclick="closeExercisePanel()">✕</button>
     </div>
+    <div class="pin-tabs-row" id="pinTabsRow"></div>
     <div class="ex-panel-body" id="exPanelBody">
-      <!-- renderExercisePanel() で動的描画 -->
+      <!-- renderActivePinContent() で動的描画 -->
     </div>
   </div>
 </div>
@@ -1706,11 +1739,17 @@ html.dark .tile-sheet-subtitle{color:#555;}
 <div class="jpm-overlay" id="jpmOverlay" onclick="bgCloseJp(event)">
   <div class="jpm-sheet">
     <button class="jpm-close" onclick="closeJpModal()">✕</button>
-    <img class="jpm-char-sprite" id="jpmCharSprite" src="" alt="" onerror="this.style.display='none'">
-    <div class="jpm-handle"></div>
-    <img class="jpm-year-banner" id="jpmYearBanner" src="" alt="" onerror="this.style.display='none'">
+    <!-- ヒーローエリア（JS で動的構築） -->
+    <div class="jpm-hero" id="jpmHero">
+      <div class="jpm-hero-bg" id="jpmHeroBg"></div>
+      <img class="jpm-hero-yr" id="jpmHeroYr" src="" alt="" onerror="this.style.display='none'">
+      <span class="jpm-hero-status" id="jpmHeroStatus"></span>
+      <span class="jpm-hero-stnum" id="jpmHeroStnum"></span>
+      <div class="jpm-hero-yearnum" id="jpmHeroYear"></div>
+      <div class="jpm-hero-regn" id="jpmHeroRegn"></div>
+      <!-- char or lock injected by JS -->
+    </div>
     <div class="jpm-body">
-      <div class="jpm-year-badge" id="jpmYearBadge">📅 1970年 · Stage 1</div>
       <div class="jpm-head">
         <div class="jpm-flag" id="jpmFlag">🗾</div>
         <div>
@@ -2250,15 +2289,16 @@ let S = {
   habitPool:      [],
   habitLog:       [],
   pomodoroLog:    [],
-  exerciseMetrics:[
-    {id:'ex1',name:'ベンチプレス',unit:'kg'},
-    {id:'ex2',name:'スクワット',unit:'kg'},
-    {id:'ex3',name:'デッドリフト',unit:'kg'},
-    {id:'ex4',name:'懸垂',unit:'回'},
-    {id:'ex5',name:'ランニング',unit:'km'},
+  pins:[
+    {id:'pin_undou',name:'運動',icon:'💪',goal:'',metrics:[
+      {id:'ex1',name:'ベンチプレス',unit:'kg'},
+      {id:'ex2',name:'スクワット',unit:'kg'},
+      {id:'ex3',name:'デッドリフト',unit:'kg'},
+      {id:'ex4',name:'懸垂',unit:'回'},
+      {id:'ex5',name:'ランニング',unit:'km'},
+    ],log:[]},
   ],
-  exerciseLog:    [],
-  exerciseGoal:   '運動目標',
+  activePinId:    'pin_undou',
   bossState:      null,
   loginStreak:    0,
   lastLoginDate:  '',
@@ -2689,47 +2729,49 @@ function setYattaSection(s){
 }
 
 function renderPinSection(){
-  const logs=S.exerciseLog||[];
-  const today=todayStr();
-  // 今週
-  const weekAgo=new Date(); weekAgo.setDate(weekAgo.getDate()-6);
-  const weekCount=logs.filter(e=>e.date>=weekAgo.toISOString().split('T')[0]).length;
-  // 連続日数
-  const dateSet=new Set(logs.map(e=>e.date));
-  let streak=0;
-  const d=new Date();
+  migratePinsData();
+  const pins=S.pins||[];
+  const allLogs=pins.flatMap(p=>p.log||[]);
+  const weekAgoStr=new Date(Date.now()-6*86400000).toISOString().split('T')[0];
+  const weekCount=allLogs.filter(e=>e.date>=weekAgoStr).length;
+  const dateSet=new Set(allLogs.map(e=>e.date));
+  let streak=0;const d=new Date();
   while(dateSet.has(d.toISOString().split('T')[0])){streak++;d.setDate(d.getDate()-1);}
 
   const gb=$('ysPinGoalBanner');
-  if(gb) gb.innerHTML=`<div class="pin-goal-banner-inner"><span style="font-size:18px">🎯</span><span>${escH(S.exerciseGoal||'どんな目標でもOK！')}</span></div>`;
-  const t=$('ysPinTotal'); if(t) t.textContent=logs.length;
+  if(gb) gb.innerHTML=pins.length?pins.map(p=>`
+    <div class="pin-goal-banner-inner">
+      <span style="font-size:16px">${escH(p.icon||'📌')}</span>
+      <span style="font-weight:700;color:var(--sky);">${escH(p.name)}</span>
+      <span style="flex:1;font-size:11px;">${escH(p.goal||'目標未設定')}</span>
+      <span style="font-size:10px;color:rgba(255,255,255,0.35);">${(p.log||[]).length}件</span>
+    </div>`).join(''):'';
+
+  const t=$('ysPinTotal'); if(t) t.textContent=allLogs.length;
   const w=$('ysPinWeek');  if(w) w.textContent=weekCount;
   const st=$('ysPinStreak');if(st) st.textContent=streak;
 
   const listEl=$('ysPinList');
   if(!listEl) return;
-  if(!logs.length){listEl.innerHTML='<div class="log-empty">🚩 Pinを保存するとここに記録されます</div>';return;}
-  const metrics=S.exerciseMetrics||[];
-  listEl.innerHTML=[...logs].reverse().slice(0,50).map(e=>{
-    const chips=metrics.filter(m=>e.values&&e.values[m.id]!=null)
-      .map(m=>`<span class="ex-hist-chip">${escH(m.name)} ${e.values[m.id]}${escH(m.unit)}</span>`).join('');
-    return `<div class="ex-hist-item">
-      <div class="ex-hist-hdr">
-        <span class="ex-hist-date">${escH(e.date||'')}</span>
-        <span class="ex-hist-name">${escH(e.title||'')}</span>
-        <button class="ex-hist-del" onclick="deletePinLog('${escH(e.id)}')" title="削除">🗑</button>
-      </div>
-      ${chips?`<div class="ex-hist-chips">${chips}</div>`:''}
-    </div>`;
-  }).join('');
-}
+  if(!allLogs.length){listEl.innerHTML='<div class="log-empty">🚩 Pinを保存するとここに記録されます</div>';return;}
 
-function deletePinLog(id){
-  S.exerciseLog=(S.exerciseLog||[]).filter(e=>e.id!==id);
-  save();
-  renderPinSection();
-  const ep=$('exPanel');
-  if(ep&&ep.classList.contains('open')) renderExercisePanel();
+  listEl.innerHTML=pins.map(pin=>{
+    const logs=[...(pin.log||[])].reverse().slice(0,8);
+    if(!logs.length) return '';
+    const rows=logs.map(e=>{
+      const chips=(pin.metrics||[]).filter(m=>e.values&&e.values[m.id]!=null)
+        .map(m=>`<span class="ex-hist-chip">${escH(m.name)} ${e.values[m.id]}${escH(m.unit)}</span>`).join('');
+      return `<div class="ex-hist-item">
+        <div class="ex-hist-hdr">
+          <span class="ex-hist-date">${escH(e.date||'')}</span>
+          <span class="ex-hist-name">${escH(e.title||'')}</span>
+          <button class="ex-hist-del" onclick="deletePinLogEntry('${escH(pin.id)}','${escH(e.id)}')" title="削除">🗑</button>
+        </div>
+        ${chips?`<div class="ex-hist-chips">${chips}</div>`:''}
+      </div>`;
+    }).join('');
+    return `<div class="pin-group-hdr">${escH(pin.icon||'📌')} ${escH(pin.name)}</div>${rows}`;
+  }).join('');
 }
 
 function renderHabitLog(){
@@ -5104,7 +5146,7 @@ function buildTileGridHtml(progress,needed,color){
 // COSTUME 装備システム
 // =====================================================
 function getCharJourneyImg(charName, stepVal){
-  const n = stepVal + 1;
+  const n = stepVal; // costumeIdx は1始まり（1970年=1）なので+1不要
   if(charName==='おーる局長') return `../../../画像/マネぼう/imgキャラ/おーる局長/All (${n}).png`;
   if(charName==='えんだ')     return `../../../画像/マネぼう/imgキャラ/えんだ/END (${n}).png`;
   if(charName==='ためぞう')   return `../../../画像/マネぼう/imgキャラ/ためぞう/3-0.png`;
@@ -5203,7 +5245,7 @@ function _pinchD(ts){return Math.hypot(ts[0].clientX-ts[1].clientX,ts[0].clientY
 function setMapScaleTo(newScale,pivotClientX,pivotClientY){
   const stage=document.getElementById('jpMapStage');
   if(!stage) return;
-  newScale=Math.max(0.7,Math.min(6,newScale));
+  newScale=Math.max(1.5,Math.min(5,newScale));
   const rect=stage.getBoundingClientRect();
   const px=(pivotClientX!==undefined?pivotClientX-rect.left:rect.width/2);
   const py=(pivotClientY!==undefined?pivotClientY-rect.top:rect.height/2);
@@ -5224,15 +5266,9 @@ function _applyMT(){
   if(btn) btn.style.display=(_mapScale.toFixed(2)!=='1.00'||Math.abs(_mapOffX)>1||Math.abs(_mapOffY)>1)?'flex':'none';
 }
 
-function resetMapView(){
-  _mapScale=1;_mapOffX=0;_mapOffY=0;
-  const stage=document.getElementById('jpMapStage');
-  if(stage) stage.style.transform='';
-  const btn=document.getElementById('mapResetBtn');
-  if(btn) btn.style.display='none';
-}
+function resetMapView(){ centerOnCurrentNode(true); }
 
-function centerOnCurrentNode(){
+function centerOnCurrentNode(animated){
   const step=getJpStep();
   if(step>=JP_ORDER.length) return;
   const s=JP_ALL[JP_ORDER[step]];
@@ -5245,6 +5281,7 @@ function centerOnCurrentNode(){
   _mapScale=targetScale;
   _mapOffX=w/2-nx*targetScale;
   _mapOffY=h/2-ny*targetScale;
+  if(animated){ stage.style.transition='transform 0.42s cubic-bezier(0.4,0,0.2,1)'; setTimeout(()=>{ stage.style.transition=''; },450); }
   _applyMT();
 }
 // ルートSVGを描画（訪問済みノードを順番に結ぶ線）
@@ -5311,6 +5348,8 @@ function buildJapanMap(){
   });
 
   updateJpHUD();
+  // 地方レベルのズームで現在地に自動センタリング
+  setTimeout(()=>centerOnCurrentNode(true),60);
 }
 
 function buildPrefShapesSvg(stage,step,progress){
@@ -5384,24 +5423,53 @@ function openJpModal(id,idx){
   const color=JP_RC[s.region]||'#aaa';
   const year=getJpYear(idx);
   const stageNum=idx+1;
+  const isDone=idx<step, isCur=idx===step, isLock=idx>step;
 
-  // 年バナー画像
-  const banner=document.getElementById('jpmYearBanner');
-  if(banner){ banner.style.display='block'; banner.src=getJpImgPath(idx); }
+  // ── ヒーロー構築 ──
+  const hero=document.getElementById('jpmHero');
+  if(hero){
+    // 背景グラデーション（地域カラー）
+    const bg=document.getElementById('jpmHeroBg');
+    if(bg) bg.style.background=`linear-gradient(160deg,${jpHex(color,0.55)} 0%,${jpHex(color,0.12)} 55%,rgba(5,7,25,1) 100%)`;
 
-  // アクティブキャラのスプライト（装備中コスチューム優先）
-  const sprite=document.getElementById('jpmCharSprite');
-  if(sprite){
-    const ch=CHARS[S.activeChar];
-    const costumeImg=getCharDisplayImg(S.activeChar);
-    const spriteImg=costumeImg||(ch&&ch.imgs[3]);
-    if(spriteImg){ sprite.style.display='block'; sprite.src=spriteImg; }
-    else{ sprite.style.display='none'; }
+    // 年バナー画像（薄いオーバーレイ）
+    const yrImg=document.getElementById('jpmHeroYr');
+    if(yrImg){yrImg.style.display='block';yrImg.src=getJpImgPath(idx);}
+
+    // ステータスバッジ
+    const st=document.getElementById('jpmHeroStatus');
+    if(st){
+      if(isDone){ st.textContent='✅ 制覇済み'; st.style.cssText='background:rgba(245,200,66,0.18);border:1.5px solid rgba(245,200,66,0.6);color:var(--gold);'; }
+      else if(isCur){ st.textContent='📍 現在地'; st.style.cssText='background:rgba(245,200,66,0.25);border:1.5px solid var(--gold);color:var(--gold);animation:jpBlink 1.8s ease-in-out infinite;'; }
+      else{ st.textContent='🔒 未開放'; st.style.cssText='background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.4);'; }
+    }
+
+    // Stage番号
+    const stn=document.getElementById('jpmHeroStnum');
+    if(stn) stn.textContent=`Stage ${stageNum}/56`;
+
+    // 年・地域
+    const yn=document.getElementById('jpmHeroYear');
+    if(yn) yn.textContent=`${year}年`;
+    const rg=document.getElementById('jpmHeroRegn');
+    if(rg) rg.textContent=jpRegLabel(s.region);
+
+    // キャラ画像（制覇済み・現在地）またはロックアイコン
+    hero.querySelectorAll('.jpm-hero-char,.jpm-hero-lock').forEach(el=>el.remove());
+    if(!isLock){
+      const charImg=document.createElement('img');
+      charImg.className='jpm-hero-char'+(isCur?' is-current':'');
+      charImg.src=`../../../画像/マネぼう/imgキャラ/おーる局長/All (${stageNum}).png`;
+      charImg.alt='';
+      charImg.onerror=()=>charImg.remove();
+      hero.appendChild(charImg);
+    } else {
+      const lock=document.createElement('div');
+      lock.className='jpm-hero-lock';
+      lock.textContent='🔒';
+      hero.appendChild(lock);
+    }
   }
-
-  // 年バッジ
-  const badge=document.getElementById('jpmYearBadge');
-  if(badge) badge.textContent=`📅 ${year}年 · Stage ${stageNum}/56`;
 
   // フラグ・名前
   const flag=document.getElementById('jpmFlag');
@@ -5413,26 +5481,26 @@ function openJpModal(id,idx){
   // ステージ状態＋タイル進捗
   const info=document.getElementById('jpmStageInfo');
   if(info){
-    if(idx<step){
-      info.innerHTML=`<span style="color:var(--gold)">✅ 制覇済み（${year}年）</span>`;
-    } else if(idx===step){
+    if(isDone){
+      info.innerHTML=`<span style="color:var(--gold);font-weight:900;">✅ ${year}年 制覇済み！</span>`;
+    } else if(isCur){
       const progress=S.jpMap?S.jpMap.progress||0:0;
       const needed=getJpTilesNeeded(idx);
       info.innerHTML=`<div style="margin-top:4px">${buildTileGridHtml(progress,needed,color)}</div>`;
     } else {
-      info.textContent=`🔒 ${JP_ALL[JP_ORDER[step]].name}（${getJpYear(step)}年）をクリアしてから進もう`;
+      info.textContent=`🔒 ${JP_ALL[JP_ORDER[step]]?.name||'前の県'}（${getJpYear(step)}年）をクリアしてから進もう`;
     }
   }
 
-  // 歴史テキスト（eras[0]のみ表示）
+  // 歴史テキスト
   const erasEl=document.getElementById('jpmEras');
   if(erasEl) erasEl.innerHTML=`<div class="jpm-era" style="border-color:${color}"><div class="jpm-era-title" style="color:${color}">${year}年代 — ${jpRegLabel(s.region)}</div><div class="jpm-era-text">${s.eras[0]||''}</div></div>`;
 
-  // ボタン（旅行ボタンは撤去、完了済みのみ表示）
+  // ボタン
   const btn=document.getElementById('jpmBtn');
   if(btn){
-    if(idx<step){ btn.textContent='✅ 制覇済み'; btn.className='jpm-btn jpm-done'; btn.style.background=''; btn.style.color=''; }
-    else if(idx===step){ btn.textContent='⏱ ポモドーロで領地を広げよう'; btn.className='jpm-btn jpm-locked'; btn.style.background=''; btn.style.color=''; }
+    if(isDone){ btn.textContent='✅ 制覇済み'; btn.className='jpm-btn jpm-done'; btn.style.background=''; btn.style.color=''; }
+    else if(isCur){ btn.textContent='⏱ ポモドーロで領地を広げよう'; btn.className='jpm-btn jpm-locked'; btn.style.background=''; btn.style.color=''; }
     else{ btn.textContent='🔒 順番に進もう'; btn.className='jpm-btn jpm-locked'; btn.style.background=''; btn.style.color=''; }
   }
   updateEquipBtn();
@@ -5466,251 +5534,380 @@ function bgCloseJp(e){if(e.target===document.getElementById('jpmOverlay'))closeJ
 buildJapanMap();
 
 // =====================================================
-// 運動記録パネル
+// PIN SYSTEM (Multi-Pin)
 // =====================================================
 let _exChart = null;
 let _exSettingsOpen = false;
+let _pinChartTab = 'radar'; // 'radar'|'trend'|'bar'
+let _trendMetricId = null;
+
+function getActivePin(){
+  return (S.pins||[]).find(p=>p.id===S.activePinId)||null;
+}
+
+function migratePinsData(){
+  if(!S.pins) S.pins=[];
+  // migrate legacy exerciseLog/exerciseMetrics/exerciseGoal
+  if(S.exerciseMetrics||S.exerciseLog){
+    let p=S.pins.find(p=>p.id==='pin_undou');
+    if(!p){
+      p={id:'pin_undou',name:'運動',icon:'💪',goal:S.exerciseGoal||'',metrics:S.exerciseMetrics||[],log:S.exerciseLog||[]};
+      S.pins.unshift(p);
+    } else {
+      if(S.exerciseLog&&S.exerciseLog.length) p.log=[...p.log,...S.exerciseLog];
+    }
+    delete S.exerciseMetrics; delete S.exerciseLog; delete S.exerciseGoal;
+    save();
+  }
+  if(!S.activePinId||(S.pins.length&&!getActivePin())) S.activePinId=S.pins[0]?.id||null;
+}
 
 function openExercisePanel(){
-  document.getElementById('exPanel').classList.add('open');
+  migratePinsData();
+  $('exPanel').classList.add('open');
   document.body.style.overflow='hidden';
   renderExercisePanel();
 }
 function closeExercisePanel(){
-  document.getElementById('exPanel').classList.remove('open');
+  $('exPanel').classList.remove('open');
   document.body.style.overflow='';
 }
 function closeExercisePanelBg(e){
-  if(e.target===document.getElementById('exPanel')) closeExercisePanel();
+  if(e.target===$('exPanel')||e.target.classList.contains('ex-panel-overlay')) closeExercisePanel();
+}
+
+function addNewPin(){
+  const name=prompt('新しいPinの名前を入力してください\n例: 勉強、読書、食事、睡眠…');
+  if(!name||!name.trim()) return;
+  const icons=['📌','📚','🍱','🧠','🎯','😴','🏃','✍️','🌿','💊','🎸','🧘'];
+  const icon=icons[Math.floor(Math.random()*icons.length)];
+  const id='pin_'+Date.now();
+  if(!S.pins) S.pins=[];
+  S.pins.push({id,name:name.trim(),icon,goal:'',metrics:[],log:[]});
+  S.activePinId=id;
+  _exSettingsOpen=true;
+  save();
+  renderExercisePanel();
+}
+
+function switchPin(id){
+  S.activePinId=id;
+  _pinChartTab='radar';
+  _trendMetricId=null;
+  _exSettingsOpen=false;
+  if(_exChart){try{_exChart.destroy();}catch(e){}_exChart=null;}
+  renderExercisePanel();
+}
+
+function deletePin(id){
+  if(!confirm('このPinをすべての記録ごと削除しますか？')) return;
+  S.pins=(S.pins||[]).filter(p=>p.id!==id);
+  if(S.activePinId===id) S.activePinId=S.pins[0]?.id||null;
+  save();
+  renderExercisePanel();
 }
 
 function renderExercisePanel(){
-  if(!S.exerciseMetrics||!S.exerciseMetrics.length){
-    S.exerciseMetrics=[
-      {id:'ex1',name:'ベンチプレス',unit:'kg'},
-      {id:'ex2',name:'スクワット',unit:'kg'},
-      {id:'ex3',name:'デッドリフト',unit:'kg'},
-      {id:'ex4',name:'懸垂',unit:'回'},
-      {id:'ex5',name:'ランニング',unit:'km'},
-    ];
-  }
-  if(!S.exerciseLog) S.exerciseLog=[];
-  const metrics=S.exerciseMetrics;
+  migratePinsData();
+  renderPinTabs();
+  renderActivePinContent();
+}
 
-  // latest log values for placeholder
-  const latest=S.exerciseLog[S.exerciseLog.length-1];
+function renderPinTabs(){
+  const el=$('pinTabsRow');
+  if(!el) return;
+  const pins=S.pins||[];
+  el.innerHTML=pins.map(p=>`
+    <button class="pin-tab-btn${p.id===S.activePinId?' pt-active':''}" onclick="switchPin('${escH(p.id)}')">
+      <span>${escH(p.icon||'📌')}</span><span>${escH(p.name)}</span>
+    </button>`).join('')+
+    `<button class="pin-add-btn" onclick="addNewPin()">＋</button>`;
+}
+
+function renderActivePinContent(){
+  const body=$('exPanelBody');
+  if(!body) return;
+  const pin=getActivePin();
+  if(!pin){
+    body.innerHTML=`<div class="log-empty" style="margin-top:50px;">＋ボタンでPinを追加してください</div>`;
+    return;
+  }
+  if(!pin.metrics) pin.metrics=[];
+  if(!pin.log) pin.log=[];
+
+  const latest=pin.log[pin.log.length-1];
   const latestVals=latest?latest.values:{};
 
-  // goal card HTML
+  // goal
   const goalHTML=`
     <div class="ex-goal-card" id="exGoalCard">
       <span style="font-size:20px">🎯</span>
-      <div class="ex-goal-text" id="exGoalDisplay">${escH(S.exerciseGoal||'どんな目標でもOK！')}</div>
+      <div class="ex-goal-text" id="exGoalDisplay">${escH(pin.goal||'目標を設定しよう')}</div>
       <button class="ex-goal-edit" onclick="toggleExGoalEdit()">編集</button>
     </div>
     <div id="exGoalEditRow" style="display:none;margin-bottom:14px;">
       <div class="ex-goal-input-row">
-        <input class="ex-goal-input" id="exGoalInput" type="text" placeholder="例: 週3回ジム / 毎日英単語10個 / 読書30分..." value="${escH(S.exerciseGoal||'')}">
+        <input class="ex-goal-input" id="exGoalInput" type="text" placeholder="例: 週3回ジム / 毎日30分読書..." value="${escH(pin.goal||'')}">
         <button class="ex-goal-save" onclick="saveExGoal()">保存</button>
       </div>
     </div>`;
 
-  // chart canvas
-  const chartHTML=`
-    <div class="ex-chart-wrap" style="height:200px;">
-      <canvas id="exRadarCanvas" style="max-width:200px;max-height:200px;"></canvas>
+  // chart section
+  let chartHTML='';
+  if(pin.metrics.length>0||pin.log.length>0){
+    const tabs=`<div class="pin-chart-tabs">
+      <button class="pct-btn${_pinChartTab==='radar'?' pct-active':''}" onclick="switchPinChart('radar')">🕷️ レーダー</button>
+      <button class="pct-btn${_pinChartTab==='trend'?' pct-active':''}" onclick="switchPinChart('trend')">📈 トレンド</button>
+      <button class="pct-btn${_pinChartTab==='bar'?' pct-active':''}" onclick="switchPinChart('bar')">📊 週次</button>
     </div>`;
+    let canvasHTML='';
+    if(_pinChartTab==='radar') canvasHTML=`<canvas id="exRadarCanvas" style="max-width:190px;max-height:190px;display:block;margin:0 auto;"></canvas>`;
+    else if(_pinChartTab==='trend'){
+      const metrics=pin.metrics;
+      if(!_trendMetricId||!metrics.find(m=>m.id===_trendMetricId)) _trendMetricId=metrics[0]?.id||null;
+      const sel=metrics.map(m=>`<option value="${escH(m.id)}"${m.id===_trendMetricId?' selected':''}>${escH(m.name)}</option>`).join('');
+      canvasHTML=metrics.length?`<select class="pin-trend-sel" onchange="_trendMetricId=this.value;renderPinTrendChart(getActivePin())">${sel}</select><canvas id="exTrendCanvas" style="width:100%;display:block;"></canvas>`
+        :`<div style="color:rgba(255,255,255,0.3);font-size:10px;text-align:center;padding:16px;">項目を追加するとグラフが表示されます</div>`;
+    } else canvasHTML=`<canvas id="exBarCanvas" style="width:100%;display:block;"></canvas>`;
+    chartHTML=tabs+`<div class="ex-chart-wrap cwrap-${_pinChartTab==='radar'?'radar':_pinChartTab==='trend'?'trend':'bar'}">${canvasHTML}</div>`;
+  }
 
-  // input grid
-  const inputGridItems=metrics.map(m=>`
+  // input form
+  const inputItems=pin.metrics.map(m=>`
     <div class="ex-input-item">
       <div class="ex-input-label">${escH(m.name)}</div>
       <input class="ex-input-field" type="number" id="exInput_${escH(m.id)}" min="0" step="0.1" placeholder="${latestVals[m.id]||'0'}">
       <div class="ex-input-unit">${escH(m.unit)}</div>
     </div>`).join('');
-
   const formHTML=`
     <div class="ex-form-title">TODAY'S PIN</div>
-    <div class="ex-input-grid">${inputGridItems}</div>
-    <div class="ex-title-row">
-      <input class="ex-title-input" id="exTitleInput" type="text" placeholder="メモ（任意）例: 今日の感想、コンディションなど...">
-    </div>
-    <button class="ex-save-btn" onclick="saveExerciseLog()">🚩 Pinを保存</button>`;
+    ${pin.metrics.length?`<div class="ex-input-grid">${inputItems}</div>`:'<div style="font-size:10px;color:rgba(255,255,255,0.3);margin-bottom:10px;text-align:center;">⬇️ 項目設定から記録項目を追加</div>'}
+    <div class="ex-title-row"><input class="ex-title-input" id="exTitleInput" type="text" placeholder="メモ（任意）"></div>
+    <button class="ex-save-btn" onclick="saveExerciseLog()">🚩 ${escH(pin.name)} を記録</button>`;
 
   // history
-  const histHTML=renderExerciseHistoryHTML();
+  const histRows=[...pin.log].reverse().slice(0,30);
+  const histHTML=histRows.length===0?'<div class="log-empty">記録がまだありません</div>':
+    `<div class="ex-hist-title" style="margin-top:4px;">HISTORY</div>`+histRows.map(e=>{
+      const chips=(pin.metrics||[]).filter(m=>e.values&&e.values[m.id]!=null)
+        .map(m=>`<span class="ex-hist-chip">${escH(m.name)} ${e.values[m.id]}${escH(m.unit)}</span>`).join('');
+      return `<div class="ex-hist-item">
+        <div class="ex-hist-hdr">
+          <span class="ex-hist-date">${escH(e.date||'')}</span>
+          <span class="ex-hist-name">${escH(e.title||'')}</span>
+          <button class="ex-hist-del" onclick="deletePinLogEntry('${escH(pin.id)}','${escH(e.id)}')" title="削除">🗑</button>
+        </div>
+        ${chips?`<div class="ex-hist-chips">${chips}</div>`:''}
+      </div>`;
+    }).join('');
 
-  // settings toggle
+  // settings
   const settingsHTML=`
-    <button class="ex-settings-toggle" onclick="toggleExSettings()">⚙️ 項目設定</button>
+    <div style="display:flex;gap:6px;margin-bottom:6px;">
+      <button class="ex-settings-toggle" style="flex:1;" onclick="toggleExSettings()">⚙️ 項目設定</button>
+      ${(S.pins||[]).length>1?`<button class="pin-del-btn" onclick="deletePin('${escH(pin.id)}')">🗑 削除</button>`:''}
+    </div>
     <div id="exSettingsArea" style="display:none;margin-bottom:14px;">
+      <div class="pin-name-row">
+        <input class="pin-icon-input" id="pinIconInput" type="text" placeholder="🏷" value="${escH(pin.icon||'📌')}" oninput="updatePinMeta()">
+        <input class="ex-metric-name" id="pinNameInput" type="text" placeholder="Pin名" value="${escH(pin.name||'')}" style="flex:1;" oninput="updatePinMeta()">
+      </div>
       <div id="exMetricRows"></div>
       <div class="ex-add-metric-row">
-        <input class="ex-goal-input" id="exNewMetricName" type="text" placeholder="名前（例: 腕立て）" style="flex:1;">
-        <input class="ex-goal-input" id="exNewMetricUnit" type="text" placeholder="単位" style="width:56px;">
-        <button class="ex-add-btn" onclick="addExerciseMetric()">＋追加</button>
+        <input class="ex-goal-input" id="exNewMetricName" type="text" placeholder="項目名（例: ランニング）" style="flex:1;">
+        <input class="ex-goal-input" id="exNewMetricUnit" type="text" placeholder="単位" style="width:52px;">
+        <button class="ex-add-btn" onclick="addExerciseMetric()">＋</button>
       </div>
     </div>`;
 
-  document.getElementById('exPanelBody').innerHTML=goalHTML+chartHTML+formHTML+histHTML+settingsHTML;
+  body.innerHTML=goalHTML+chartHTML+formHTML+histHTML+settingsHTML;
 
-  // restore settings open state
   if(_exSettingsOpen){
-    document.getElementById('exSettingsArea').style.display='block';
+    $('exSettingsArea').style.display='block';
     renderMetricSettingsRows();
   }
-
-  renderExerciseChart();
+  setTimeout(()=>{
+    if(_pinChartTab==='radar') renderPinRadarChart(getActivePin());
+    if(_pinChartTab==='bar')   renderPinBarChart(getActivePin());
+    if(_pinChartTab==='trend') renderPinTrendChart(getActivePin());
+  },0);
 }
 
+// ── chart renderers ─────────────────────────────────
+function switchPinChart(type){
+  _pinChartTab=type;
+  if(_exChart){try{_exChart.destroy();}catch(e){}_exChart=null;}
+  renderActivePinContent();
+}
+
+function renderPinRadarChart(pin){
+  if(!pin) return;
+  const canvas=$('exRadarCanvas'); if(!canvas) return;
+  const metrics=pin.metrics||[]; if(!metrics.length) return;
+  if(_exChart){try{_exChart.destroy();}catch(e){}_exChart=null;}
+  const logs=pin.log||[];
+  const recent=logs.slice(-5);
+  if(!recent.length){canvas.parentElement.innerHTML='<div style="color:rgba(255,255,255,0.3);font-size:11px;text-align:center;padding:20px;">記録を保存するとグラフが表示されます</div>';return;}
+  const maxVals={};
+  metrics.forEach(m=>{maxVals[m.id]=Math.max(1,...logs.map(l=>(l.values||{})[m.id]||0));});
+  _exChart=new Chart(canvas,{
+    type:'radar',
+    data:{labels:metrics.map(m=>m.name),datasets:recent.map((e,i)=>{
+      const a=0.15+(i/recent.length)*0.55;
+      return {label:e.date,data:metrics.map(m=>Math.round(((e.values||{})[m.id]||0)/maxVals[m.id]*100)),
+        backgroundColor:`rgba(91,200,232,${a*0.35})`,borderColor:`rgba(91,200,232,${a})`,
+        borderWidth:i===recent.length-1?2:1,pointBackgroundColor:'rgba(91,200,232,0.8)',pointRadius:i===recent.length-1?3:1};
+    })},
+    options:{responsive:true,maintainAspectRatio:true,animation:{duration:400},
+      scales:{r:{min:0,max:100,ticks:{display:false},grid:{color:'rgba(255,255,255,0.1)'},
+        pointLabels:{color:'rgba(255,255,255,0.55)',font:{size:9,family:"'Zen Maru Gothic',sans-serif"}},
+        angleLines:{color:'rgba(255,255,255,0.08)'}}},
+      plugins:{legend:{display:false}}}
+  });
+}
+
+function renderPinBarChart(pin){
+  if(!pin) return;
+  const canvas=$('exBarCanvas'); if(!canvas) return;
+  if(_exChart){try{_exChart.destroy();}catch(e){}_exChart=null;}
+  const logs=pin.log||[];
+  const labels=[],counts=[];
+  for(let i=13;i>=0;i--){
+    const d=new Date(); d.setDate(d.getDate()-i);
+    const ds=d.toISOString().split('T')[0];
+    labels.push(`${d.getMonth()+1}/${d.getDate()}`);
+    counts.push(logs.filter(e=>e.date===ds).length);
+  }
+  _exChart=new Chart(canvas,{
+    type:'bar',
+    data:{labels,datasets:[{data:counts,backgroundColor:'rgba(245,200,66,0.55)',borderColor:'rgba(245,200,66,0.9)',borderWidth:1,borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:300},
+      scales:{x:{ticks:{color:'rgba(255,255,255,0.38)',font:{size:8}},grid:{display:false}},
+        y:{ticks:{color:'rgba(255,255,255,0.38)',font:{size:9},stepSize:1},grid:{color:'rgba(255,255,255,0.06)'}}},
+      plugins:{legend:{display:false}}}
+  });
+}
+
+function renderPinTrendChart(pin){
+  if(!pin) return;
+  const canvas=$('exTrendCanvas'); if(!canvas) return;
+  if(_exChart){try{_exChart.destroy();}catch(e){}_exChart=null;}
+  const m=(pin.metrics||[]).find(mm=>mm.id===_trendMetricId);
+  if(!m) return;
+  const logs=(pin.log||[]).filter(e=>e.values&&e.values[m.id]!=null).slice(-20);
+  if(!logs.length){canvas.insertAdjacentHTML('afterend','<div style="font-size:10px;color:rgba(255,255,255,0.3);text-align:center;padding:6px;">データがまだありません</div>');return;}
+  _exChart=new Chart(canvas,{
+    type:'line',
+    data:{labels:logs.map(e=>e.date.slice(5)),datasets:[{
+      label:m.name,data:logs.map(e=>e.values[m.id]),
+      backgroundColor:'rgba(155,109,214,0.15)',borderColor:'rgba(155,109,214,0.9)',borderWidth:2,
+      pointBackgroundColor:'rgba(155,109,214,0.8)',pointRadius:3,fill:true,tension:0.35}]},
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:300},
+      scales:{x:{ticks:{color:'rgba(255,255,255,0.38)',font:{size:8}},grid:{display:false}},
+        y:{ticks:{color:'rgba(255,255,255,0.38)',font:{size:9}},grid:{color:'rgba(255,255,255,0.06)'}}},
+      plugins:{legend:{display:false}}}
+  });
+}
+
+// ── save / delete ───────────────────────────────────
 function toggleExGoalEdit(){
-  const row=document.getElementById('exGoalEditRow');
+  const row=$('exGoalEditRow'); if(!row) return;
   row.style.display=(row.style.display==='none')?'block':'none';
-  if(row.style.display==='block') document.getElementById('exGoalInput').focus();
+  if(row.style.display==='block') $('exGoalInput').focus();
 }
 function saveExGoal(){
-  S.exerciseGoal=document.getElementById('exGoalInput').value.trim();
+  const pin=getActivePin(); if(!pin) return;
+  pin.goal=$('exGoalInput').value.trim();
   save();
-  document.getElementById('exGoalDisplay').textContent=S.exerciseGoal||'どんな目標でもOK！';
-  document.getElementById('exGoalEditRow').style.display='none';
+  $('exGoalDisplay').textContent=pin.goal||'目標を設定しよう';
+  $('exGoalEditRow').style.display='none';
 }
 
 function saveExerciseLog(){
-  const metrics=S.exerciseMetrics||[];
-  const values={};
-  let hasAny=false;
+  const pin=getActivePin();
+  if(!pin){showToast('⚠️ Pinを選択してください');return;}
+  const metrics=pin.metrics||[];
+  const values={};let hasAny=false;
   metrics.forEach(m=>{
-    const v=parseFloat(document.getElementById('exInput_'+m.id)?.value||'');
-    if(!isNaN(v)&&v>0){ values[m.id]=v; hasAny=true; }
+    const v=parseFloat($('exInput_'+m.id)?.value||'');
+    if(!isNaN(v)&&v>0){values[m.id]=v;hasAny=true;}
   });
-  if(!hasAny){ showToast('⚠️ 少なくとも1つ入力してください'); return; }
-  const title=document.getElementById('exTitleInput')?.value.trim()||'';
-  const entry={id:'e'+Date.now(),date:todayStr(),values,title};
-  if(!S.exerciseLog) S.exerciseLog=[];
-  S.exerciseLog.push(entry);
-  if(S.exerciseLog.length>180) S.exerciseLog=S.exerciseLog.slice(-180);
+  const title=$('exTitleInput')?.value.trim()||'';
+  if(!hasAny&&!title){showToast('⚠️ 値かメモを入力してください');return;}
+  if(!pin.log) pin.log=[];
+  pin.log.push({id:'e'+Date.now(),date:todayStr(),values,title});
+  if(pin.log.length>180) pin.log=pin.log.slice(-180);
   save();
-  showToast('🚩 Pinを保存しました！');
-  renderExercisePanel();
+  showToast(`🚩 ${pin.name} を記録しました！`);
+  renderActivePinContent();
+  if(_yattaSection==='pin') renderPinSection();
 }
 
-function deleteExerciseLog(id){
-  S.exerciseLog=(S.exerciseLog||[]).filter(e=>e.id!==id);
+function deletePinLogEntry(pinId,entryId){
+  const pin=(S.pins||[]).find(p=>p.id===pinId); if(!pin) return;
+  pin.log=(pin.log||[]).filter(e=>e.id!==entryId);
   save();
-  renderExercisePanel();
+  renderActivePinContent();
+  if(_yattaSection==='pin') renderPinSection();
 }
+// legacy alias used elsewhere
+function deleteExerciseLog(id){ deletePinLogEntry(S.activePinId,id); }
 
-function renderExerciseHistoryHTML(){
-  const logs=(S.exerciseLog||[]).slice().reverse().slice(0,30);
-  if(!logs.length) return '<div class="log-empty">記録がまだありません</div>';
-  const metrics=S.exerciseMetrics||[];
-  const rows=logs.map(e=>{
-    const chips=metrics.filter(m=>e.values[m.id]!=null).map(m=>`<span class="ex-hist-chip">${escH(m.name)} ${e.values[m.id]}${escH(m.unit)}</span>`).join('');
-    return `<div class="ex-hist-item">
-      <div class="ex-hist-hdr">
-        <span class="ex-hist-date">${escH(e.date)}</span>
-        <span class="ex-hist-name">${escH(e.title||'')}</span>
-        <button class="ex-hist-del" onclick="deleteExerciseLog('${escH(e.id)}')" title="削除">🗑</button>
-      </div>
-      <div class="ex-hist-chips">${chips}</div>
-    </div>`;
-  }).join('');
-  return `<div class="ex-hist-title" style="margin-top:4px;">HISTORY</div>${rows}`;
-}
-
-function renderExerciseChart(){
-  const canvas=document.getElementById('exRadarCanvas');
-  if(!canvas) return;
-  const metrics=S.exerciseMetrics||[];
-  if(!metrics.length) return;
-
-  // destroy previous chart instance
-  if(_exChart){ try{ _exChart.destroy(); }catch(e){} _exChart=null; }
-
-  const logs=S.exerciseLog||[];
-  // use last 5 sessions for sparkline; compare latest vs previous
-  const recent=logs.slice(-5);
-  if(recent.length<1){ canvas.parentElement.innerHTML='<div style="color:rgba(255,255,255,0.3);font-size:11px;text-align:center;padding:20px;">記録を保存するとグラフが表示されます</div>'; return; }
-
-  // max per metric across all logs for normalization
-  const maxVals={};
-  metrics.forEach(m=>{ maxVals[m.id]=Math.max(1,...logs.map(l=>l.values[m.id]||0)); });
-
-  const datasets=recent.map((entry,i)=>{
-    const alpha=0.15+(i/recent.length)*0.55;
-    const data=metrics.map(m=>{ const v=entry.values[m.id]||0; return Math.round((v/maxVals[m.id])*100); });
-    return {
-      label:entry.date,
-      data,
-      backgroundColor:`rgba(91,200,232,${alpha*0.35})`,
-      borderColor:`rgba(91,200,232,${alpha})`,
-      borderWidth:i===recent.length-1?2:1,
-      pointBackgroundColor:'rgba(91,200,232,0.8)',
-      pointRadius:i===recent.length-1?3:1,
-    };
-  });
-
-  _exChart=new Chart(canvas,{
-    type:'radar',
-    data:{ labels:metrics.map(m=>m.name), datasets },
-    options:{
-      responsive:true,maintainAspectRatio:true,
-      animation:{duration:400},
-      scales:{r:{
-        min:0,max:100,
-        ticks:{display:false,stepSize:25},
-        grid:{color:'rgba(255,255,255,0.1)'},
-        pointLabels:{color:'rgba(255,255,255,0.55)',font:{size:9,family:"'Zen Maru Gothic',sans-serif"}},
-        angleLines:{color:'rgba(255,255,255,0.08)'},
-      }},
-      plugins:{legend:{display:false}},
-    }
-  });
-}
-
+// ── settings ────────────────────────────────────────
 function toggleExSettings(){
   _exSettingsOpen=!_exSettingsOpen;
-  const area=document.getElementById('exSettingsArea');
-  if(!area) return;
+  const area=$('exSettingsArea'); if(!area) return;
   area.style.display=_exSettingsOpen?'block':'none';
   if(_exSettingsOpen) renderMetricSettingsRows();
 }
 
+function updatePinMeta(){
+  const pin=getActivePin(); if(!pin) return;
+  const nameEl=$('pinNameInput'),iconEl=$('pinIconInput');
+  if(nameEl) pin.name=nameEl.value.trim()||pin.name;
+  if(iconEl) pin.icon=iconEl.value||pin.icon;
+  save();
+  renderPinTabs();
+}
+
 function renderMetricSettingsRows(){
-  const el=document.getElementById('exMetricRows');
-  if(!el) return;
-  const metrics=S.exerciseMetrics||[];
-  el.innerHTML=metrics.map(m=>`
+  const el=$('exMetricRows'); if(!el) return;
+  const pin=getActivePin(); if(!pin) return;
+  el.innerHTML=(pin.metrics||[]).map(m=>`
     <div class="ex-metric-row">
-      <input class="ex-metric-name" value="${escH(m.name)}" onchange="updateMetricName('${escH(m.id)}',this.value)">
-      <input class="ex-metric-unit" value="${escH(m.unit)}" onchange="updateMetricUnit('${escH(m.id)}',this.value)">
+      <input class="ex-metric-name" value="${escH(m.name)}" onchange="updateMetricName('${escH(m.id)}',this.value)" placeholder="名前">
+      <input class="ex-metric-unit" value="${escH(m.unit)}" onchange="updateMetricUnit('${escH(m.id)}',this.value)" placeholder="単位">
       <button class="ex-metric-del" onclick="removeExerciseMetric('${escH(m.id)}')">✕</button>
     </div>`).join('');
 }
 
 function updateMetricName(id,val){
-  const m=(S.exerciseMetrics||[]).find(x=>x.id===id);
-  if(m){ m.name=val.trim()||m.name; save(); }
+  const pin=getActivePin(); if(!pin) return;
+  const m=(pin.metrics||[]).find(x=>x.id===id);
+  if(m){m.name=val.trim()||m.name;save();}
 }
 function updateMetricUnit(id,val){
-  const m=(S.exerciseMetrics||[]).find(x=>x.id===id);
-  if(m){ m.unit=val.trim()||m.unit; save(); }
+  const pin=getActivePin(); if(!pin) return;
+  const m=(pin.metrics||[]).find(x=>x.id===id);
+  if(m){m.unit=val.trim();save();}
 }
 function addExerciseMetric(){
-  const name=document.getElementById('exNewMetricName')?.value.trim();
-  const unit=document.getElementById('exNewMetricUnit')?.value.trim()||'回';
-  if(!name){ showToast('⚠️ 名前を入力してください'); return; }
-  if(!S.exerciseMetrics) S.exerciseMetrics=[];
-  S.exerciseMetrics.push({id:'ex'+Date.now(),name,unit});
+  const pin=getActivePin(); if(!pin) return;
+  const name=$('exNewMetricName')?.value.trim();
+  const unit=$('exNewMetricUnit')?.value.trim()||'回';
+  if(!name){showToast('⚠️ 項目名を入力してください');return;}
+  if(!pin.metrics) pin.metrics=[];
+  pin.metrics.push({id:'m'+Date.now(),name,unit});
   save();
-  renderExercisePanel();
   _exSettingsOpen=true;
+  renderActivePinContent();
 }
 function removeExerciseMetric(id){
-  S.exerciseMetrics=(S.exerciseMetrics||[]).filter(m=>m.id!==id);
+  const pin=getActivePin(); if(!pin) return;
+  pin.metrics=(pin.metrics||[]).filter(m=>m.id!==id);
   save();
-  renderExercisePanel();
   _exSettingsOpen=true;
+  renderActivePinContent();
 }
 
 </script>
