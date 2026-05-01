@@ -3283,6 +3283,12 @@ let S = {
   itemCounts:     {},
   lastEraNotified:0,
   bossHistory:    {},
+  charTitles:     {},
+  gachaCollection:{},
+  gachaCounts:    {},
+  knownTitleIds:  [],
+  achievUnlockDates:{},
+  streakShieldUsedDate:'',
   ...loadState(),
 };
 if(!CHARS[S.activeChar]) S.activeChar='えんだ';
@@ -7242,6 +7248,10 @@ function getPinWeekCount(pin){
   return (pin.log||[]).filter(e=>e.date>=monStr).length;
 }
 let _updatePinMetaTimer=null;
+function updatePinMetaDebounced(){
+  clearTimeout(_updatePinMetaTimer);
+  _updatePinMetaTimer=setTimeout(updatePinMeta,500);
+}
 
 function migratePinsData(){
   if(!S.pins) S.pins=[];
