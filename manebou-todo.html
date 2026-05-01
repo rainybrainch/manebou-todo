@@ -298,24 +298,48 @@ nav{position:sticky;top:0;z-index:200;background:rgba(26,26,46,0.94);backdrop-fi
 .nav-popup-backdrop{position:fixed;inset:0;z-index:749;display:none;}
 .nav-popup-backdrop.open{display:block;}
 .nav-popup-wrap{position:fixed;top:50px;right:8px;z-index:750;}
-.nav-popup{background:var(--dark);border:2.5px solid var(--gold);border-radius:16px;padding:16px 14px;width:216px;box-shadow:0 8px 30px rgba(0,0,0,0.75),0 0 0 1px rgba(245,200,66,0.08);transform:translateY(-8px) scale(0.93);opacity:0;pointer-events:none;transition:transform 0.22s cubic-bezier(0.34,1.56,0.64,1),opacity 0.15s;}
+.nav-popup{background:linear-gradient(145deg,#1c1a38 0%,#130f28 100%);border:2px solid rgba(245,200,66,0.5);border-radius:18px;padding:18px 15px 14px;width:220px;box-shadow:0 12px 40px rgba(0,0,0,0.8),0 0 0 1px rgba(245,200,66,0.06),inset 0 1px 0 rgba(255,255,255,0.06);transform:translateY(-10px) scale(0.91);opacity:0;pointer-events:none;transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1),opacity 0.18s;}
 .nav-popup.open{transform:translateY(0) scale(1);opacity:1;pointer-events:all;}
-.nav-popup-avatar{width:46px;height:46px;border-radius:50%;border:2.5px solid var(--gold);object-fit:cover;margin:0 auto 8px;display:block;}
-.nav-popup-avatar-placeholder{width:46px;height:46px;border-radius:50%;border:2.5px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto 8px;}
-.nav-popup-name{font-size:12px;font-weight:700;color:#fff;text-align:center;margin-bottom:3px;word-break:break-all;}
+/* staggered item entrance */
+@keyframes popItemIn{from{opacity:0;transform:translateX(7px)}to{opacity:1;transform:translateX(0)}}
+.nav-popup.open>*{opacity:0;animation:popItemIn 0.22s ease forwards;}
+.nav-popup.open>*:nth-child(1){animation-delay:0.07s}
+.nav-popup.open>*:nth-child(2){animation-delay:0.11s}
+.nav-popup.open>*:nth-child(3){animation-delay:0.14s}
+.nav-popup.open>*:nth-child(4){animation-delay:0.17s}
+.nav-popup.open>*:nth-child(5){animation-delay:0.20s}
+.nav-popup.open>*:nth-child(6){animation-delay:0.23s}
+.nav-popup.open>*:nth-child(7){animation-delay:0.26s}
+.nav-popup.open>*:nth-child(8){animation-delay:0.29s}
+/* avatar glow ring */
+@keyframes avatarRing{0%,100%{box-shadow:0 0 0 2px rgba(245,200,66,0.5),0 0 14px rgba(245,200,66,0.18)}50%{box-shadow:0 0 0 3.5px var(--gold),0 0 24px rgba(245,200,66,0.55)}}
+.nav-popup-avatar{width:48px;height:48px;border-radius:50%;border:2.5px solid var(--gold);object-fit:cover;margin:0 auto 8px;display:block;animation:avatarRing 2.6s ease-in-out infinite;}
+.nav-popup-avatar-placeholder{width:48px;height:48px;border-radius:50%;border:2px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 8px;}
+.nav-popup-name{font-size:13px;font-weight:700;color:#fff;text-align:center;margin-bottom:3px;word-break:break-all;}
 .nav-popup-email{font-size:9px;color:rgba(255,255,255,0.32);text-align:center;margin-bottom:10px;word-break:break-all;font-weight:700;}
-.nav-popup-cloud-badge{font-size:9px;font-weight:700;background:rgba(76,175,125,0.12);border:1.5px solid var(--green);border-radius:20px;color:var(--green);padding:3px 10px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;gap:4px;width:fit-content;}
-.nav-popup-divider{border:none;border-top:1px solid rgba(255,255,255,0.07);margin:0 0 10px;}
-.nav-popup-btn{display:flex;align-items:center;gap:7px;width:100%;padding:9px 10px;background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.08);border-radius:10px;color:rgba(255,255,255,0.65);font-size:11px;font-weight:700;cursor:pointer;margin-bottom:6px;transition:background 0.15s,border-color 0.15s;font-family:inherit;text-decoration:none;box-sizing:border-box;text-align:left;}
+/* cloud badge pulse */
+@keyframes cloudPulse{0%,100%{box-shadow:0 0 4px rgba(76,175,125,0.15)}50%{box-shadow:0 0 14px rgba(76,175,125,0.6),0 0 24px rgba(76,175,125,0.1)}}
+.nav-popup-cloud-badge{font-size:9px;font-weight:700;background:rgba(76,175,125,0.12);border:1.5px solid var(--green);border-radius:20px;color:var(--green);padding:3px 10px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;gap:4px;width:fit-content;animation:cloudPulse 2.2s ease-in-out infinite;}
+/* popup divider gradient */
+.nav-popup-divider{border:none;height:1px;background:linear-gradient(90deg,transparent,rgba(245,200,66,0.2),transparent);margin:0 0 10px;}
+/* buttons with left-bar hover */
+.nav-popup-btn{display:flex;align-items:center;gap:7px;width:100%;padding:9px 10px 9px 12px;background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.08);border-radius:10px;color:rgba(255,255,255,0.6);font-size:11px;font-weight:700;cursor:pointer;margin-bottom:6px;transition:background 0.18s,border-color 0.18s,color 0.18s,transform 0.15s;font-family:inherit;text-decoration:none;box-sizing:border-box;text-align:left;position:relative;overflow:hidden;}
+.nav-popup-btn::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gold);transform:scaleY(0);transition:transform 0.18s ease;border-radius:0 2px 2px 0;}
 .nav-popup-btn:last-child{margin-bottom:0;}
-.nav-popup-btn:hover{background:rgba(255,255,255,0.09);border-color:rgba(255,255,255,0.18);color:#fff;}
-.nav-popup-btn.danger{color:rgba(255,100,100,0.65);border-color:rgba(255,80,80,0.12);}
-.nav-popup-btn.danger:hover{background:rgba(255,60,60,0.08);border-color:rgba(255,80,80,0.35);color:rgb(255,110,110);}
-.nav-popup-login-icon{font-size:34px;text-align:center;margin-bottom:8px;}
+.nav-popup-btn:hover{background:rgba(255,255,255,0.09);border-color:rgba(255,255,255,0.18);color:#fff;transform:translateX(1px);}
+.nav-popup-btn:hover::before{transform:scaleY(1);}
+.nav-popup-btn:active{transform:scale(0.97);}
+.nav-popup-btn.danger{color:rgba(255,100,100,0.6);border-color:rgba(255,80,80,0.12);}
+.nav-popup-btn.danger::before{background:rgba(255,80,80,0.7);}
+.nav-popup-btn.danger:hover{background:rgba(255,60,60,0.08);border-color:rgba(255,80,80,0.35);color:rgb(255,120,120);}
+/* login state */
+.nav-popup-login-icon{font-size:36px;text-align:center;margin-bottom:8px;}
 .nav-popup-login-title{font-size:11px;font-weight:700;color:rgba(255,255,255,0.55);text-align:center;margin-bottom:6px;}
 .nav-popup-login-desc{font-size:9px;color:rgba(255,255,255,0.3);text-align:center;margin-bottom:14px;line-height:1.7;font-weight:700;}
-.nav-popup-login-btn{width:100%;padding:10px;background:var(--gold);color:var(--dark);border:none;border-radius:10px;font-family:'Dela Gothic One',sans-serif;font-size:12px;cursor:pointer;transition:opacity 0.15s;}
-.nav-popup-login-btn:hover{opacity:0.88;}
+@keyframes loginShimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.nav-popup-login-btn{width:100%;padding:11px;background:linear-gradient(90deg,var(--gold-dark) 0%,var(--gold) 30%,#ffee8a 55%,var(--gold) 75%,var(--gold-dark) 100%);background-size:200%;color:var(--dark);border:none;border-radius:10px;font-family:'Dela Gothic One',sans-serif;font-size:12px;cursor:pointer;animation:loginShimmer 3.5s linear infinite;transition:transform 0.15s,box-shadow 0.15s;}
+.nav-popup-login-btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(245,200,66,0.5);}
+.nav-popup-login-btn:active{transform:scale(0.97);}
 /* auth settings card */
 .auth-card{background:var(--dark);border:3px solid var(--gold);border-radius:15px;padding:16px;margin-bottom:10px;box-shadow:4px 4px 0 var(--gold-dark);}
 .auth-card-loggedin{background:var(--dark);border:3px solid var(--green);border-radius:15px;padding:16px;margin-bottom:10px;box-shadow:4px 4px 0 rgba(76,175,125,0.4);}
@@ -466,7 +490,6 @@ nav{position:sticky;top:0;z-index:200;background:rgba(26,26,46,0.94);backdrop-fi
 .char-no-titles{font-size:10px;color:rgba(255,255,255,0.3);font-weight:700;}
 
 /* collection tab */
-.coll-section-title{font-family:'Dela Gothic One',sans-serif;font-size:11px;color:#888;letter-spacing:3px;margin:18px 0 10px;}
 /* badge collection cards */
 .badge-coll-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
 .badge-coll-label{font-family:'Dela Gothic One',sans-serif;font-size:13px;color:var(--purple);}
@@ -509,6 +532,33 @@ nav{position:sticky;top:0;z-index:200;background:rgba(26,26,46,0.94);backdrop-fi
 .coll-char-body{flex:1;min-width:0;}
 .coll-char-name{font-size:12px;font-weight:700;margin-bottom:4px;}
 .coll-char-badge-row{font-size:10px;color:rgba(255,255,255,0.4);margin-bottom:8px;font-weight:700;}
+
+/* ====== COLLECTION SUB-TABS ====== */
+.coll-tabs{display:flex;gap:4px;margin-bottom:14px;padding:4px;background:rgba(255,255,255,0.05);border-radius:14px;border:1.5px solid rgba(255,255,255,0.08);}
+.coll-tab{flex:1;padding:7px 3px;border:none;border-radius:10px;font-family:'Zen Maru Gothic',sans-serif;font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);background:transparent;cursor:pointer;transition:all 0.22s cubic-bezier(0.34,1.56,0.64,1);line-height:1.35;white-space:nowrap;}
+.coll-tab.active{background:var(--purple);color:#fff;box-shadow:0 2px 10px rgba(155,109,214,0.45);}
+.coll-panel{display:none;}.coll-panel.active{display:block;}
+@keyframes collPanelIn{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
+.coll-panel-anim{animation:collPanelIn 0.27s ease;}
+
+/* badge glow effects */
+@keyframes bciGlow{0%,100%{box-shadow:0 0 6px rgba(155,109,214,0.15)}50%{box-shadow:0 0 18px rgba(155,109,214,0.55),0 0 28px rgba(155,109,214,0.12)}}
+@keyframes bciNewFlash{0%,100%{box-shadow:0 0 8px rgba(245,200,66,0.5);border-color:var(--gold)}50%{box-shadow:0 0 24px rgba(245,200,66,0.9),0 0 40px rgba(245,200,66,0.3);border-color:#ffe88a}}
+.bci:not(.bci-locked){animation:bciGlow 3.5s ease-in-out infinite;}
+.bci.bci-new-glow{animation:bciNewFlash 1.9s ease-in-out infinite !important;border-color:var(--gold) !important;}
+
+/* wardrobe item effects */
+@keyframes wiGlow{0%,100%{box-shadow:0 0 6px rgba(245,200,66,0.2)}50%{box-shadow:0 0 16px rgba(245,200,66,0.65),0 0 24px rgba(245,200,66,0.18)}}
+.wardrobe-item.wi-active{animation:wiGlow 2.5s ease-in-out infinite;}
+.wardrobe-item:not(.wi-locked){position:relative;overflow:hidden;}
+.wardrobe-item:not(.wi-locked)::after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,0.22) 50%,transparent 65%);transform:translateX(-120%);transition:transform 0.4s ease;pointer-events:none;}
+.wardrobe-item:not(.wi-locked):hover::after{transform:translateX(120%);}
+.wardrobe-item.wi-active::after{animation:wiShine 3s ease-in-out infinite 0.5s;}
+@keyframes wiShine{0%,85%,100%{transform:translateX(-120%)}42%{transform:translateX(120%)}}
+
+/* section title shimmer */
+@keyframes shimmerTitle{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.coll-section-title{font-family:'Dela Gothic One',sans-serif;font-size:11px;letter-spacing:3px;margin:18px 0 10px;background:linear-gradient(90deg,#666 0%,#aaa 40%,#fff 55%,#aaa 70%,#666 100%);background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmerTitle 5s linear infinite;}
 
 /* ====== CELEBRATION ====== */
 .celebration-overlay{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;pointer-events:none;animation:cfIn 0.3s ease,cfOut 0.4s ease 2.4s forwards;}
@@ -1012,8 +1062,8 @@ html.dark .tile-sheet-subtitle{color:#555;}
 .jp-pref-fog{fill:rgba(255,255,255,0.01);stroke:rgba(255,255,255,0.07);stroke-width:0.35;pointer-events:none;}
 @keyframes prefGlow{0%,100%{stroke:rgba(245,200,66,0.7);filter:drop-shadow(0 0 2px rgba(245,200,66,0.4))}50%{stroke:rgba(245,200,66,1);filter:drop-shadow(0 0 7px rgba(245,200,66,0.9))}}
 /* ========== マップ上キャラピン ========== */
-.jp-char-pin{position:absolute;width:16px;height:16px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.8);transform:translate(-50%,-50%);cursor:pointer;box-shadow:0 1px 6px rgba(0,0,0,0.7);transition:transform 0.15s,z-index 0s;object-fit:cover;background:#1a1a2e;}
-.jp-char-pin:hover{transform:translate(-50%,-50%) scale(1.8);z-index:200!important;border-color:var(--gold);box-shadow:0 2px 10px rgba(245,200,66,0.5);}
+.jp-char-pin{position:absolute;width:38px;height:auto;transform:translate(-50%,-100%);cursor:pointer;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.8));transition:transform 0.15s;object-fit:contain;}
+.jp-char-pin:hover{transform:translate(-50%,-100%) scale(1.5);z-index:200!important;filter:drop-shadow(0 3px 10px rgba(245,200,66,0.6));}
 /* ========== タイル進捗 ========== */
 .jp-tile-grid{display:flex;flex-wrap:wrap;gap:3px;margin:10px 0 4px;}
 .jp-tile{width:22px;height:22px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:13px;border:1.5px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.04);}
@@ -1311,50 +1361,61 @@ html.dark .tile-sheet-subtitle{color:#555;}
 <!-- TAB: コレクション -->
 <div class="tab-panel" id="tab-achiev">
   <div class="main">
-    <!-- 衣装コレクション -->
-    <div class="coll-section-title">👕 衣装コレクション</div>
-    <div class="char-journal-card" id="collCostumeCard">
-      <div id="collCostumeList"><!-- renderCollCostume() で描画 --></div>
+    <!-- サブタブ -->
+    <div class="coll-tabs">
+      <button class="coll-tab active" data-ctab="costume" onclick="switchCollTab('costume')">👕 衣装</button>
+      <button class="coll-tab" data-ctab="badge" onclick="switchCollTab('badge')">🏅 バッジ</button>
+      <button class="coll-tab" data-ctab="record" onclick="switchCollTab('record')">📊 記録</button>
+      <button class="coll-tab" data-ctab="theme" onclick="switchCollTab('theme')">🎨 テーマ</button>
     </div>
 
-    <!-- バッジ -->
-    <div class="coll-section-title">🏅 バッジ</div>
-    <div class="title-coll-card">
-      <div class="badge-coll-hdr">
-        <span class="badge-coll-label">🏅 バッジコレクション</span>
-        <span class="badge-coll-count" id="collTitleUnlockedCount">0 / 0</span>
-      </div>
-      <div class="badge-coll-grid" id="collTitleGrid"></div>
-    </div>
-
-    <!-- ポモドーロ記録 -->
-    <div class="coll-section-title">🍅 ポモドーロ記録</div>
-    <div class="pom-summary-card">
-      <div>
-        <div class="pom-sum-num" id="collPomTotal">0</div>
-        <div class="pom-sum-label">総セッション数</div>
-      </div>
-      <div style="margin-left:auto;text-align:right;">
-        <div style="font-size:20px;font-family:'Dela Gothic One',sans-serif;color:rgba(91,200,232,0.7)" id="collPomMinutes">0</div>
-        <div class="pom-sum-label">累計分</div>
+    <!-- 衣装パネル -->
+    <div class="coll-panel active" id="cpanel-costume">
+      <div class="char-journal-card" id="collCostumeCard">
+        <div id="collCostumeList"><!-- renderCollCostume() で描画 --></div>
       </div>
     </div>
-    <div class="badges-title">セッション履歴</div>
-    <div id="collPomList"></div>
 
-    <!-- ガチャ図鑑 -->
-    <div class="coll-section-title">✨ ガチャ図鑑</div>
-    <div class="gacha-journal-card">
-      <div class="gacha-journal-hdr">
-        <span class="gacha-journal-title-txt">✨ ガチャ図鑑</span>
-        <span class="gacha-journal-total" id="gachaTotalPulls">総引数: 0回</span>
+    <!-- バッジパネル -->
+    <div class="coll-panel" id="cpanel-badge">
+      <div class="title-coll-card">
+        <div class="badge-coll-hdr">
+          <span class="badge-coll-label">🏅 バッジコレクション</span>
+          <span class="badge-coll-count" id="collTitleUnlockedCount">0 / 0</span>
+        </div>
+        <div class="badge-coll-grid" id="collTitleGrid"></div>
       </div>
-      <div id="gachaRarityRows"></div>
     </div>
 
-    <!-- テーマ選択 -->
-    <div class="theme-stitle">THEMES</div>
-    <div class="theme-grid-row" id="themeGridRow"></div>
+    <!-- 記録パネル -->
+    <div class="coll-panel" id="cpanel-record">
+      <div class="pom-summary-card">
+        <div>
+          <div class="pom-sum-num" id="collPomTotal">0</div>
+          <div class="pom-sum-label">総セッション数</div>
+        </div>
+        <div style="margin-left:auto;text-align:right;">
+          <div style="font-size:20px;font-family:'Dela Gothic One',sans-serif;color:rgba(91,200,232,0.7)" id="collPomMinutes">0</div>
+          <div class="pom-sum-label">累計分</div>
+        </div>
+      </div>
+      <div class="badges-title">セッション履歴</div>
+      <div id="collPomList"></div>
+      <div class="coll-section-title">✨ ガチャ図鑑</div>
+      <div class="gacha-journal-card">
+        <div class="gacha-journal-hdr">
+          <span class="gacha-journal-title-txt">✨ ガチャ図鑑</span>
+          <span class="gacha-journal-total" id="gachaTotalPulls">総引数: 0回</span>
+        </div>
+        <div id="gachaRarityRows"></div>
+      </div>
+    </div>
+
+    <!-- テーマパネル -->
+    <div class="coll-panel" id="cpanel-theme">
+      <div class="theme-stitle">THEMES</div>
+      <div class="theme-grid-row" id="themeGridRow"></div>
+    </div>
   </div>
 </div>
 
@@ -2955,12 +3016,38 @@ function equipTitle(charName, titleId){
 // =====================================================
 // COLLECTION TAB
 // =====================================================
+let _collTab='costume';
+
+function switchCollTab(tab){
+  _collTab=tab;
+  document.querySelectorAll('.coll-tab').forEach(b=>b.classList.toggle('active',b.dataset.ctab===tab));
+  document.querySelectorAll('.coll-panel').forEach(p=>{
+    const isActive=p.id==='cpanel-'+tab;
+    p.classList.toggle('active',isActive);
+    if(isActive){
+      p.classList.add('coll-panel-anim');
+      setTimeout(()=>p.classList.remove('coll-panel-anim'),400);
+    }
+  });
+  // lazy render on first visit
+  if(tab==='badge') renderCollBadges();
+  if(tab==='record'){ renderCollPom(); renderGachaJournal(); }
+  if(tab==='theme') renderThemeSelector();
+}
+
 function renderCollection(){
+  // always render the default visible panel (costume)
   renderCollCostume();
+  // render others only if already visited
   renderCollBadges();
   renderCollPom();
   renderGachaJournal();
   renderThemeSelector();
+  // restore active tab
+  if(_collTab!=='costume'){
+    document.querySelectorAll('.coll-tab').forEach(b=>b.classList.toggle('active',b.dataset.ctab===_collTab));
+    document.querySelectorAll('.coll-panel').forEach(p=>p.classList.toggle('active',p.id==='cpanel-'+_collTab));
+  }
 }
 
 function renderCollBadges(){
@@ -2976,13 +3063,14 @@ function renderCollBadges(){
   const charTitles=S.charTitles||{};
   const equippedMap={};
   CHAR_ORDER.forEach(name=>{ if(charTitles[name]) equippedMap[charTitles[name]]=name; });
-  tg.innerHTML=sorted.map(t=>{
+  tg.innerHTML=sorted.map((t,idx)=>{
     const isUnlocked=cond[t.id];
     const equippedBy=equippedMap[t.id];
-    const newTag=isUnlocked&&!(S.knownTitleIds||[]).includes(t.id)
-      ?'<span class="bci-new">NEW</span>':'' ;
+    const isNew=isUnlocked&&!(S.knownTitleIds||[]).includes(t.id);
+    const newTag=isNew?'<span class="bci-new">NEW</span>':'';
+    const delay=`animation-delay:${idx*0.1}s`;
     if(isUnlocked){
-      return `<div class="bci">
+      return `<div class="bci${isNew?' bci-new-glow':''}" style="${delay}">
         ${newTag}
         <span class="bci-emoji">${t.emoji}</span>
         <div class="bci-name">${escH(t.name)}</div>
@@ -2990,7 +3078,7 @@ function renderCollBadges(){
         ${equippedBy?`<div style="margin-top:5px;font-size:7px;font-weight:700;color:var(--gold);">✅ ${escH(equippedBy)}</div>`:''}
       </div>`;
     } else {
-      return `<div class="bci bci-locked">
+      return `<div class="bci bci-locked" style="${delay}">
         <span class="bci-emoji">🔒</span>
         <div class="bci-name">？？？</div>
         <div class="bci-desc">${escH(t.desc)}</div>
@@ -4436,7 +4524,7 @@ function renderNavPopup(){
       <div class="nav-popup-email">${email}</div>
       <div class="nav-popup-cloud-badge">☁️ クラウド保存 ON</div>
       <hr class="nav-popup-divider">
-      <button class="nav-popup-btn" onclick="closeNavPopup();switchTab('settings')">⚙️ 設定・アカウント</button>
+      <button class="nav-popup-btn" onclick="closeNavPopup();switchTab('settings')">⚙️ 設定</button>
       <a class="nav-popup-btn" href="https://rainybrainch.github.io/manebou-hp/home.html">🏠 アカウントページへ</a>
       <button class="nav-popup-btn danger" onclick="closeNavPopup();fbSignOut()">🚪 ログアウト</button>
     `;
@@ -4790,6 +4878,34 @@ function setMapView(v){
   },360);
 }
 
+// ─── フィールドビュー ───────────────────────────────────
+function buildStageChainHtml(step){
+  const start=Math.max(0,step-8),end=Math.min(JP_ORDER.length-1,step+8);
+  let html='';
+  for(let i=start;i<=end;i++){
+    const id=JP_ORDER[i],s=JP_ALL[id];
+    const color=JP_RC[s?.region]||'#888';
+    const dist=Math.abs(i-step);
+    const sf=Math.max(0.44,1-dist*0.1);
+    const cs=Math.round(44*sf),is=Math.round(68*sf),cw=Math.round(36*Math.max(0.52,1-dist*0.07)),fs=Math.round(9*sf);
+    const stCls=i<step?'s-visited':i===step?'s-current':'s-fog';
+    const showChar=i<=step,n=i+1,year=getJpYear(i);
+    const csrc=`../../../画像/マネぼう/imgキャラ/おーる局長/All (${n}).png`;
+    if(i>start) html+=`<div class="jp-s-connector${i<=step?' c-visited':''}" style="width:${cw}px;"></div>`;
+    html+=`<div class="jp-s-node ${stCls}" style="--jrc:${color};" data-step="${i}" onclick="openJpModal('${escH(id)}',${i})">
+      ${showChar?`<img class="jp-s-charimg" src="${escH(csrc)}" alt="" style="width:${is}px;height:${is}px;" onerror="this.style.display='none'">`:''}
+      <div class="jp-s-circ" style="width:${cs}px;height:${cs}px;font-size:${fs}px;">${s?.emoji||'🗾'}</div>
+      <div class="jp-s-lbl">${year}<br>${jpShort(s?.name||'')}</div>
+    </div>`;
+  }
+  return html;
+}
+function scrollFieldToCurrentStage(step){
+  const sc=document.getElementById('jpFieldScroll');if(!sc) return;
+  const cur=sc.querySelector(`[data-step="${step}"]`);if(!cur) return;
+  sc.scrollTo({left:cur.offsetLeft-sc.clientWidth/2+cur.offsetWidth/2,behavior:'smooth'});
+}
+
 function renderMapCurrentView(step){
   const card=document.getElementById('mapDestCard');
   if(!card) return;
@@ -4809,11 +4925,17 @@ function renderMapCurrentView(step){
   const progress=S.jpMap?S.jpMap.progress||0:0;
   const needed=getJpTilesNeeded(step);
   const n=step+1;
-  const spriteImg=`../../../画像/マネぼう/imgキャラ/おーる局長/All (${n}).png`;
-  const imgPath=getJpImgPath(step);
   card.innerHTML=`
-    <img class="jpm-char-sprite" src="${escH(spriteImg)}" alt="" onerror="this.style.display='none'">
-    <img class="map-dest-banner" src="${imgPath}" alt="" onerror="this.style.display='none'">
+    <div class="jp-field-view" id="jpFieldView">
+      <div class="jp-field-sky"></div>
+      <div class="jp-field-ground"></div>
+      <div class="jp-field-scroll" id="jpFieldScroll">
+        <div class="jp-field-chain" id="jpFieldChain">${buildStageChainHtml(step)}</div>
+      </div>
+      <div class="jp-field-overlay">
+        <div class="jp-field-badge">📍 Stage ${n}/56 · ${escH(s.name)}</div>
+      </div>
+    </div>
     <div class="map-dest-body">
       <div class="jpm-year-badge" style="margin-bottom:10px;">📅 ${year}年 · Stage ${n}/56</div>
       <div class="jpm-head">
@@ -4829,6 +4951,7 @@ function renderMapCurrentView(step){
     </div>`;
   const erasEl=document.getElementById('mdEras');
   if(erasEl) erasEl.innerHTML=`<div class="jpm-era" style="border-color:${color}"><div class="jpm-era-title" style="color:${color}">${year}年代 — ${jpRegLabel(s.region)}</div><div class="jpm-era-text">${s.eras[0]||''}</div></div>`;
+  setTimeout(()=>scrollFieldToCurrentStage(step),80);
 }
 
 // =====================================================
