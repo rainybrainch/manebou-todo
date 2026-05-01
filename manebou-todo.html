@@ -36,8 +36,11 @@ nav{position:sticky;top:0;z-index:200;background:rgba(26,26,46,0.94);backdrop-fi
 .xp-fill{height:100%;background:linear-gradient(90deg,var(--sky),var(--gold));border-radius:999px;transition:width 0.6s ease;}
 .xp-pts{font-size:9px;color:var(--gold);font-weight:700;white-space:nowrap;flex-shrink:0;}
 
+/* ====== BOTTOM DOCK (char-bar + nav, fixed at very bottom) ====== */
+.bottom-dock{position:fixed;bottom:0;left:0;right:0;z-index:250;background:rgba(26,26,46,0.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);}
+
 /* ====== CHARACTER BAR ====== */
-.char-bar{position:fixed;bottom:calc(66px + env(safe-area-inset-bottom, 0px));left:0;right:0;z-index:199;background:linear-gradient(to top,#0e1428,var(--dark));border-top:3px solid rgba(245,200,66,0.3);padding:10px 14px;display:flex;align-items:center;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.char-bar{border-top:3px solid rgba(245,200,66,0.3);padding:10px 14px;display:flex;align-items:center;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
 .char-bar-label{font-size:8px;color:rgba(255,255,255,0.35);letter-spacing:2px;flex-shrink:0;font-weight:700;}
 .char-btn{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;border:none;background:rgba(255,255,255,0.04);padding:8px 10px;flex-shrink:0;border-radius:16px;border:2px solid transparent;transition:all 0.2s;}
 .char-btn:hover{background:rgba(255,255,255,0.08);transform:translateY(-2px);}
@@ -66,7 +69,7 @@ nav{position:sticky;top:0;z-index:200;background:rgba(26,26,46,0.94);backdrop-fi
 @keyframes scrollX{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
 /* ====== BOTTOM NAV ====== */
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:250;background:rgba(26,26,46,0.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:3px solid var(--gold);display:flex;height:calc(66px + env(safe-area-inset-bottom, 0px));padding-bottom:env(safe-area-inset-bottom, 0px);}
+.bottom-nav{border-top:3px solid var(--gold);display:flex;height:calc(66px + env(safe-area-inset-bottom, 0px));padding-bottom:env(safe-area-inset-bottom, 0px);}
 .bn-tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:none;background:none;cursor:pointer;color:rgba(255,255,255,0.38);transition:color 0.2s;padding:8px 0;font-family:'Zen Maru Gothic',sans-serif;position:relative;-webkit-tap-highlight-color:transparent;}
 .bn-icon{font-size:20px;line-height:1;display:block;}
 .bn-label{font-size:9px;font-weight:700;letter-spacing:0.5px;display:block;}
@@ -197,12 +200,12 @@ nav{position:sticky;top:0;z-index:200;background:rgba(26,26,46,0.94);backdrop-fi
 .btn-submit:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--gold-dark);}
 
 /* ====== FAB ====== */
-.fab{position:fixed;bottom:76px;right:18px;z-index:300;width:56px;height:56px;border-radius:50%;background:var(--dark);border:3px solid var(--gold);color:var(--gold);font-size:26px;cursor:pointer;box-shadow:4px 4px 0 var(--gold-dark);display:flex;align-items:center;justify-content:center;transition:transform 0.2s,box-shadow 0.2s;font-family:'Dela Gothic One',sans-serif;}
-.fab:hover{transform:scale(1.1) translate(-2px,-2px);box-shadow:6px 6px 0 var(--gold-dark);}
+.fab{position:fixed;bottom:170px;right:14px;z-index:300;height:46px;padding:0 18px;border-radius:23px;background:var(--dark);border:3px solid var(--gold);color:var(--gold);font-size:13px;font-weight:700;cursor:pointer;box-shadow:4px 4px 0 var(--gold-dark);display:flex;align-items:center;justify-content:center;gap:5px;white-space:nowrap;transition:transform 0.2s,box-shadow 0.2s;-webkit-tap-highlight-color:transparent;}
+.fab:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--gold-dark);}
 .fab:active{transform:scale(0.95);}
 /* ====== AI PANEL ====== */
-.ai-fab{position:fixed;bottom:142px;right:18px;z-index:300;width:46px;height:46px;border-radius:50%;background:var(--purple);border:3px solid var(--dark);color:white;font-size:20px;cursor:pointer;box-shadow:4px 4px 0 rgba(155,109,214,0.5);display:flex;align-items:center;justify-content:center;transition:transform 0.2s;-webkit-tap-highlight-color:transparent;}
-.ai-fab:hover{transform:scale(1.1) translate(-2px,-2px);}
+.ai-fab{position:fixed;bottom:228px;right:14px;z-index:300;height:40px;padding:0 14px;border-radius:20px;background:var(--purple);border:3px solid var(--dark);color:white;font-size:12px;font-weight:700;cursor:pointer;box-shadow:4px 4px 0 rgba(155,109,214,0.5);display:flex;align-items:center;justify-content:center;gap:5px;white-space:nowrap;transition:transform 0.2s;-webkit-tap-highlight-color:transparent;}
+.ai-fab:hover{transform:translate(-2px,-2px);}
 .ai-fab:active{transform:scale(0.95);}
 .ai-panel{position:fixed;inset:0;z-index:600;display:flex;align-items:stretch;justify-content:flex-end;pointer-events:none;}
 .ai-panel.open{pointer-events:all;}
@@ -426,7 +429,8 @@ html.dark .task-card.done .task-title{color:#555;}
 html.dark .task-card.done{border-color:#30363D;box-shadow:2px 2px 0 #30363D;}
 html.dark .stat-card,html.dark .progress-wrap,html.dark .today-hero,html.dark .heatmap-wrap,html.dark .badge-card,html.dark .barchart-wrap,html.dark .weekly-goal-card{background:#161B22;border-color:#30363D;box-shadow:3px 3px 0 #30363D;}
 html.dark .bubble{background:#161B22;border-color:#30363D;color:#E6EDF3;}
-html.dark .bottom-nav{background:rgba(10,12,20,0.98);border-color:#30363D;}
+html.dark .bottom-dock{background:rgba(10,12,20,0.98);}
+html.dark .bottom-nav{border-color:#30363D;}
 html.dark .bn-tab{color:#444;}html.dark .bn-tab.active{color:var(--gold);}html.dark .bn-tab.active::after{background:var(--gold);}
 html.dark .input-field,html.dark .textarea-field{background:#0D1117;color:#E6EDF3;border-color:#30363D;}
 html.dark .modal-sheet{background:#161B22;border-color:#30363D;}
@@ -1211,10 +1215,10 @@ html.dark .tile-sheet-subtitle{color:#555;}
 </div>
 
 <!-- FAB -->
-<button class="fab" onclick="openModal()" title="タスクを追加">＋</button>
+<button class="fab" onclick="openModal()">＋ タスク追加</button>
 
 <!-- AI相談ボタン -->
-<button class="ai-fab" onclick="toggleAiPanel()" title="AIに相談">💬</button>
+<button class="ai-fab" onclick="toggleAiPanel()">💬 AIに相談</button>
 
 <!-- AIパネル -->
 <div class="ai-panel" id="aiPanel" onclick="closeAiPanel(event)">
@@ -1383,30 +1387,30 @@ html.dark .tile-sheet-subtitle{color:#555;}
   </div>
 </div>
 
-<!-- CHARACTER BAR -->
-<div class="char-bar">
-  <span class="char-bar-label">COACH</span>
-  <div id="charSelector" style="display:flex;gap:6px;"></div>
+<!-- BOTTOM DOCK: char-bar + nav, fixed at very bottom -->
+<div class="bottom-dock">
+  <div class="char-bar">
+    <span class="char-bar-label">COACH</span>
+    <div id="charSelector" style="display:flex;gap:6px;"></div>
+  </div>
+  <nav class="bottom-nav">
+    <button class="bn-tab active" id="bnt-today" onclick="switchTab('today')">
+      <span class="bn-icon">📝</span><span class="bn-label">やること</span>
+    </button>
+    <button class="bn-tab" id="bnt-all" onclick="switchTab('all')">
+      <span class="bn-icon">🏅</span><span class="bn-label">成果</span>
+    </button>
+    <button class="bn-tab" id="bnt-map" onclick="switchTab('map')">
+      <span class="bn-icon">🗺️</span><span class="bn-label">冒険</span>
+    </button>
+    <button class="bn-tab" id="bnt-achiev" onclick="switchTab('achiev')">
+      <span class="bn-icon">🏆</span><span class="bn-label">実績</span>
+    </button>
+    <button class="bn-tab" id="bnt-settings" onclick="switchTab('settings')">
+      <span class="bn-icon">⚙️</span><span class="bn-label">設定</span>
+    </button>
+  </nav>
 </div>
-
-<!-- BOTTOM NAV -->
-<nav class="bottom-nav">
-  <button class="bn-tab active" id="bnt-today" onclick="switchTab('today')">
-    <span class="bn-icon">📝</span><span class="bn-label">やること</span>
-  </button>
-  <button class="bn-tab" id="bnt-all" onclick="switchTab('all')">
-    <span class="bn-icon">🏅</span><span class="bn-label">成果</span>
-  </button>
-  <button class="bn-tab" id="bnt-map" onclick="switchTab('map')">
-    <span class="bn-icon">🗺️</span><span class="bn-label">冒険</span>
-  </button>
-  <button class="bn-tab" id="bnt-achiev" onclick="switchTab('achiev')">
-    <span class="bn-icon">🏆</span><span class="bn-label">実績</span>
-  </button>
-  <button class="bn-tab" id="bnt-settings" onclick="switchTab('settings')">
-    <span class="bn-icon">⚙️</span><span class="bn-label">設定</span>
-  </button>
-</nav>
 
 <script>
 // =====================================================
@@ -1860,13 +1864,9 @@ function renderCharSelector(){
     const c=CHARS[name];
     const idx=charExprIdx[name]||0;
     const act=name===S.activeChar?'active':'';
-    const equippedId=(S.charTitles||{})[name];
-    const equippedTitle=equippedId?TITLES.find(t=>t.id===equippedId):null;
     return `<button class="char-btn ${act}" onclick="selectChar('${escH(name)}')" title="${escH(c.role)}">
       <img class="char-avatar" src="${c.imgs[idx]}" alt="${escH(name)}" onerror="this.style.background='#ccc'">
       <span class="char-name">${escH(name)}</span>
-      <span class="char-role-label" style="color:${c.color};border-color:${c.color};background:${c.color}22;">${escH(c.role)}</span>
-      ${equippedTitle?`<span class="char-equipped-tag">${equippedTitle.emoji} ${equippedTitle.name}</span>`:''}
     </button>`;
   }).join('');
   const ch=CHARS[S.activeChar];
