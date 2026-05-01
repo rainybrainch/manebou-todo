@@ -465,6 +465,38 @@ nav{position:sticky;top:0;z-index:200;background:rgba(26,26,46,0.94);backdrop-fi
 .title-chip.equipped{background:rgba(245,200,66,0.15);border-color:var(--gold);color:var(--gold);}
 .char-no-titles{font-size:10px;color:rgba(255,255,255,0.3);font-weight:700;}
 
+/* collection tab */
+.coll-section-title{font-family:'Dela Gothic One',sans-serif;font-size:11px;color:#888;letter-spacing:3px;margin:18px 0 10px;}
+/* adventure gacha / costume cards */
+.adv-gacha-card{background:var(--dark);border:3px solid var(--gold);border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:4px 4px 0 var(--gold-dark);}
+.adv-gacha-hdr{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.adv-gacha-title{font-family:'Dela Gothic One',sans-serif;font-size:13px;color:var(--gold);}
+.adv-gacha-cost{font-size:10px;color:rgba(255,255,255,0.4);font-weight:700;margin-left:auto;}
+.adv-gacha-desc{font-size:10px;color:rgba(255,255,255,0.4);font-weight:700;margin-bottom:12px;line-height:1.6;}
+.adv-gacha-btn{width:100%;padding:12px;background:var(--gold);color:var(--dark);border:none;border-radius:12px;font-family:'Dela Gothic One',sans-serif;font-size:14px;cursor:pointer;transition:opacity 0.15s;}
+.adv-gacha-btn:hover{opacity:0.88;}
+.adv-gacha-btn:disabled{opacity:0.4;cursor:not-allowed;}
+.adv-costume-card{background:var(--dark);border:3px solid var(--sky);border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:4px 4px 0 rgba(91,200,232,0.4);}
+.adv-costume-char{font-size:10px;color:var(--sky);font-weight:700;margin-left:auto;}
+/* wardrobe scroll */
+.wardrobe-scroll{display:flex;gap:6px;overflow-x:auto;padding:4px 2px 8px;-webkit-overflow-scrolling:touch;}
+.wardrobe-scroll::-webkit-scrollbar{height:3px;}
+.wardrobe-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.15);border-radius:3px;}
+.wardrobe-item{flex-shrink:0;width:56px;text-align:center;border-radius:10px;padding:5px 3px;border:2px solid transparent;cursor:pointer;transition:border-color 0.15s,background 0.15s;}
+.wardrobe-item.wi-active{border-color:var(--gold);background:rgba(245,200,66,0.12);}
+.wardrobe-item:not(.wi-locked):hover{border-color:rgba(255,255,255,0.25);}
+.wardrobe-item.wi-locked{opacity:0.25;cursor:not-allowed;filter:grayscale(1);}
+.wardrobe-item img{width:46px;height:46px;object-fit:contain;border-radius:6px;display:block;margin:0 auto;}
+.wardrobe-year{font-size:7px;font-weight:700;color:rgba(255,255,255,0.5);margin-top:3px;line-height:1;}
+.wardrobe-year.wy-active{color:var(--gold);}
+/* char collection rows */
+.coll-char-row{display:flex;gap:10px;align-items:flex-start;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.07);}
+.coll-char-row:last-child{border-bottom:none;}
+.coll-char-avatar{width:52px;height:52px;border-radius:50%;border:3px solid;object-fit:cover;flex-shrink:0;}
+.coll-char-body{flex:1;min-width:0;}
+.coll-char-name{font-size:12px;font-weight:700;margin-bottom:4px;}
+.coll-char-badge-row{font-size:10px;color:rgba(255,255,255,0.4);margin-bottom:8px;font-weight:700;}
+
 /* ====== CELEBRATION ====== */
 .celebration-overlay{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;pointer-events:none;animation:cfIn 0.3s ease,cfOut 0.4s ease 2.4s forwards;}
 @keyframes cfIn{from{opacity:0}to{opacity:1}}
@@ -906,9 +938,11 @@ html.dark .tile-sheet-subtitle{color:#555;}
 .jp-node.jp-fog .jp-circle{width:12px;height:12px;background:rgba(255,255,255,0.03);border:1.5px solid rgba(255,255,255,0.09);filter:blur(0.5px);}
 .jp-node.jp-fog .jp-step-lbl{display:none;}
 /* マップ表示切り替えスイッチャー */
-.map-view-switcher{display:flex;gap:5px;margin-bottom:14px;background:rgba(255,255,255,0.04);border-radius:14px;padding:4px;}
-.mvs-btn{flex:1;padding:12px 0;border-radius:12px;border:none;font-size:13px;font-weight:700;cursor:pointer;background:transparent;color:rgba(255,255,255,0.35);transition:all 0.2s;font-family:inherit;-webkit-tap-highlight-color:transparent;min-height:46px;}
-.mvs-btn.mvs-active{background:rgba(245,200,66,0.12);color:var(--gold);border:1.5px solid rgba(245,200,66,0.3);}
+.map-view-switcher{position:relative;display:flex;gap:0;margin-bottom:14px;background:rgba(255,255,255,0.05);border-radius:14px;padding:4px;}
+.mvs-indicator{position:absolute;top:4px;bottom:4px;left:4px;width:calc(50% - 6px);background:linear-gradient(135deg,rgba(245,200,66,0.2),rgba(245,200,66,0.08));border:1.5px solid rgba(245,200,66,0.5);border-radius:10px;transition:left 0.38s cubic-bezier(0.4,0,0.2,1),box-shadow 0.3s;pointer-events:none;box-shadow:0 0 12px rgba(245,200,66,0.18);}
+.mvs-indicator.on-all{left:calc(50% + 2px);}
+.mvs-btn{flex:1;padding:11px 0;border-radius:10px;border:none;font-size:13px;font-weight:700;cursor:pointer;background:transparent;color:rgba(255,255,255,0.38);transition:color 0.28s;font-family:inherit;-webkit-tap-highlight-color:transparent;min-height:44px;position:relative;z-index:1;}
+.mvs-btn.mvs-active{color:var(--gold);}
 /* インライン現在地カード */
 .map-dest-card{background:#0d0f22;border-radius:20px;border:2px solid rgba(245,200,66,0.2);overflow:hidden;position:relative;margin-bottom:14px;}
 .map-dest-banner{width:100%;height:150px;object-fit:cover;display:block;}
@@ -1121,9 +1155,7 @@ html.dark .tile-sheet-subtitle{color:#555;}
     <!-- サブナビ -->
     <div class="yatta-sub-nav">
       <button class="ysn-btn ysn-active" id="ysn-tasks" onclick="setYattaSection('tasks')">📋 タスク</button>
-      <button class="ysn-btn" id="ysn-achiev" onclick="setYattaSection('achiev')">🏆 実績</button>
       <button class="ysn-btn" id="ysn-habit" onclick="setYattaSection('habit')">🎯 習慣</button>
-      <button class="ysn-btn" id="ysn-pom" onclick="setYattaSection('pom')">🍅 ポモドーロ</button>
     </div>
 
     <!-- ── タスク ── -->
@@ -1238,14 +1270,56 @@ html.dark .tile-sheet-subtitle{color:#555;}
   </div>
 </div>
 
-<!-- TAB: ガチャ -->
+<!-- TAB: コレクション -->
 <div class="tab-panel" id="tab-achiev">
   <div class="main">
-    <!-- テーマ選択 -->
-    <div class="theme-stitle">THEMES</div>
-    <div class="theme-grid-row" id="themeGridRow"></div>
+    <!-- 衣装コレクション -->
+    <div class="coll-section-title">👕 衣装コレクション</div>
+    <div class="char-journal-card" id="collCostumeCard">
+      <div id="collCostumeList"><!-- renderCollCostume() で描画 --></div>
+    </div>
+
+    <!-- バッジ・実績 -->
+    <div class="coll-section-title">🏅 バッジ &amp; 実績</div>
+    <div class="level-card">
+      <div class="lv-card-top">
+        <div class="lv-icon" id="collLvIcon">🌱</div>
+        <div class="lv-info">
+          <div class="lv-num" id="collLvNum">Lv. 1</div>
+          <div class="lv-name" id="collLvName">家計簿デビュー</div>
+          <div class="lv-xp" id="collLvXpInfo">0 / 100 XP</div>
+        </div>
+      </div>
+      <div class="lv-bar-bg"><div class="lv-bar-fill" id="collLvBarFill" style="width:0%"></div></div>
+      <div class="lv-bar-labels"><span id="collLvCurXp">0 XP</span><span id="collLvNextXp">次のレベルまで 100 XP</span></div>
+    </div>
+    <div class="badges-title">ACHIEVEMENTS</div>
+    <div id="collBadgeGrid" class="badge-grid"></div>
+    <div class="title-coll-card">
+      <div class="title-coll-hdr">
+        <span class="title-coll-title-txt">🏅 バッジコレクション</span>
+        <span class="title-coll-count" id="collTitleUnlockedCount">0 / 0</span>
+      </div>
+      <div class="title-grid" id="collTitleGrid"></div>
+    </div>
+
+    <!-- ポモドーロ記録 -->
+    <div class="coll-section-title">🍅 ポモドーロ記録</div>
+    <div class="pom-summary-card">
+      <div>
+        <div class="pom-sum-num" id="collPomTotal">0</div>
+        <div class="pom-sum-label">総セッション数</div>
+      </div>
+      <div style="margin-left:auto;text-align:right;">
+        <div style="font-size:20px;font-family:'Dela Gothic One',sans-serif;color:rgba(91,200,232,0.7)" id="collPomMinutes">0</div>
+        <div class="pom-sum-label">累計分</div>
+      </div>
+    </div>
+    <div class="badges-title">セッション履歴</div>
+    <div id="collPomList"></div>
 
     <!-- ガチャ図鑑 -->
+    <div class="coll-section-title">✨ ガチャ図鑑</div>
     <div class="gacha-journal-card">
       <div class="gacha-journal-hdr">
         <span class="gacha-journal-title-txt">✨ ガチャ図鑑</span>
@@ -1253,6 +1327,10 @@ html.dark .tile-sheet-subtitle{color:#555;}
       </div>
       <div id="gachaRarityRows"></div>
     </div>
+
+    <!-- テーマ選択 -->
+    <div class="theme-stitle">THEMES</div>
+    <div class="theme-grid-row" id="themeGridRow"></div>
   </div>
 </div>
 
@@ -1283,6 +1361,7 @@ html.dark .tile-sheet-subtitle{color:#555;}
 
     <!-- マップ表示切り替え -->
     <div class="map-view-switcher">
+      <div class="mvs-indicator" id="mvsIndicator"></div>
       <button class="mvs-btn mvs-active" id="mvs-current" onclick="setMapView('current')">📍 現在地</button>
       <button class="mvs-btn" id="mvs-all" onclick="setMapView('all')">🗾 全体を見る</button>
     </div>
@@ -1350,11 +1429,26 @@ html.dark .tile-sheet-subtitle{color:#555;}
     <!-- Boss Section -->
     <div id="bossSection"></div>
 
-    <!-- キャラ図鑑 -->
-    <div class="char-journal-card">
-      <div class="char-journal-hdr-txt">📖 キャラ図鑑</div>
-      <div id="charJournalList"></div>
+    <!-- ガチャセクション -->
+    <div class="adv-gacha-card">
+      <div class="adv-gacha-hdr">
+        <span class="adv-gacha-title">🎲 ガチャ</span>
+        <span class="adv-gacha-cost">10🪙 / 回</span>
+      </div>
+      <div class="adv-gacha-desc">コインを使って道具ガチャを引こう！ポモドーロ完了でも自動で引けます。</div>
+      <button class="adv-gacha-btn" id="advGachaBtn" onclick="manualGachaPull()">🎲 ガチャを引く</button>
     </div>
+
+    <!-- 衣装切り替え -->
+    <div class="adv-costume-card" id="advCostumeCard">
+      <div class="adv-gacha-hdr">
+        <span class="adv-gacha-title">👕 衣装切り替え</span>
+        <span class="adv-costume-char" id="advCostumeCharName"></span>
+      </div>
+      <div id="advCostumeScroll"><!-- renderAdvCostume() で描画 --></div>
+    </div>
+
+    <div id="charJournalList" style="display:none"></div>
   </div>
 </div>
 
@@ -1717,7 +1811,7 @@ html.dark .tile-sheet-subtitle{color:#555;}
       <span class="bn-icon">🗺️</span><span class="bn-label">冒険</span>
     </button>
     <button class="bn-tab" id="bnt-achiev" onclick="switchTab('achiev')">
-      <span class="bn-icon">🎰</span><span class="bn-label">ガチャ</span>
+      <span class="bn-icon">🎴</span><span class="bn-label">コレクション</span>
     </button>
     <button class="bn-tab" id="bnt-settings" onclick="switchTab('settings')">
       <span class="bn-icon">⚙️</span><span class="bn-label">設定</span>
@@ -2461,8 +2555,8 @@ function switchTab(tab){
   $('tab-'+tab).classList.add('active');
   if(tab==='today')    renderToday();
   if(tab==='all'){     renderAll(); setYattaSection(_yattaSection||'tasks'); }
-  if(tab==='achiev')   renderGacha();
-  if(tab==='map')      renderMap();
+  if(tab==='achiev')   renderCollection();
+  if(tab==='map'){ renderMap(); renderAdvGacha(); renderAdvCostume(); }
   if(tab==='settings') renderSettings();
 }
 
@@ -2835,6 +2929,222 @@ function equipTitle(charName, titleId){
 }
 
 // =====================================================
+// COLLECTION TAB
+// =====================================================
+function renderCollection(){
+  renderCollCostume();
+  renderCollBadges();
+  renderCollPom();
+  renderGachaJournal();
+  renderThemeSelector();
+}
+
+function renderCollBadges(){
+  const lv=getLevel(S.xp);
+  const next=getNextLevel(S.xp);
+  const pct=getLvProgress(S.xp);
+  const setEl=(id,v)=>{const e=$(id);if(e)e.textContent=v;};
+  const setStyle=(id,k,v)=>{const e=$(id);if(e)e.style[k]=v;};
+  setEl('collLvIcon', lv.icon);
+  setEl('collLvNum', 'Lv. '+lv.lv);
+  setEl('collLvName', lv.name);
+  setEl('collLvXpInfo', S.xp+' / '+next+' XP');
+  setStyle('collLvBarFill','width',pct+'%');
+  setEl('collLvCurXp', S.xp+' XP');
+  setEl('collLvNextXp', '次のレベルまで '+(next-S.xp)+' XP');
+  // badge grid
+  const bg=$('collBadgeGrid');
+  if(bg) bg.innerHTML=$('badgeGrid')?$('badgeGrid').innerHTML:'';
+  // title grid
+  const cond=checkTitleConditions();
+  const unlocked=TITLES.filter(t=>cond[t.id]).length;
+  setEl('collTitleUnlockedCount', unlocked+' / '+TITLES.length);
+  const tg=$('collTitleGrid');
+  if(tg){
+    const sorted=[...TITLES].sort((a,b)=>(cond[b.id]?1:0)-(cond[a.id]?1:0));
+    tg.innerHTML=sorted.map(t=>`<div class="title-badge${cond[t.id]?'':' locked'}">
+      <span class="title-emoji">${t.emoji}</span>
+      <div class="title-name">${escH(t.name)}</div>
+      <div class="title-desc">${escH(t.desc)}</div>
+    </div>`).join('');
+  }
+}
+
+function renderCollPom(){
+  const total=S.pomodoroSessions||0;
+  const e1=$('collPomTotal'), e2=$('collPomMinutes');
+  if(e1) e1.textContent=total;
+  if(e2) e2.textContent=total*25;
+  const log=(S.pomodoroLog||[]).slice().reverse();
+  const el=$('collPomList');
+  if(!el) return;
+  if(log.length===0){el.innerHTML='<div class="log-empty">🍅 ポモドーロを完了するとここに記録されます</div>';return;}
+  el.innerHTML=log.slice(0,30).map(entry=>{
+    const mins=entry.duration||25;
+    const task=entry.task||'';
+    return `<div class="pom-log-row">
+      <div class="pom-log-top">
+        <span class="pom-log-date">${entry.date||''}</span>
+        <span class="pom-log-time">${entry.time||''}</span>
+        <span class="pom-log-dur">⏱ ${mins}分</span>
+      </div>
+      ${task?`<div class="pom-log-task">${escH(task)}</div>`:''}
+    </div>`;
+  }).join('');
+}
+
+function renderCollCostume(){
+  const jpStep=getJpStep();
+  const charTitles=S.charTitles||{};
+  const el=$('collCostumeList');
+  if(!el) return;
+  el.innerHTML=CHAR_ORDER.map(name=>{
+    const c=CHARS[name];
+    const hasOutfits=name==='おーる局長'||name==='えんだ';
+    const equippedCostume=(S.charCostume||{})[name];
+    const costumeImg=getCharDisplayImg(name);
+    const avatarSrc=costumeImg||c.imgs[0];
+    const equippedId=charTitles[name];
+    const equippedTitle=equippedId?TITLES.find(t=>t.id===equippedId):null;
+
+    let wardrobeHtml='';
+    if(hasOutfits){
+      const isDefaultActive=equippedCostume==null;
+      const items=[`<div class="wardrobe-item${isDefaultActive?' wi-active':''}" onclick="equipCostumeFromJournal('${escH(name)}',null)">
+        <img src="${escH(c.imgs[0])}" alt="デフォ" onerror="this.style.opacity='0.3'">
+        <div class="wardrobe-year${isDefaultActive?' wy-active':''}">デフォ</div>
+      </div>`];
+      for(let i=0;i<56;i++){
+        const costumeIdx=i+1;
+        const year=1970+i;
+        const unlocked=jpStep>=costumeIdx;
+        const isActive=equippedCostume===costumeIdx;
+        if(unlocked){
+          const imgSrc=getCharJourneyImg(name,costumeIdx);
+          items.push(`<div class="wardrobe-item${isActive?' wi-active':''}" onclick="equipCostumeFromJournal('${escH(name)}',${costumeIdx})">
+            <img src="${escH(imgSrc)}" alt="${year}" onerror="this.style.opacity='0.3'">
+            <div class="wardrobe-year${isActive?' wy-active':''}">${year}</div>
+          </div>`);
+        } else {
+          items.push(`<div class="wardrobe-item wi-locked">
+            <div style="width:46px;height:46px;display:flex;align-items:center;justify-content:center;font-size:16px;margin:0 auto;">🔒</div>
+            <div class="wardrobe-year">${year}</div>
+          </div>`);
+        }
+      }
+      wardrobeHtml=`<div class="wardrobe-scroll">${items.join('')}</div>`;
+    } else {
+      wardrobeHtml=`<div style="font-size:10px;color:rgba(255,255,255,0.25);font-weight:700;padding:8px 0;">衣装は冒険で解放されます（準備中）</div>`;
+    }
+
+    const unlockedIds=getUnlockedTitleIds();
+    const chips=unlockedIds.length===0
+      ?`<span class="char-no-titles">まだバッジがありません</span>`
+      :unlockedIds.map(id=>{
+          const t=TITLES.find(tt=>tt.id===id);
+          const isEq=equippedId===id;
+          return `<span class="title-chip${isEq?' equipped':''}" onclick="equipTitle('${escH(name)}','${id}')">${t.emoji} ${t.name}</span>`;
+        }).join('');
+
+    return `<div class="coll-char-row">
+      <img class="coll-char-avatar" src="${escH(avatarSrc)}" alt="${escH(name)}" style="border-color:${c.color};" onerror="this.src='${escH(c.imgs[0])}'">
+      <div class="coll-char-body">
+        <div class="coll-char-name" style="color:${c.color};">${escH(name)}</div>
+        <div class="coll-char-badge-row">🏅 <span style="color:var(--gold);">${equippedTitle?equippedTitle.emoji+' '+equippedTitle.name:'（なし）'}</span></div>
+        <div class="char-title-chips" style="margin-bottom:10px;">${chips}</div>
+        ${wardrobeHtml}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function equipCostumeFromJournal(charName, costumeIdx){
+  if(!S.charCostume) S.charCostume={};
+  if(costumeIdx===null){
+    delete S.charCostume[charName];
+    showToast(`${charName} をデフォルト衣装に戻した`);
+  } else {
+    S.charCostume[charName]=costumeIdx;
+    const year=1970+(costumeIdx-1);
+    showToast(`✨ ${charName} に${year}年の衣装を装備！`);
+  }
+  save();
+  renderCharSelector();
+  renderCollCostume();
+  renderAdvCostume();
+}
+
+// =====================================================
+// ADVENTURE TAB: GACHA + COSTUME
+// =====================================================
+const MANUAL_GACHA_COST=10;
+
+function renderAdvGacha(){
+  const btn=$('advGachaBtn');
+  if(!btn) return;
+  const coins=S.coins||0;
+  btn.disabled=coins<MANUAL_GACHA_COST;
+  btn.textContent=`🎲 ガチャを引く（${MANUAL_GACHA_COST}🪙）`;
+}
+
+function manualGachaPull(){
+  const coins=S.coins||0;
+  if(coins<MANUAL_GACHA_COST){showToast('コインが足りません');return;}
+  S.coins=coins-MANUAL_GACHA_COST;
+  const rarity=rollGacha();
+  if(!S.gachaCounts) S.gachaCounts={};
+  S.gachaCounts[rarity.id]=(S.gachaCounts[rarity.id]||0)+1;
+  if(rarity.coins>0) earnCoins(rarity.coins);
+  save();
+  showGacha(rarity, null);
+  renderNav();
+  renderAdvGacha();
+}
+
+function renderAdvCostume(){
+  const el=$('advCostumeScroll');
+  const nameEl=$('advCostumeCharName');
+  if(!el) return;
+  const name=S.activeChar;
+  if(nameEl) nameEl.textContent=name||'';
+  const c=CHARS[name];
+  if(!c){el.innerHTML='';return;}
+  const hasOutfits=name==='おーる局長'||name==='えんだ';
+  const jpStep=getJpStep();
+  const equippedCostume=(S.charCostume||{})[name];
+
+  if(!hasOutfits){
+    el.innerHTML=`<div style="font-size:10px;color:rgba(255,255,255,0.3);font-weight:700;padding:8px 0;">このキャラの衣装は準備中です</div>`;
+    return;
+  }
+
+  const isDefaultActive=equippedCostume==null;
+  const items=[`<div class="wardrobe-item${isDefaultActive?' wi-active':''}" onclick="equipCostumeFromJournal('${escH(name)}',null)">
+    <img src="${escH(c.imgs[0])}" alt="デフォ" onerror="this.style.opacity='0.3'">
+    <div class="wardrobe-year${isDefaultActive?' wy-active':''}">デフォ</div>
+  </div>`];
+  for(let i=0;i<56;i++){
+    const costumeIdx=i+1;
+    const year=1970+i;
+    const unlocked=jpStep>=costumeIdx;
+    const isActive=equippedCostume===costumeIdx;
+    if(unlocked){
+      const imgSrc=getCharJourneyImg(name,costumeIdx);
+      items.push(`<div class="wardrobe-item${isActive?' wi-active':''}" onclick="equipCostumeFromJournal('${escH(name)}',${costumeIdx})">
+        <img src="${escH(imgSrc)}" alt="${year}" onerror="this.style.opacity='0.3'">
+        <div class="wardrobe-year${isActive?' wy-active':''}">${year}</div>
+      </div>`);
+    } else {
+      items.push(`<div class="wardrobe-item wi-locked">
+        <div style="width:46px;height:46px;display:flex;align-items:center;justify-content:center;font-size:16px;margin:0 auto;">🔒</div>
+        <div class="wardrobe-year">${year}</div>
+      </div>`);
+    }
+  }
+  el.innerHTML=`<div class="wardrobe-scroll">${items.join('')}</div>`;
+}
+
+// =====================================================
 // GACHA JOURNAL
 // =====================================================
 function renderGachaJournal(){
@@ -3053,12 +3363,14 @@ function renderMap(){
   _mapView='current';
   const cv=document.getElementById('mapCurrentView');
   const av=document.getElementById('mapAllView');
-  if(cv) cv.style.display='block';
-  if(av) av.style.display='none';
+  if(cv){ cv.style.display='block'; cv.style.opacity=''; cv.style.transform=''; }
+  if(av){ av.style.display='none'; av.style.opacity=''; av.style.transform=''; }
   const mb=document.getElementById('mvs-current');
   const ab=document.getElementById('mvs-all');
   if(mb) mb.classList.add('mvs-active');
   if(ab) ab.classList.remove('mvs-active');
+  const ind=document.getElementById('mvsIndicator');
+  if(ind) ind.className='mvs-indicator';
   renderMapCurrentView(getJpStep());
   updateJpHUD();
 
@@ -4096,7 +4408,7 @@ function renderNavPopup(){
       <div class="nav-popup-cloud-badge">☁️ クラウド保存 ON</div>
       <hr class="nav-popup-divider">
       <button class="nav-popup-btn" onclick="closeNavPopup();switchTab('settings')">⚙️ 設定・アカウント</button>
-      <a class="nav-popup-btn" href="https://rainybrainch.github.io/manebou-hp/home.html" style="display:flex">🏠 マネぼうHPへ</a>
+      <a class="nav-popup-btn" href="https://rainybrainch.github.io/manebou-hp/home.html">🏠 アカウントページへ</a>
       <button class="nav-popup-btn danger" onclick="closeNavPopup();fbSignOut()">🚪 ログアウト</button>
     `;
   } else {
@@ -4404,17 +4716,49 @@ function jpRegLabel(r){
 let _mapView='current';
 
 function setMapView(v){
+  if(_mapView===v) return;
   _mapView=v;
   const cv=document.getElementById('mapCurrentView');
   const av=document.getElementById('mapAllView');
   const mb=document.getElementById('mvs-current');
   const ab=document.getElementById('mvs-all');
-  if(cv) cv.style.display=v==='current'?'block':'none';
-  if(av) av.style.display=v==='all'?'block':'none';
+  const ind=document.getElementById('mvsIndicator');
+
+  // スイッチャー更新
   if(mb) mb.classList.toggle('mvs-active',v==='current');
   if(ab) ab.classList.toggle('mvs-active',v==='all');
+  if(ind){ ind.className='mvs-indicator'+(v==='all'?' on-all':''); }
+
+  // コンテンツを事前構築
   if(v==='all'){ buildJapanMap(); updateJpHUD(); }
   else { renderMapCurrentView(getJpStep()); }
+
+  const outEl=v==='current'?av:cv;
+  const inEl =v==='current'?cv:av;
+
+  // アウトアニメーション
+  outEl.style.transition='opacity 0.22s ease,transform 0.22s ease';
+  outEl.style.opacity='0';
+  outEl.style.transform=v==='current'?'scale(0.97) translateY(-8px)':'scale(1.03)';
+
+  // インを準備（初期状態を即セット）
+  inEl.style.display='block';
+  inEl.style.transition='none';
+  inEl.style.opacity='0';
+  inEl.style.transform=v==='current'?'scale(1.02) translateY(12px)':'scale(0.96)';
+
+  // 次フレームでフェードイン開始
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    inEl.style.transition='opacity 0.34s cubic-bezier(0.4,0,0.2,1),transform 0.34s cubic-bezier(0.4,0,0.2,1)';
+    inEl.style.opacity='1';
+    inEl.style.transform='scale(1) translateY(0)';
+  }));
+
+  // クリーンアップ
+  setTimeout(()=>{
+    outEl.style.display='none';
+    [outEl,inEl].forEach(el=>{ el.style.transition=''; el.style.opacity=''; el.style.transform=''; });
+  },360);
 }
 
 function renderMapCurrentView(step){
