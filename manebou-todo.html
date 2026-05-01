@@ -6,6 +6,9 @@
 <title>マネぼうTODO | タスク管理 ver2</title>
 <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <style>
 :root {
   --sky:#5BC8E8; --red:#E8354A; --gold:#F5C842; --gold-dark:#D4A017;
@@ -260,6 +263,47 @@ nav{position:sticky;top:0;z-index:200;background:rgba(26,26,46,0.94);backdrop-fi
 .ex-metric-del{background:none;border:none;color:rgba(255,80,80,0.5);font-size:16px;cursor:pointer;}
 .ex-add-metric-row{display:flex;gap:8px;margin-top:6px;}
 .ex-add-btn{background:rgba(91,200,232,0.15);border:1.5px solid rgba(91,200,232,0.35);border-radius:8px;color:var(--sky);font-size:11px;font-weight:700;padding:8px 12px;cursor:pointer;white-space:nowrap;}
+/* ====== LOGIN MODAL ====== */
+.login-modal-overlay{position:fixed;inset:0;z-index:800;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s;}
+.login-modal-overlay.open{opacity:1;pointer-events:all;}
+.login-modal-card{background:var(--dark);border:3px solid var(--gold);border-radius:22px;padding:24px 20px;width:min(360px,92vw);box-shadow:0 0 40px rgba(245,200,66,0.2);transform:scale(0.92);transition:transform 0.3s;}
+.login-modal-overlay.open .login-modal-card{transform:scale(1);}
+.login-modal-title{font-family:'Dela Gothic One',sans-serif;font-size:16px;color:var(--gold);margin-bottom:6px;text-align:center;}
+.login-modal-sub{font-size:11px;color:rgba(255,255,255,0.4);text-align:center;margin-bottom:16px;font-weight:700;}
+.login-input{width:100%;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.15);border-radius:10px;color:#fff;font-size:14px;padding:10px 12px;margin-bottom:10px;font-family:inherit;}
+.login-input:focus{outline:none;border-color:var(--gold);}
+.login-btn-primary{width:100%;padding:12px;background:var(--gold);color:var(--dark);border:none;border-radius:12px;font-family:'Dela Gothic One',sans-serif;font-size:14px;cursor:pointer;margin-bottom:8px;transition:opacity 0.15s;}
+.login-btn-primary:disabled{opacity:0.5;cursor:not-allowed;}
+.login-btn-google{width:100%;padding:11px;background:rgba(255,255,255,0.07);color:#fff;border:1.5px solid rgba(255,255,255,0.2);border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:12px;font-family:inherit;transition:background 0.15s;}
+.login-btn-google:hover{background:rgba(255,255,255,0.12);}
+.login-toggle-txt{font-size:11px;color:rgba(255,255,255,0.4);text-align:center;font-weight:700;}
+.login-toggle-txt a{color:var(--sky);cursor:pointer;text-decoration:underline;}
+.login-close-link{display:block;text-align:center;margin-top:12px;font-size:11px;color:rgba(255,255,255,0.3);cursor:pointer;font-weight:700;}
+/* cloud confirm */
+.cloud-confirm-overlay{position:fixed;inset:0;z-index:810;background:rgba(0,0,0,0.65);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s;}
+.cloud-confirm-overlay.open{opacity:1;pointer-events:all;}
+.cloud-confirm-card{background:var(--dark);border:3px solid var(--sky);border-radius:20px;padding:22px 20px;width:min(320px,90vw);text-align:center;box-shadow:0 0 30px rgba(91,200,232,0.25);}
+.cloud-confirm-icon{font-size:36px;margin-bottom:8px;}
+.cloud-confirm-title{font-family:'Dela Gothic One',sans-serif;font-size:15px;color:var(--sky);margin-bottom:8px;}
+.cloud-confirm-desc{font-size:11px;color:rgba(255,255,255,0.5);font-weight:700;margin-bottom:16px;line-height:1.7;}
+.cloud-confirm-btns{display:flex;gap:8px;}
+.cloud-confirm-btn{flex:1;padding:11px;border-radius:10px;font-family:'Dela Gothic One',sans-serif;font-size:12px;cursor:pointer;border:none;}
+.cloud-confirm-btn.primary{background:var(--sky);color:#000;}
+.cloud-confirm-btn.secondary{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.4);border:1.5px solid rgba(255,255,255,0.1);}
+/* nav auth */
+.nav-user-avatar{width:26px;height:26px;border-radius:50%;border:2px solid var(--gold);object-fit:cover;cursor:pointer;display:none;}
+.nav-login-link{font-size:10px;color:rgba(255,255,255,0.45);font-weight:700;cursor:pointer;white-space:nowrap;border:1.5px solid rgba(255,255,255,0.2);border-radius:8px;padding:3px 8px;transition:border-color 0.15s;}
+.nav-login-link:hover{border-color:var(--gold);color:var(--gold);}
+/* auth settings card */
+.auth-card{background:var(--dark);border:3px solid var(--gold);border-radius:15px;padding:16px;margin-bottom:10px;box-shadow:4px 4px 0 var(--gold-dark);}
+.auth-card-loggedin{background:var(--dark);border:3px solid var(--green);border-radius:15px;padding:16px;margin-bottom:10px;box-shadow:4px 4px 0 rgba(76,175,125,0.4);}
+.auth-user-row{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.auth-user-avatar{width:40px;height:40px;border-radius:50%;border:2px solid var(--gold);object-fit:cover;flex-shrink:0;}
+.auth-user-name{font-size:13px;font-weight:700;color:#fff;}
+.auth-user-email{font-size:10px;color:rgba(255,255,255,0.4);font-weight:700;margin-top:2px;}
+.auth-btn-row{display:flex;gap:8px;}
+.auth-cloud-btn{flex:1;padding:9px;background:var(--sky);color:#000;border:none;border-radius:10px;font-family:'Dela Gothic One',sans-serif;font-size:11px;cursor:pointer;}
+.auth-logout-btn{padding:9px 14px;background:none;border:1.5px solid rgba(232,53,74,0.4);border-radius:10px;color:var(--red);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;}
 /* ====== AI PANEL ====== */
 .ai-panel{position:fixed;inset:0;z-index:600;display:flex;align-items:stretch;justify-content:flex-end;pointer-events:none;}
 .ai-panel.open{pointer-events:all;}
@@ -787,7 +831,7 @@ html.dark .tile-sheet-subtitle{color:#555;}
     radial-gradient(ellipse at 70% 20%,rgba(74,158,255,0.11) 0%,transparent 50%),
     radial-gradient(ellipse at 15% 80%,rgba(162,155,254,0.1) 0%,transparent 50%),
     linear-gradient(175deg,#05061a 0%,#080a20 100%);
-  border:none;border-radius:0;overflow:hidden;
+  border:none;border-radius:0;overflow:visible;
 }
 .jp-sea{position:absolute;font-size:8px;color:rgba(255,255,255,0.14);font-weight:700;letter-spacing:1.5px;pointer-events:none;transform:translate(-50%,-50%);}
 /* 統計バーをマップ直上に */
@@ -808,16 +852,16 @@ html.dark .tile-sheet-subtitle{color:#555;}
 .jp-node:hover{transform:translate(-50%,-50%) scale(1.25);z-index:20;}
 .jp-node:active{transform:translate(-50%,-50%) scale(1.05);}
 .jp-circle{
-  width:24px;height:24px;border-radius:50%;
-  border:2px solid rgba(255,255,255,0.1);background:rgba(10,12,30,0.7);
+  width:26px;height:26px;border-radius:50%;
+  border:2px solid rgba(255,255,255,0.18);background:rgba(10,12,30,0.75);
   display:flex;align-items:center;justify-content:center;
-  font-size:6.5px;font-weight:900;color:rgba(255,255,255,0.18);
+  font-size:7px;font-weight:900;color:rgba(255,255,255,0.28);
   line-height:1.1;text-align:center;transition:all .25s;
 }
-.jp-step-lbl{font-size:5.5px;line-height:1;margin-top:2px;color:rgba(255,255,255,0.18);letter-spacing:0;}
+.jp-step-lbl{font-size:6.5px;line-height:1;margin-top:3px;color:rgba(255,255,255,0.4);letter-spacing:0;font-weight:700;}
 /* 訪問済み */
-.jp-node.jp-visited .jp-circle{color:#fff;background:var(--jrc,#4a8f6e);border-color:rgba(255,255,255,0.5);box-shadow:0 0 6px var(--jrc,transparent);}
-.jp-node.jp-visited .jp-step-lbl{color:rgba(245,200,66,0.7);}
+.jp-node.jp-visited .jp-circle{color:#fff;background:var(--jrc,#4a8f6e);border-color:rgba(255,255,255,0.7);box-shadow:0 0 10px var(--jrc,transparent),0 0 4px rgba(255,255,255,0.2);}
+.jp-node.jp-visited .jp-step-lbl{color:rgba(255,255,255,0.85);font-size:7px;}
 /* 現在地 */
 .jp-node.jp-current .jp-circle{
   width:32px;height:32px;font-size:8px;font-weight:900;
@@ -827,7 +871,9 @@ html.dark .tile-sheet-subtitle{color:#555;}
 }
 .jp-node.jp-current .jp-step-lbl{color:var(--gold);font-weight:900;font-size:6px;}
 .jp-node.jp-current{z-index:15;}
-@keyframes jpPulse{0%,100%{box-shadow:0 0 0 5px rgba(245,200,66,0.25),0 0 22px rgba(245,200,66,0.7)}50%{box-shadow:0 0 0 10px rgba(245,200,66,0.08),0 0 40px rgba(245,200,66,0.9)}}
+@keyframes jpPulse{0%,100%{box-shadow:0 0 0 4px rgba(245,200,66,0.45),0 0 20px rgba(245,200,66,0.7)}50%{box-shadow:0 0 0 9px rgba(245,200,66,0.12),0 0 36px rgba(245,200,66,1)}}
+.jp-node.jp-current::before{content:"";position:absolute;width:44px;height:44px;border-radius:50%;border:2.5px solid rgba(245,200,66,0.65);animation:jpRipple 1.8s ease-out infinite;pointer-events:none;}
+@keyframes jpRipple{0%{transform:scale(0.75);opacity:1;}100%{transform:scale(2.0);opacity:0;}}
 /* 領土ノード */
 .jp-node.jp-terr .jp-circle{width:18px;height:18px;font-size:5.5px;border-style:dashed;}
 .jp-node.jp-terr.jp-current .jp-circle{width:26px;height:26px;font-size:7px;}
@@ -835,7 +881,7 @@ html.dark .tile-sheet-subtitle{color:#555;}
 /* 霧ノード（未到達） */
 .jp-node.jp-fog{pointer-events:none;z-index:2;}
 .jp-node.jp-fog:hover{transform:translate(-50%,-50%);}
-.jp-node.jp-fog .jp-circle{width:10px;height:10px;background:rgba(15,17,40,0.5);border:1.5px solid rgba(255,255,255,0.04);filter:blur(0.8px);}
+.jp-node.jp-fog .jp-circle{width:12px;height:12px;background:rgba(255,255,255,0.03);border:1.5px solid rgba(255,255,255,0.09);filter:blur(0.5px);}
 .jp-node.jp-fog .jp-step-lbl{display:none;}
 /* マップ表示切り替えスイッチャー */
 .map-view-switcher{display:flex;gap:5px;margin-bottom:14px;background:rgba(255,255,255,0.04);border-radius:14px;padding:4px;}
@@ -851,12 +897,16 @@ html.dark .tile-sheet-subtitle{color:#555;}
 .jp-route-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;overflow:visible;}
 .jp-land-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;}
 .jp-land-svg polygon,.jp-land-svg ellipse{
-  fill:rgba(80,140,220,0.08);
-  stroke:rgba(100,170,255,0.45);
-  stroke-width:0.55;
+  fill:rgba(70,130,220,0.14);
+  stroke:rgba(120,180,255,0.7);
+  stroke-width:0.8;
   stroke-linejoin:round;
 }
 @keyframes jpBlink{0%,100%{opacity:1}50%{opacity:.4}}
+.map-zoom-bar{position:absolute;bottom:10px;right:10px;z-index:30;display:flex;flex-direction:column;gap:5px;pointer-events:all;}
+.map-zoom-btn{width:32px;height:32px;border-radius:10px;background:rgba(5,6,26,0.75);border:1.5px solid rgba(255,255,255,0.22);color:rgba(255,255,255,0.85);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:900;line-height:1;backdrop-filter:blur(6px);transition:background 0.15s;}
+.map-zoom-btn:hover{background:rgba(245,200,66,0.18);border-color:rgba(245,200,66,0.5);}
+#mapResetBtn{font-size:13px;display:none;}
 
 /* 日本マップ モーダル */
 .jpm-overlay{position:fixed;inset:0;z-index:700;background:rgba(0,0,0,0.82);backdrop-filter:blur(10px);display:none;align-items:flex-end;justify-content:center;}
@@ -883,6 +933,9 @@ html.dark .tile-sheet-subtitle{color:#555;}
 .jpm-btn.jpm-done:hover{opacity:1;}
 .jpm-btn.jpm-locked{background:rgba(255,255,255,.03);color:rgba(255,255,255,.18);cursor:default;}
 .jpm-btn.jpm-locked:hover{opacity:1;}
+.jpm-btn.jpm-equip{background:linear-gradient(135deg,#a855f7,#7c3aed);color:#fff;}
+.jpm-btn.jpm-equip.active{background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);}
+.char-costume-badge{position:absolute;top:1px;right:2px;font-size:9px;line-height:1;pointer-events:none;}
 .jpm-char-sprite{position:absolute;bottom:32px;right:8px;width:110px;height:auto;pointer-events:none;z-index:0;filter:drop-shadow(0 4px 18px rgba(0,0,0,0.5));animation:jpmFloat 3s ease-in-out infinite;}
 @keyframes jpmFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 .jpm-btn.jpm-max:hover{opacity:1;}
@@ -904,6 +957,8 @@ html.dark .tile-sheet-subtitle{color:#555;}
     <div class="nav-coin" id="navCoin">🪙0</div>
     <div class="nav-streak" id="navStreak">🔥0</div>
     <div class="nav-date" id="navDate"></div>
+    <img id="navUserAvatar" class="nav-user-avatar" src="" alt="" onclick="openAccountMenu()" title="アカウント">
+    <span id="navLoginLink" class="nav-login-link" onclick="openLoginModal()" style="display:none">ログイン</span>
     <button class="dark-toggle" id="darkToggle" onclick="toggleDark()" title="ダークモード切替">🌙</button>
   </div>
 </nav>
@@ -1223,6 +1278,13 @@ html.dark .tile-sheet-subtitle{color:#555;}
             <div class="jp-sea" style="left:8%;top:78%">東シナ海</div>
           </div>
         </div>
+        <!-- ズームコントロール -->
+        <div class="map-zoom-bar">
+          <button class="map-zoom-btn" onclick="adjustMapScale(1.35)" title="ズームイン">＋</button>
+          <button class="map-zoom-btn" id="mapResetBtn" onclick="resetMapView()" title="リセット">⌂</button>
+          <button class="map-zoom-btn" id="mapCenterBtn" onclick="centerOnCurrentNode()" title="現在地へ">📍</button>
+          <button class="map-zoom-btn" onclick="adjustMapScale(0.74)" title="ズームアウト">－</button>
+        </div>
       </div>
     </div>
 
@@ -1407,6 +1469,37 @@ html.dark .tile-sheet-subtitle{color:#555;}
       <div class="jpm-stage-info" id="jpmStageInfo"></div>
       <div id="jpmEras"></div>
       <button class="jpm-btn" id="jpmBtn" onclick="visitJpStage()">🚆 旅行する！</button>
+      <button class="jpm-btn jpm-equip" id="jpmEquipBtn" onclick="toggleEquipCostume()" style="display:none;margin-top:8px;">🎽 この衣装を装備する</button>
+    </div>
+  </div>
+</div>
+
+<!-- ログインモーダル -->
+<div class="login-modal-overlay" id="loginModalOverlay" onclick="closeLoginModalBg(event)">
+  <div class="login-modal-card">
+    <div class="login-modal-title">🪙 マネぼうアカウント</div>
+    <div class="login-modal-sub" id="loginModeLabel">メールアドレスでログイン</div>
+    <input class="login-input" id="loginEmail" type="email" placeholder="メールアドレス" autocomplete="email">
+    <input class="login-input" id="loginPassword" type="password" placeholder="パスワード（6文字以上）" autocomplete="current-password">
+    <div id="loginNameWrap" style="display:none">
+      <input class="login-input" id="loginName" type="text" placeholder="ニックネーム（任意）">
+    </div>
+    <button class="login-btn-primary" id="loginSubmitBtn" onclick="submitEmailAuth()">ログイン</button>
+    <button class="login-btn-google" onclick="signInWithGoogle()">🔑 Googleでログイン</button>
+    <div class="login-toggle-txt" id="loginToggleTxt">アカウントがない方は<a onclick="toggleLoginMode()">新規登録</a></div>
+    <span class="login-close-link" onclick="closeLoginModal()">キャンセル</span>
+  </div>
+</div>
+
+<!-- クラウドデータ確認 -->
+<div class="cloud-confirm-overlay" id="cloudConfirmOverlay">
+  <div class="cloud-confirm-card">
+    <div class="cloud-confirm-icon">☁️</div>
+    <div class="cloud-confirm-title">クラウドデータを発見</div>
+    <div class="cloud-confirm-desc">クラウドの保存データがこのデバイスより<br>新しいです。どちらを使いますか？</div>
+    <div class="cloud-confirm-btns">
+      <button class="cloud-confirm-btn primary" onclick="confirmCloudLoad()">クラウドを使う</button>
+      <button class="cloud-confirm-btn secondary" onclick="dismissCloudLoad()">このまま使う</button>
     </div>
   </div>
 </div>
@@ -1543,6 +1636,9 @@ html.dark .tile-sheet-subtitle{color:#555;}
         <button class="settings-btn danger" onclick="resetData()">リセット</button>
       </div>
     </div>
+
+    <div class="section-header" style="margin-top:20px;"><span class="slabel">アカウント</span></div>
+    <div id="authSettingsCard"></div>
 
     <div class="section-header" style="margin-top:20px;"><span class="slabel">アプリ情報</span></div>
     <div class="settings-card">
@@ -1920,6 +2016,9 @@ if(!CHARS[S.activeChar]) S.activeChar='えんだ';
 S.charsUsedSet = S.charsUsedSet||[];
 S.charsUsed = S.charsUsedSet.length;
 
+let _auth = null, _db = null, _fbUser = null;
+let _cloudSaveTimer = null, _pendingCloudData = null;
+
 let editingId        = null;
 let currentFilter    = 'all';
 let modalPriority    = 'medium';
@@ -1943,7 +2042,10 @@ function fmtDate(iso){
   const d=new Date(iso+'T00:00:00');
   return `${d.getMonth()+1}/${d.getDate()}`;
 }
-function save(){ localStorage.setItem('mb2_state', JSON.stringify(S)); }
+function save(){
+  localStorage.setItem('mb2_state', JSON.stringify(S));
+  if(_fbUser){ clearTimeout(_cloudSaveTimer); _cloudSaveTimer=setTimeout(()=>cloudSaveNow(true),3000); }
+}
 
 // =====================================================
 // LEVEL SYSTEM
@@ -2068,6 +2170,7 @@ function selectChar(name){
 function cycleCharExpr(){
   const ch=CHARS[S.activeChar];
   if(!ch) return;
+  if(S.charCostume&&S.charCostume[S.activeChar]!=null) return;
   charExprIdx[S.activeChar]=((charExprIdx[S.activeChar]||0)+1)%ch.imgs.length;
   $('bubbleImg').src=ch.imgs[charExprIdx[S.activeChar]];
   renderCharSelector();
@@ -3365,12 +3468,41 @@ function clearCompleted(){
 function renderSettings(){
   const isDark=document.documentElement.classList.contains('dark');
   const toggle=$('darkModeToggle');
-  if(toggle){
-    toggle.textContent=isDark?'ON':'OFF';
-    toggle.classList.toggle('on',isDark);
-  }
+  if(toggle){ toggle.textContent=isDark?'ON':'OFF'; toggle.classList.toggle('on',isDark); }
   const wgl=$('weeklyGoalSettingLabel');
   if(wgl) wgl.textContent=S.weeklyGoal?`${S.weeklyGoal}タスク / 週`:'設定なし';
+  // auth card
+  const card=$('authSettingsCard');
+  if(!card) return;
+  if(_fbUser){
+    const avatarHtml=_fbUser.photoURL
+      ?`<img class="auth-user-avatar" src="${escH(_fbUser.photoURL)}" onerror="this.style.display='none'">`
+      :`<div class="auth-user-avatar" style="background:rgba(245,200,66,0.15);display:flex;align-items:center;justify-content:center;font-size:18px;">👤</div>`;
+    card.className='auth-card-loggedin';
+    card.innerHTML=`
+      <div class="auth-user-row">
+        ${avatarHtml}
+        <div>
+          <div class="auth-user-name">${escH(_fbUser.displayName||'ユーザー')}</div>
+          <div class="auth-user-email">${escH(_fbUser.email||'')}</div>
+        </div>
+      </div>
+      <div class="auth-btn-row">
+        <button class="auth-cloud-btn" onclick="cloudSaveNow(false)">☁️ 今すぐ保存</button>
+        <button class="auth-logout-btn" onclick="fbSignOut()">ログアウト</button>
+      </div>`;
+  } else {
+    card.className='auth-card';
+    card.innerHTML=`
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+        <span style="font-size:22px">🔐</span>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:var(--gold);">マネぼうアカウント</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.4);font-weight:700;margin-top:2px;">ログインするとデータをクラウド保存・デバイス間同期</div>
+        </div>
+      </div>
+      <button class="login-btn-primary" style="margin-bottom:0" onclick="openLoginModal()">ログイン / 新規登録</button>`;
+  }
 }
 
 function exportData(){
@@ -3729,6 +3861,159 @@ function closeAiPanelDirect(){
 }
 
 // =====================================================
+// FIREBASE AUTH + CLOUD SAVE
+// =====================================================
+(function initFirebase(){
+  try{
+    const FB={
+      apiKey:"AIzaSyDUqrAgL2TYCoKom3B67Go2CTXpo0HlTP4",
+      authDomain:"manebou-app-41dd3.firebaseapp.com",
+      projectId:"manebou-app-41dd3",
+      storageBucket:"manebou-app-41dd3.firebasestorage.app",
+      messagingSenderId:"185792077295",
+      appId:"1:185792077295:web:299acd59423d9706f76a1a"
+    };
+    if(!firebase.apps.length) firebase.initializeApp(FB);
+    _auth=firebase.auth();
+    _db=firebase.firestore();
+  }catch(e){ console.warn('Firebase init failed:',e); }
+  if(!_auth) return;
+  _auth.onAuthStateChanged(async user=>{
+    _fbUser=user;
+    const av=document.getElementById('navUserAvatar');
+    const ll=document.getElementById('navLoginLink');
+    if(user){
+      if(av&&user.photoURL){ av.src=user.photoURL; av.style.display=''; }
+      else if(av) av.style.display='none';
+      if(ll) ll.style.display='none';
+      await cloudLoad();
+    } else {
+      if(av) av.style.display='none';
+      if(ll) ll.style.display='';
+    }
+    const stab=document.getElementById('tab-settings');
+    if(stab&&stab.classList.contains('active')) renderSettings();
+  });
+})();
+
+async function cloudSaveNow(silent){
+  if(!_fbUser||!_db) return;
+  try{
+    S._cloudTs=Date.now();
+    localStorage.setItem('mb2_state',JSON.stringify(S));
+    await _db.collection('todo_saves').doc(_fbUser.uid).set({
+      state: JSON.stringify(S),
+      savedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      clientTs: S._cloudTs
+    });
+    if(!silent) showToast('☁️ クラウドに保存しました');
+  }catch(e){ if(!silent) showToast('保存失敗: '+e.message); }
+}
+async function cloudLoad(){
+  if(!_fbUser||!_db) return;
+  try{
+    const snap=await _db.collection('todo_saves').doc(_fbUser.uid).get();
+    if(!snap.exists){ cloudSaveNow(true); return; }
+    const d=snap.data();
+    const cloudTs=d.clientTs||0;
+    const localTs=S._cloudTs||0;
+    if(cloudTs>localTs){
+      _pendingCloudData=JSON.parse(d.state);
+      document.getElementById('cloudConfirmOverlay').classList.add('open');
+    } else { cloudSaveNow(true); }
+  }catch(e){ console.warn('cloudLoad:',e); }
+}
+function confirmCloudLoad(){
+  document.getElementById('cloudConfirmOverlay').classList.remove('open');
+  if(!_pendingCloudData) return;
+  Object.assign(S,_pendingCloudData);
+  _pendingCloudData=null;
+  localStorage.setItem('mb2_state',JSON.stringify(S));
+  showToast('☁️ クラウドのデータを読み込みました');
+  renderAll(); renderToday(); renderCharSelector(); autoSetBubble();
+  const stab=document.getElementById('tab-settings');
+  if(stab&&stab.classList.contains('active')) renderSettings();
+}
+function dismissCloudLoad(){
+  document.getElementById('cloudConfirmOverlay').classList.remove('open');
+  _pendingCloudData=null;
+  cloudSaveNow(true);
+}
+let _loginMode='login';
+function openLoginModal(){
+  if(_fbUser){ switchTab('settings'); return; }
+  document.getElementById('loginModalOverlay').classList.add('open');
+  setTimeout(()=>{ const el=document.getElementById('loginEmail'); if(el) el.focus(); },300);
+}
+function closeLoginModal(){
+  document.getElementById('loginModalOverlay').classList.remove('open');
+}
+function closeLoginModalBg(e){
+  if(e.target===document.getElementById('loginModalOverlay')) closeLoginModal();
+}
+function toggleLoginMode(){
+  _loginMode=_loginMode==='login'?'register':'login';
+  const isReg=_loginMode==='register';
+  document.getElementById('loginModeLabel').textContent=isReg?'新規アカウント作成':'メールアドレスでログイン';
+  document.getElementById('loginSubmitBtn').textContent=isReg?'アカウント作成':'ログイン';
+  document.getElementById('loginNameWrap').style.display=isReg?'':'none';
+  document.getElementById('loginPassword').autocomplete=isReg?'new-password':'current-password';
+  document.getElementById('loginToggleTxt').innerHTML=isReg
+    ?'すでにアカウントをお持ちの方は<a onclick="toggleLoginMode()">ログイン</a>'
+    :'アカウントがない方は<a onclick="toggleLoginMode()">新規登録</a>';
+}
+async function submitEmailAuth(){
+  if(!_auth){ showToast('Firebase未接続です'); return; }
+  const email=document.getElementById('loginEmail').value.trim();
+  const pass=document.getElementById('loginPassword').value;
+  if(!email||!pass){ showToast('メールとパスワードを入力してください'); return; }
+  if(pass.length<6){ showToast('パスワードは6文字以上にしてください'); return; }
+  const btn=document.getElementById('loginSubmitBtn');
+  btn.disabled=true; btn.textContent='処理中...';
+  try{
+    if(_loginMode==='login'){
+      await _auth.signInWithEmailAndPassword(email,pass);
+    } else {
+      const name=(document.getElementById('loginName').value||'').trim()||email.split('@')[0];
+      const cred=await _auth.createUserWithEmailAndPassword(email,pass);
+      await cred.user.updateProfile({displayName:name});
+      if(_db) await _db.collection('users').doc(cred.user.uid).set({
+        name,email:cred.user.email,photoURL:'',role:'player',groupId:null,createdAt:new Date()
+      });
+    }
+    closeLoginModal();
+    showToast('✅ ログインしました！');
+  }catch(e){
+    const msgs={
+      'auth/user-not-found':'メールアドレスが見つかりません',
+      'auth/wrong-password':'パスワードが正しくありません',
+      'auth/invalid-credential':'メールまたはパスワードが正しくありません',
+      'auth/email-already-in-use':'このメールは既に使用中です',
+      'auth/weak-password':'パスワードは6文字以上',
+      'auth/invalid-email':'メールアドレスの形式が正しくありません',
+    };
+    showToast(msgs[e.code]||e.message);
+    btn.disabled=false;
+    btn.textContent=_loginMode==='login'?'ログイン':'アカウント作成';
+  }
+}
+function signInWithGoogle(){
+  if(!_auth){ showToast('Firebase未接続です'); return; }
+  const p=new firebase.auth.GoogleAuthProvider();
+  _auth.signInWithPopup(p)
+    .then(()=>{ closeLoginModal(); showToast('✅ Googleログイン成功'); })
+    .catch(e=>showToast('ログイン失敗: '+e.message));
+}
+function fbSignOut(){
+  if(!_auth) return;
+  _auth.signOut().then(()=>showToast('ログアウトしました'));
+}
+function openAccountMenu(){
+  if(_fbUser) switchTab('settings');
+  else openLoginModal();
+}
+
+// =====================================================
 // INIT
 // =====================================================
 function init(){
@@ -4003,6 +4288,153 @@ function visitJpStageInline(){
   }
 }
 
+// =====================================================
+// COSTUME 装備システム
+// =====================================================
+function getCharJourneyImg(charName, stepVal){
+  const n = stepVal + 1;
+  if(charName==='おーる局長') return `../../../画像/マネぼう/imgキャラ/おーる局長/All (${n}).png`;
+  if(charName==='えんだ')     return `../../../画像/マネぼう/imgキャラ/えんだ/END (${n}).png`;
+  if(charName==='ためぞう')   return `../../../画像/マネぼう/imgキャラ/ためぞう/3-0.png`;
+  if(charName==='カウッシー') return `../../../画像/マネぼう/imgキャラ/かうっしー/4-0.png`;
+  return null;
+}
+function getCharDisplayImg(charName){
+  if(!S.charCostume) return null;
+  const es = S.charCostume[charName];
+  if(es == null) return null;
+  return getCharJourneyImg(charName, es);
+}
+function toggleEquipCostume(){
+  if(jpCurIdx < 0) return;
+  const targetStep = jpCurIdx + 1;
+  if(!S.charCostume) S.charCostume = {};
+  const cur = S.charCostume[S.activeChar];
+  if(cur === targetStep){
+    delete S.charCostume[S.activeChar];
+    showToast('👕 装備を外した');
+  } else {
+    S.charCostume[S.activeChar] = targetStep;
+    const yr = getJpYear(jpCurIdx);
+    showToast(`✨ ${yr}年の衣装を装備！`);
+  }
+  save();
+  renderCharSelector();
+  updateEquipBtn();
+}
+function updateEquipBtn(){
+  const btn = document.getElementById('jpmEquipBtn');
+  if(!btn) return;
+  const step = getJpStep();
+  const idx = jpCurIdx;
+  if(idx < 0 || idx >= step){ btn.style.display='none'; return; }
+  btn.style.display='block';
+  const targetStep = idx + 1;
+  const equipped = S.charCostume && S.charCostume[S.activeChar] === targetStep;
+  btn.textContent = equipped ? '✅ 装備中（タップで外す）' : '🎽 この衣装を装備する';
+  btn.className = 'jpm-btn jpm-equip' + (equipped ? ' active' : '');
+}
+// =====================================================
+// MAP PAN / ZOOM
+// =====================================================
+let _mapScale=1,_mapOffX=0,_mapOffY=0;
+let _mapDragSt=null,_mapPanning=false,_mapTx=0,_mapTy=0;
+let _mapPinchD0=0,_mapPinchS0=1,_mapPanZoomInited=false;
+
+function initMapPanZoom(){
+  if(_mapPanZoomInited) return;
+  _mapPanZoomInited=true;
+  const wrap=document.querySelector('.jp-map-tilt');
+  if(!wrap) return;
+  wrap.addEventListener('wheel',(e)=>{
+    e.preventDefault();
+    setMapScaleTo(_mapScale*(e.deltaY<0?1.12:0.89),e.clientX,e.clientY);
+  },{passive:false});
+  wrap.addEventListener('mousedown',(e)=>{
+    if(e.button!==0) return;
+    _mapDragSt={x:e.clientX-_mapOffX,y:e.clientY-_mapOffY};
+    _mapTx=e.clientX;_mapTy=e.clientY;_mapPanning=false;
+  });
+  window.addEventListener('mousemove',(e)=>{
+    if(!_mapDragSt) return;
+    if(!_mapPanning&&Math.hypot(e.clientX-_mapTx,e.clientY-_mapTy)>5) _mapPanning=true;
+    if(_mapPanning){_mapOffX=e.clientX-_mapDragSt.x;_mapOffY=e.clientY-_mapDragSt.y;_applyMT();}
+  });
+  window.addEventListener('mouseup',()=>{_mapDragSt=null;});
+  wrap.addEventListener('touchstart',(e)=>{
+    if(e.touches.length===1){
+      _mapTx=e.touches[0].clientX;_mapTy=e.touches[0].clientY;
+      _mapDragSt={x:_mapTx-_mapOffX,y:_mapTy-_mapOffY};_mapPanning=false;
+    } else if(e.touches.length>=2){
+      e.preventDefault();_mapDragSt=null;
+      _mapPinchD0=_pinchD(e.touches);_mapPinchS0=_mapScale;
+    }
+  },{passive:false});
+  wrap.addEventListener('touchmove',(e)=>{
+    e.preventDefault();
+    if(e.touches.length>=2){
+      const cx=(e.touches[0].clientX+e.touches[1].clientX)/2;
+      const cy=(e.touches[0].clientY+e.touches[1].clientY)/2;
+      setMapScaleTo(_mapPinchS0*(_pinchD(e.touches)/_mapPinchD0),cx,cy);
+      return;
+    }
+    if(e.touches.length===1&&_mapDragSt){
+      if(!_mapPanning&&Math.hypot(e.touches[0].clientX-_mapTx,e.touches[0].clientY-_mapTy)>8) _mapPanning=true;
+      if(_mapPanning){_mapOffX=e.touches[0].clientX-_mapDragSt.x;_mapOffY=e.touches[0].clientY-_mapDragSt.y;_applyMT();}
+    }
+  },{passive:false});
+  wrap.addEventListener('touchend',()=>{_mapDragSt=null;});
+}
+
+function _pinchD(ts){return Math.hypot(ts[0].clientX-ts[1].clientX,ts[0].clientY-ts[1].clientY);}
+
+function setMapScaleTo(newScale,pivotClientX,pivotClientY){
+  const stage=document.getElementById('jpMapStage');
+  if(!stage) return;
+  newScale=Math.max(0.7,Math.min(6,newScale));
+  const rect=stage.getBoundingClientRect();
+  const px=(pivotClientX!==undefined?pivotClientX-rect.left:rect.width/2);
+  const py=(pivotClientY!==undefined?pivotClientY-rect.top:rect.height/2);
+  const mx=(px-_mapOffX)/_mapScale, my=(py-_mapOffY)/_mapScale;
+  _mapOffX=px-mx*newScale; _mapOffY=py-my*newScale;
+  _mapScale=newScale;
+  _applyMT();
+}
+
+function adjustMapScale(factor){setMapScaleTo(_mapScale*factor);}
+
+function _applyMT(){
+  const stage=document.getElementById('jpMapStage');
+  if(!stage) return;
+  stage.style.transformOrigin='0 0';
+  stage.style.transform=`translate(${_mapOffX}px,${_mapOffY}px) scale(${_mapScale})`;
+  const btn=document.getElementById('mapResetBtn');
+  if(btn) btn.style.display=(_mapScale.toFixed(2)!=='1.00'||Math.abs(_mapOffX)>1||Math.abs(_mapOffY)>1)?'flex':'none';
+}
+
+function resetMapView(){
+  _mapScale=1;_mapOffX=0;_mapOffY=0;
+  const stage=document.getElementById('jpMapStage');
+  if(stage) stage.style.transform='';
+  const btn=document.getElementById('mapResetBtn');
+  if(btn) btn.style.display='none';
+}
+
+function centerOnCurrentNode(){
+  const step=getJpStep();
+  if(step>=JP_ORDER.length) return;
+  const s=JP_ALL[JP_ORDER[step]];
+  if(!s) return;
+  const stage=document.getElementById('jpMapStage');
+  if(!stage) return;
+  const w=stage.clientWidth,h=stage.clientHeight;
+  const targetScale=2.5;
+  const nx=s.x/100*w, ny=s.y/100*h;
+  _mapScale=targetScale;
+  _mapOffX=w/2-nx*targetScale;
+  _mapOffY=h/2-ny*targetScale;
+  _applyMT();
+}
 // ルートSVGを描画（訪問済みノードを順番に結ぶ線）
 function buildRouteSvg(stage, step){
   let svg=stage.querySelector('.jp-route-svg');
@@ -4012,12 +4444,25 @@ function buildRouteSvg(stage, step){
   for(let i=0;i<Math.min(step,total-1);i++){
     const a=JP_ALL[JP_ORDER[i]], b=JP_ALL[JP_ORDER[i+1]];
     if(!a||!b) continue;
+    const isLast=i===step-1;
+    const dash=b.isTerr?'4,4':'';
+    // グロー層（幅広・半透明）
+    const glow=document.createElementNS('http://www.w3.org/2000/svg','line');
+    glow.setAttribute('x1',a.x+'%'); glow.setAttribute('y1',a.y+'%');
+    glow.setAttribute('x2',b.x+'%'); glow.setAttribute('y2',b.y+'%');
+    glow.setAttribute('stroke',isLast?'rgba(245,200,66,0.22)':'rgba(180,220,255,0.12)');
+    glow.setAttribute('stroke-width',isLast?'6':'4');
+    glow.setAttribute('stroke-linecap','round');
+    if(dash) glow.setAttribute('stroke-dasharray',dash);
+    svg.appendChild(glow);
+    // メインライン
     const line=document.createElementNS('http://www.w3.org/2000/svg','line');
     line.setAttribute('x1',a.x+'%'); line.setAttribute('y1',a.y+'%');
     line.setAttribute('x2',b.x+'%'); line.setAttribute('y2',b.y+'%');
-    line.setAttribute('stroke',i===step-1?'rgba(245,200,66,0.7)':'rgba(255,255,255,0.18)');
-    line.setAttribute('stroke-width',i===step-1?'1.5':'0.8');
-    line.setAttribute('stroke-dasharray',b.isTerr?'3,3':'');
+    line.setAttribute('stroke',isLast?'rgba(245,200,66,0.95)':'rgba(255,255,255,0.6)');
+    line.setAttribute('stroke-width',isLast?'2.2':'1.5');
+    line.setAttribute('stroke-linecap','round');
+    if(dash) line.setAttribute('stroke-dasharray',dash);
     svg.appendChild(line);
   }
 }
@@ -4025,6 +4470,7 @@ function buildRouteSvg(stage, step){
 function buildJapanMap(){
   const stage=document.getElementById('jpMapStage');
   if(!stage) return;
+  initMapPanZoom();
   stage.querySelectorAll('.jp-node').forEach(el=>el.remove());
   if(!S.jpMap) S.jpMap={step:0};
   const step=getJpStep();
@@ -4102,11 +4548,12 @@ function openJpModal(id,idx){
   const banner=document.getElementById('jpmYearBanner');
   if(banner){ banner.style.display='block'; banner.src=getJpImgPath(idx); }
 
-  // アクティブキャラの透過スプライト
+  // アクティブキャラのスプライト（装備中コスチューム優先）
   const sprite=document.getElementById('jpmCharSprite');
   if(sprite){
     const ch=CHARS[S.activeChar];
-    const spriteImg=ch&&ch.imgs[3];
+    const costumeImg=getCharDisplayImg(S.activeChar);
+    const spriteImg=costumeImg||(ch&&ch.imgs[3]);
     if(spriteImg){ sprite.style.display='block'; sprite.src=spriteImg; }
     else{ sprite.style.display='none'; }
   }
@@ -4142,6 +4589,7 @@ function openJpModal(id,idx){
     else if(idx===step){ btn.textContent=`🚆 ${s.name}に旅行する！`; btn.className='jpm-btn'; btn.style.background=color; btn.style.color='#fff'; }
     else{ btn.textContent=`🔒 順番に進もう`; btn.className='jpm-btn jpm-locked'; }
   }
+  updateEquipBtn();
   const ov=document.getElementById('jpmOverlay');
   if(ov){ov.classList.add('open');document.body.style.overflow='hidden';}
 }
@@ -4150,16 +4598,16 @@ function visitJpStage(){
   const step=getJpStep();
   if(jpCurIdx!==step) return;
   if(!S.jpMap) S.jpMap={step:0};
+  const visitedId=jpCurId, visitedIdx=jpCurIdx;
   S.jpMap.step=step+1;
   save();
-  const s=JP_ALL[jpCurId];
+  const s=JP_ALL[visitedId];
   const year=getJpYear(step);
-  showToast(`${s.emoji} ${year}年・${s.name} 旅行完了！🎉`);
-  closeJpModal();
+  showToast(`${s.emoji} ${year}年・${s.name} 旅行完了！🎽 新衣装ゲット！`);
   updateJpHUD();
-  // 現在地ビューが表示中なら更新
   if(_mapView==='current') renderMapCurrentView(S.jpMap.step);
   else buildJapanMap();
+  setTimeout(()=>openJpModal(visitedId, visitedIdx), 200);
 }
 
 function closeJpModal(){
