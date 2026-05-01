@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>マネぼうTODO | タスク管理 ver2</title>
+<title>マネぼうPin | タスク管理 ver2</title>
 <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -1292,9 +1292,9 @@ html.dark .tile-sheet-subtitle{color:#555;}
 <!-- NAV -->
 <nav>
   <div class="nav-left">
-    <img src="images/logo.webp" class="nav-logo" alt="" onerror="this.style.display='none'">
+    <img src="images/logo.webp" class="nav-logo" alt="マネぼうPin" onerror="this.style.display='none'">
     <div>
-      <div class="nav-title">マネぼうTODO</div>
+      <div class="nav-title">マネぼうPin</div>
       <span class="nav-sub">by RAINY BRAIN</span>
     </div>
   </div>
@@ -1337,7 +1337,7 @@ html.dark .tile-sheet-subtitle{color:#555;}
 <div class="bubble-zone">
   <div class="bubble-inner">
     <div class="bubble-char-col">
-      <img id="bubbleImg" class="bubble-char-img" src="" alt="" onclick="cycleCharExpr()">
+      <img id="bubbleImg" class="bubble-char-img" src="" alt="キャラクター" onclick="cycleCharExpr()">
       <div id="bubbleName" class="bubble-char-nm"></div>
     </div>
     <div class="bubble" id="bubbleText"></div>
@@ -2100,7 +2100,7 @@ html.dark .tile-sheet-subtitle{color:#555;}
 
     <div class="section-header" style="margin-top:20px;"><span class="slabel">アプリ情報</span></div>
     <div class="settings-card">
-      <div class="settings-info-row"><span>アプリ名</span><span>マネぼうTODO</span></div>
+      <div class="settings-info-row"><span>アプリ名</span><span>マネぼうPin</span></div>
       <div class="settings-info-row"><span>バージョン</span><span>ver 2.0</span></div>
       <div class="settings-info-row"><span>開発</span><span>RAINY BRAIN</span></div>
     </div>
@@ -2112,7 +2112,7 @@ html.dark .tile-sheet-subtitle{color:#555;}
   <div class="char-popup-sheet" id="charPopupSheet">
     <div class="char-popup-handle"></div>
     <div class="char-popup-head">
-      <img class="char-popup-img" id="cpopImg" src="" alt="">
+      <img class="char-popup-img" id="cpopImg" src="" alt="コーチ画像">
       <div class="char-popup-meta">
         <div class="char-popup-name" id="cpopName"></div>
         <span class="char-popup-role" id="cpopRole"></span>
@@ -2215,28 +2215,55 @@ const CHAR_IMGS = {
 const CHAR_ORDER = ['おーる局長','えんだ','ためぞう','カウッシー'];
 
 const TITLES = [
-  // 開拓
+  // ── 年代クリア（5年ごと×12）──
+  {id:'era_5',    emoji:'👶', name:'0〜4歳クリア',   desc:'お金を知った頃（タスク5件）'},
+  {id:'era_10',   emoji:'🧒', name:'5〜9歳クリア',   desc:'お小遣い時代（タスク15件）'},
+  {id:'era_15',   emoji:'📚', name:'10〜14歳クリア', desc:'節約を学んだ頃（タスク30件）'},
+  {id:'era_20',   emoji:'🎒', name:'15〜19歳クリア', desc:'アルバイト世代（タスク50件）'},
+  {id:'era_25',   emoji:'💼', name:'20〜24歳クリア', desc:'社会人デビュー（タスク100件）'},
+  {id:'era_30',   emoji:'📊', name:'25〜29歳クリア', desc:'資産形成開始（タスク150件）'},
+  {id:'era_35',   emoji:'📈', name:'30〜34歳クリア', desc:'投資家への道（タスク200件）'},
+  {id:'era_40',   emoji:'🏠', name:'35〜39歳クリア', desc:'マネー中堅（タスク300件）'},
+  {id:'era_45',   emoji:'💎', name:'40〜44歳クリア', desc:'富の守護者（タスク400件）'},
+  {id:'era_50',   emoji:'🌟', name:'45〜49歳クリア', desc:'FIRE候補生（タスク500件）'},
+  {id:'era_55',   emoji:'🏆', name:'50〜54歳クリア', desc:'資産家の証（タスク700件）'},
+  {id:'era_60',   emoji:'👑', name:'55〜59歳クリア', desc:'伝説のマネぼう（タスク1000件）'},
+  // ── 開拓 ──
   {id:'tile_1',    emoji:'🌱', name:'開拓の第一歩',   desc:'初めてのタイル解放'},
   {id:'tile_10',   emoji:'🗺️', name:'開拓者',         desc:'タイルを10枚解放'},
   {id:'tile_30',   emoji:'🏰', name:'領主',           desc:'タイルを30枚解放'},
-  {id:'tile_full', emoji:'👑', name:'全土制覇',       desc:'全100タイルを解放'},
-  // ガチャ
+  {id:'tile_full', emoji:'🌍', name:'全土制覇',       desc:'全100タイルを解放'},
+  // ── ガチャ ──
   {id:'gacha_1',   emoji:'🎲', name:'ガチャ初心者',   desc:'初めてガチャを引いた'},
   {id:'gacha_10',  emoji:'🎰', name:'ガチャ好き',     desc:'ガチャを10回引いた'},
   {id:'gacha_30',  emoji:'✨', name:'ガチャ常連',     desc:'ガチャを30回引いた'},
-  {id:'gacha_100', emoji:'💎', name:'ガチャ王者',     desc:'ガチャを100回引いた'},
-  {id:'legend_1',  emoji:'🌟', name:'伝説の証',       desc:'伝説レアリティを解放'},
-  {id:'collector', emoji:'📚', name:'コレクター',     desc:'松・竹・梅レアリティをすべて解放'},
-  // タスク
+  {id:'gacha_100', emoji:'💫', name:'ガチャ王者',     desc:'ガチャを100回引いた'},
+  {id:'legend_1',  emoji:'🌠', name:'伝説の証',       desc:'伝説レアリティを解放'},
+  {id:'collector', emoji:'📚', name:'コレクター',     desc:'松・竹・梅をすべて解放'},
+  // ── タスク ──
   {id:'task_10',   emoji:'⚡', name:'タスク始動',     desc:'タスクを10件完了'},
   {id:'task_50',   emoji:'🎯', name:'タスク達人',     desc:'タスクを50件完了'},
-  {id:'task_100',  emoji:'🏆', name:'タスクマスター', desc:'タスクを100件完了'},
-  // ポモドーロ
+  {id:'task_100',  emoji:'🏅', name:'タスクマスター', desc:'タスクを100件完了'},
+  {id:'task_200',  emoji:'🦅', name:'タスク伝説',     desc:'タスクを200件完了'},
+  {id:'task_500',  emoji:'🌠', name:'タスクの神',     desc:'タスクを500件完了'},
+  // ── ポモドーロ ──
   {id:'pom_5',     emoji:'⏱️', name:'集中の戦士',     desc:'ポモドーロを5回完了'},
   {id:'pom_25',    emoji:'🍅', name:'ポモドーロ王',   desc:'ポモドーロを25回完了'},
-  // コイン
+  {id:'pom_50',    emoji:'🔥', name:'集中マスター',   desc:'ポモドーロを50回完了'},
+  {id:'pom_100',   emoji:'🔮', name:'時間の魔術師',   desc:'ポモドーロを100回完了'},
+  // ── コイン ──
   {id:'coin_100',  emoji:'💰', name:'お金持ち',       desc:'コインを100枚以上保有'},
   {id:'coin_500',  emoji:'🤑', name:'大富豪',         desc:'コインを500枚以上保有'},
+  {id:'coin_1000', emoji:'💵', name:'億り人候補',     desc:'コインを1000枚以上保有'},
+  // ── 連続日数 ──
+  {id:'streak_3',  emoji:'🔥', name:'三日坊主打破',   desc:'3日連続でタスクを完了'},
+  {id:'streak_7',  emoji:'🌈', name:'一週間の戦士',   desc:'7日連続でタスクを完了'},
+  {id:'streak_30', emoji:'💪', name:'鉄の意志',       desc:'30日連続でタスクを完了'},
+  // ── レベル ──
+  {id:'lv_5',      emoji:'📈', name:'投資見習い卒業', desc:'レベル5に到達'},
+  {id:'lv_10',     emoji:'👑', name:'マネぼうマスター',desc:'レベル10に到達'},
+  // ── キャラ ──
+  {id:'all_chars', emoji:'🎭', name:'全員集合',       desc:'全キャラクターを使った'},
 ];
 
 function checkTitleConditions(){
@@ -2246,24 +2273,59 @@ function checkTitleConditions(){
   const total=S.totalCompleted||0;
   const poms=S.pomodoroSessions||0;
   const coins=S.coins||0;
+  const streak=S.streak||0;
+  const xp=S.xp||0;
+  const charsUsed=S.charsUsed||0;
   return {
+    // 年代クリア
+    era_5:    total>=5,
+    era_10:   total>=15,
+    era_15:   total>=30,
+    era_20:   total>=50,
+    era_25:   total>=100,
+    era_30:   total>=150,
+    era_35:   total>=200,
+    era_40:   total>=300,
+    era_45:   total>=400,
+    era_50:   total>=500,
+    era_55:   total>=700,
+    era_60:   total>=1000,
+    // 開拓
     tile_1:    tiles>=1,
     tile_10:   tiles>=10,
     tile_30:   tiles>=30,
     tile_full: tiles>=100,
+    // ガチャ
     gacha_1:   totalPulls>=1,
     gacha_10:  totalPulls>=10,
     gacha_30:  totalPulls>=30,
     gacha_100: totalPulls>=100,
     legend_1:  (counts.legend||0)>=1,
     collector: (counts.ume||0)>=1&&(counts.take||0)>=1&&(counts.matsu||0)>=1,
+    // タスク
     task_10:   total>=10,
     task_50:   total>=50,
     task_100:  total>=100,
+    task_200:  total>=200,
+    task_500:  total>=500,
+    // ポモドーロ
     pom_5:     poms>=5,
     pom_25:    poms>=25,
+    pom_50:    poms>=50,
+    pom_100:   poms>=100,
+    // コイン
     coin_100:  coins>=100,
     coin_500:  coins>=500,
+    coin_1000: coins>=1000,
+    // 連続日数
+    streak_3:  streak>=3,
+    streak_7:  streak>=7,
+    streak_30: streak>=30,
+    // レベル
+    lv_5:      xp>=700,
+    lv_10:     xp>=3200,
+    // キャラ
+    all_chars: charsUsed>=4,
   };
 }
 function getUnlockedTitleIds(){
@@ -2510,6 +2572,7 @@ let charExprIdx      = {};
 let showAllToday     = false;
 let hideDone         = false;
 let deleteConfirming = null;
+let _deleteTimer = null;
 const expandedMemos  = new Set();
 
 // =====================================================
@@ -2816,8 +2879,9 @@ function askDeleteTask(id){
   deleteConfirming=id;
   const btn=document.getElementById('del-'+id);
   if(btn){btn.textContent='✓?';btn.classList.add('del-confirm');}
-  // Auto-cancel after 3 seconds
-  setTimeout(()=>{
+  // Auto-cancel after 3 seconds (clear previous timer first)
+  clearTimeout(_deleteTimer);
+  _deleteTimer=setTimeout(()=>{
     if(deleteConfirming===id){
       deleteConfirming=null;
       const b=document.getElementById('del-'+id);
@@ -2859,6 +2923,7 @@ function toggleHideDone(){
 function showCelebration(isLevelUp=false){
   spawnConfetti();
   const ch=CHARS[S.activeChar];
+  if(!ch) return;
   const el=document.createElement('div');
   el.className='celebration-overlay';
   el.innerHTML=`<div class="celebration-card">
@@ -3017,9 +3082,6 @@ document.addEventListener('DOMContentLoaded',()=>{
   },{passive:true});
 });
 
-// ─── 旧サブナビ（互換用・使用しない）──────────────────
-let _yattaSection='tasks';
-function setYattaSection(s){ _yattaSection=s; }
 
 function renderPinSection(){
   migratePinsData();
@@ -3799,6 +3861,7 @@ function importData(){
         updateDataInfo();
       }catch(_){ showToast('❌ ファイルの読み込みに失敗しました'); }
     };
+    reader.onerror=()=>showToast('❌ ファイルの読み込みに失敗しました');
     reader.readAsText(file);
   };
   input.click();
@@ -3830,7 +3893,7 @@ function updateDataInfo(){
 // GACHA UI
 // =====================================================
 function showGacha(rarity, key){
-  const {x,y}=parseTileKey(key);
+  const {x,y}=key?parseTileKey(key):{x:-1,y:-1};
   const zone=getZoneForTile(x,y);
   const evo=getEvolutionStage();
   const isCard=rarity.id==='card';
@@ -4255,9 +4318,10 @@ function toggleMapFullscreen(){
   btn.textContent=isFs?'✕':'⛶';
   if(isFs){
     document.body.style.overflow='hidden';
-    wrap.addEventListener('click',_handleFsClose,{once:false});
+    wrap.addEventListener('click',_handleFsClose);
   } else {
     document.body.style.overflow='';
+    wrap.removeEventListener('click',_handleFsClose);
   }
 }
 function _handleFsClose(e){
@@ -4336,7 +4400,7 @@ function habitGacha(){
   if(btn){ btn.classList.add('spinning'); setTimeout(()=>btn.classList.remove('spinning'),650); }
   setTimeout(()=>{
     S.coins-=cost;
-    const count=Math.min(pool.length,Math.random()<0.3?3:Math.random()<0.5?2:1);
+    const _r=Math.random();const count=Math.min(pool.length,_r<0.3?3:_r<0.5?2:1);
     const shuffled=[...pool].sort(()=>Math.random()-0.5).slice(0,count);
     shuffled.forEach(h=>{
       S.tasks.unshift({id:Date.now().toString()+Math.random(),title:h.text,memo:'🎯 習慣ガチャより',
@@ -4399,6 +4463,7 @@ function editWeeklyGoal(){
   S.weeklyGoal=n;save();renderWeeklyGoal();
   showToast(`📅 今週の目標を ${n} タスクに設定！`);
 }
+const setWeeklyGoal=editWeeklyGoal;
 
 // =====================================================
 // CLEAR COMPLETED
@@ -4441,7 +4506,7 @@ function renderSettings(){
         <button class="auth-cloud-btn" onclick="cloudSaveNow(false)">☁️ 今すぐ保存</button>
         <button class="auth-logout-btn" onclick="fbSignOut()">ログアウト</button>
       </div>
-      <a href="https://rainybrainch.github.io/manebou-hp/home.html" style="display:block;margin-top:10px;padding:10px;background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;color:rgba(255,255,255,0.5);font-size:11px;font-weight:700;text-align:center;text-decoration:none;">🏠 マネぼうアカウントページへ戻る</a>`;
+      <a href="https://rainybrainch.github.io/manebou-hp/home.html" target="_blank" rel="noopener" style="display:block;margin-top:10px;padding:10px;background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;color:rgba(255,255,255,0.5);font-size:11px;font-weight:700;text-align:center;text-decoration:none;">🏠 マネぼうアカウントページへ戻る</a>`;
   } else {
     card.className='auth-card';
     card.innerHTML=`
@@ -4456,17 +4521,6 @@ function renderSettings(){
   }
 }
 
-function exportData(){
-  try{
-    const json=JSON.stringify(S,null,2);
-    const blob=new Blob([json],{type:'application/json'});
-    const url=URL.createObjectURL(blob);
-    const a=document.createElement('a');
-    a.href=url; a.download=`manebou-backup-${new Date().toISOString().split('T')[0]}.json`;
-    a.click(); URL.revokeObjectURL(url);
-    showToast('📤 データをエクスポートしました');
-  }catch(e){showToast('エクスポートに失敗しました');}
-}
 
 // =====================================================
 // BAR CHART
@@ -5021,8 +5075,8 @@ function renderNavPopup(){
       <div class="nav-popup-cloud-badge">☁️ クラウド保存 ON</div>
       <hr class="nav-popup-divider">
       <button class="nav-popup-btn" onclick="closeNavPopup();switchTab('settings')">⚙️ 設定</button>
-      <a class="nav-popup-btn" href="https://rainybrainch.github.io/manebou-hp/home.html">🏠 アカウントページへ</a>
-      <a class="nav-popup-btn" href="https://rainybrainch.github.io/manebou-hp/calc.html">💰 マネぼうアプリへ</a>
+      <a class="nav-popup-btn" href="https://rainybrainch.github.io/manebou-hp/home.html" target="_blank" rel="noopener">🏠 アカウントページへ</a>
+      <a class="nav-popup-btn" href="https://rainybrainch.github.io/manebou-hp/calc.html" target="_blank" rel="noopener">💰 マネぼうアプリへ</a>
       <button class="nav-popup-btn danger" onclick="closeNavPopup();fbSignOut()">🚪 ログアウト</button>
     `;
   } else {
@@ -5094,9 +5148,19 @@ function init(){
 
   // Keyboard shortcuts
   document.addEventListener('keydown',e=>{
-    if(e.key==='Escape') closeModal();
+    if(e.key==='Escape'){
+      closeModal();
+      if($('aiPanel').classList.contains('open')) $('aiPanel').classList.remove('open');
+      if($('exPanel').classList.contains('open')) closeExercisePanel();
+      if($('charPopupOverlay').classList.contains('open')){ $('charPopupOverlay').classList.remove('open'); _cpopChar=null; }
+      if($('jpmOverlay').classList.contains('open')) $('jpmOverlay').classList.remove('open');
+      if($('loginModalOverlay').classList.contains('open')) $('loginModalOverlay').classList.remove('open');
+      if($('jpMapFullModal').classList.contains('open')) closeJpMapFull();
+    }
     if(e.key==='n'&&!e.ctrlKey&&!e.metaKey&&document.activeElement.tagName!=='INPUT'&&document.activeElement.tagName!=='TEXTAREA'){
-      openModal();
+      const anyOpen=['taskModal','aiPanel','exPanel','charPopupOverlay','jpmOverlay','loginModalOverlay','jpMapFullModal']
+        .some(id=>$( id)?.classList.contains('open'));
+      if(!anyOpen) openModal();
     }
   });
 
@@ -6208,7 +6272,6 @@ function saveExerciseLog(){
   save();
   showToast(`🚩 ${pin.name} を記録しました！`);
   renderActivePinContent();
-  if(_yattaSection==='pin') renderPinSection();
 }
 
 function deletePinLogEntry(pinId,entryId){
@@ -6216,7 +6279,6 @@ function deletePinLogEntry(pinId,entryId){
   pin.log=(pin.log||[]).filter(e=>e.id!==entryId);
   save();
   renderActivePinContent();
-  if(_yattaSection==='pin') renderPinSection();
 }
 // legacy alias used elsewhere
 function deleteExerciseLog(id){ deletePinLogEntry(S.activePinId,id); }
