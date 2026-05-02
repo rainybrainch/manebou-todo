@@ -3,9 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://www.gstatic.com https://www.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com wss://*.firebaseio.com;">
 <title>マネぼうPin</title>
 <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" integrity="sha384-e6nUZLBkQ86NJ6TVVKAeSaK8jWa3NhkYWZFomE39AvDbQWeie9PlQqM3pmYW5d1g" crossorigin="anonymous"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
@@ -3314,6 +3315,12 @@ function loadState(){
     return JSON.parse(localStorage.getItem('mb2_state')||'{}');
   }catch(e){return{};}
 }
+// 許可されたキーのみコピーしてプロトタイプ汚染を防ぐ
+const STATE_KEYS=['tasks','activeChar','streak','lastDate','xp','totalCompleted','highCompleted','investCompleted','charsUsed','charsUsedSet','unlockedAchievements','completedDates','coins','unlockedTiles','purchasedTiles','activeTheme','pomodoroSessions','tileRarities','cardTiles','habitPool','habitLog','pomodoroLog','pins','activePinId','bossState','loginStreak','lastLoginDate','equippedItem','bossDefeats','bossStreak','itemCounts','lastEraNotified','bossHistory','charTitles','gachaCollection','gachaCounts','knownTitleIds','achievUnlockDates','streakShieldUsedDate','gachaItems','weeklyGoal','weeklyGoalStart','charCostume','tileCards','mapMessages','lastMapMsg','lastLoginTs'];
+function safeMergeState(src){
+  if(!src||typeof src!=='object'||Array.isArray(src)) return;
+  STATE_KEYS.forEach(k=>{ if(Object.prototype.hasOwnProperty.call(src,k)) S[k]=src[k]; });
+}
 let S = {
   tasks:          [],
   activeChar:     'えんだ',
@@ -4018,7 +4025,7 @@ function renderHabitLog(){
   if(log.length===0){el.innerHTML='<div class="log-empty">🎯 習慣ガチャを使うとここに記録されます</div>';return;}
   el.innerHTML=log.slice(0,30).map(entry=>`
     <div class="habit-log-row">
-      <div class="habit-log-date">${entry.date}</div>
+      <div class="habit-log-date">${escH(entry.date||'')}</div>
       <div class="habit-log-chips">${(entry.items||[]).map(t=>`<span class="habit-chip">${escH(t)}</span>`).join('')}</div>
     </div>`).join('');
 }
@@ -4036,7 +4043,7 @@ function renderPomodoroLog(){
   el.innerHTML=log.slice(0,30).map(entry=>{
     const dots=Array.from({length:entry.sessions},(_,i)=>`<div class="pom-dot" title="${25*(i+1)}分">🍅</div>`).join('');
     return `<div class="pom-log-row">
-      <div class="pom-log-date">${entry.date}</div>
+      <div class="pom-log-date">${escH(entry.date||'')}</div>
       <div class="pom-log-dots">${dots}</div>
       <div class="pom-log-min">${entry.sessions*25}分</div>
     </div>`;
@@ -4778,8 +4785,8 @@ function renderCollPom(){
     const task=entry.task||'';
     return `<div class="pom-log-row">
       <div class="pom-log-top">
-        <span class="pom-log-date">${entry.date||''}</span>
-        <span class="pom-log-time">${entry.time||''}</span>
+        <span class="pom-log-date">${escH(entry.date||'')}</span>
+        <span class="pom-log-time">${escH(entry.time||'')}</span>
         <span class="pom-log-dur">⏱ ${mins}分</span>
       </div>
       ${task?`<div class="pom-log-task">${escH(task)}</div>`:''}
@@ -5003,7 +5010,7 @@ function importData(){
         const imported=JSON.parse(ev.target.result);
         if(!Array.isArray(imported.tasks)) throw new Error();
         if(!confirm(`インポートしますか？\nタスク数: ${imported.tasks.length}件\n現在のデータは上書きされます`)) return;
-        Object.assign(S, imported);
+        safeMergeState(imported);
         if(!CHARS[S.activeChar]) S.activeChar='えんだ';
         save(); renderAll(); renderToday();
         showToast(`✅ インポート完了（${imported.tasks.length}件）`);
@@ -6363,7 +6370,7 @@ async function cloudLoad(){
 function confirmCloudLoad(){
   document.getElementById('cloudConfirmOverlay').classList.remove('open');
   if(!_pendingCloudData) return;
-  Object.assign(S,_pendingCloudData);
+  safeMergeState(_pendingCloudData);
   _pendingCloudData=null;
   localStorage.setItem('mb2_state',JSON.stringify(S));
   showToast('☁️ クラウドのデータを読み込みました');
